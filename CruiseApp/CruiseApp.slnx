@@ -2,5 +2,6 @@
   <Folder Name="/Documentation/">
     <File Path="../README.md" />
   </Folder>
+  <Project Path="CruiseApp.Data/CruiseApp.Data.csproj" Id="3ddd1d81-8e49-46a4-9363-c6b4c7b22446" />
   <Project Path="CruiseApp/CruiseApp.csproj" />
 </Solution>
