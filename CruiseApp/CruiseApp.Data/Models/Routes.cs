@@ -12,12 +12,6 @@ namespace CruiseApp.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100)]
-        [Unicode(false)]
-        [Comment("Name of the Route")]
-        public string Name { get; set; } = null!;
-
-        [Required]
         [Comment("The Ship of the Route.")]
         public int ShipId { get; set; }
 
@@ -25,5 +19,9 @@ namespace CruiseApp.Data.Models
         public Ship Ship { get; set; } = null!;
 
         public ICollection<RouteDay> Days { get; set; } = new List<RouteDay>();
+
+
+        [NotMapped]
+        public string Name => Ship != null? $"Route of {Ship.Name}" : "Route";
     }
 }

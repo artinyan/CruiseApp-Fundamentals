@@ -27,7 +27,7 @@ namespace CruiseApp.Data
                 .IsUnique();
 
             builder.Entity<Route>()
-                .HasIndex(r => r.Name)
+                .HasIndex(r => r.ShipId)
                 .IsUnique();
 
             builder.Entity<Deck>()
@@ -35,7 +35,7 @@ namespace CruiseApp.Data
                 .IsUnique();
 
             builder.Entity<Cabin>()
-                .HasIndex(c => new {c.DeckId, c.Name})
+                .HasIndex(c => new {c.DeckId, c.SequenceNumber})
                 .IsUnique();
         }
     }
