@@ -12,10 +12,8 @@ namespace CruiseApp.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
-        [Unicode(false)]
-        [Comment("Name of Cabin - combination of name of the Deck and sequence number.")]
-        public string Name { get; set; } = null!;
+        [Range(1, 999, ErrorMessage = "Cabin number must be between 1 and 999")] // Second Validation. (first sould be javascript frontend), third sould be in migration
+        public int SequenceNumber { get; set; }
 
         [Required]
         [Comment("The Deck of the Cabin.")]
@@ -23,6 +21,9 @@ namespace CruiseApp.Data.Models
 
         [ForeignKey(nameof(DeckId))]
         public Deck Deck { get; set; } = null!;
+
+        [NotMapped]
+        public string Name => $"{Deck.Name}{SequenceNumber:D3}";
 
     }
 }

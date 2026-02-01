@@ -12,10 +12,12 @@ namespace CruiseApp.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
-        [Unicode(false)]
-        [Comment("Name of the deck (sequence number as string).")]
-        public string Name { get; set; } = null!;
+        [Range (1, 99, ErrorMessage = "Deck number must be between 1 and 99.")] // Second Validation. (first sould be javascript frontend), third sould be in migration
+        [Comment("Numeric identifier of the Deck.")]
+        public int Number { get; set; }
+
+        [NotMapped]
+        public string Name => Number.ToString("D2");
 
         [Required]
         [Comment("The Ship of the Deck.")]
