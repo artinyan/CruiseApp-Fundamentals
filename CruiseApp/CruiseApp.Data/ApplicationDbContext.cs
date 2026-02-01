@@ -37,6 +37,10 @@ namespace CruiseApp.Data
             builder.Entity<Cabin>()
                 .HasIndex(c => new {c.DeckId, c.SequenceNumber})
                 .IsUnique();
+
+            builder.Entity<RouteDay>()
+                .HasIndex(rd => new {rd.RouteId, rd.Date })
+                .IsUnique();
         }
     }
 }
