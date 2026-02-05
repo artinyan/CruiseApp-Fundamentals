@@ -41,6 +41,10 @@ namespace CruiseApp.Data
             builder.Entity<RouteDay>()
                 .HasIndex(rd => new { rd.RouteId, rd.Date })
                 .IsUnique();
+
+            builder.Entity<Cruise>()
+                .HasIndex(c => new { c.Ship, c.FirstDay, c.LastDay})
+                .IsUnique();
         }
     }
 }
