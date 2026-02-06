@@ -22,7 +22,6 @@ namespace CruiseApp.Data.Models
         [ForeignKey(nameof(RouteId))]
         public Route Route { get; set; } = null!;
 
-
         [Required]
         [Comment("The Point of the RouteDay.")]
         public int PointId { get; set; }

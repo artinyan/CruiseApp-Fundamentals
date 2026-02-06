@@ -1,8 +1,8 @@
 using System.Diagnostics;
-using CruiseApp.Models;
+using CruiseApp.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CruiseApp.Controllers
+namespace CruiseApp.Web.Controllers
 {
     public class HomeController : Controller
     {

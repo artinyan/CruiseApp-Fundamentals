@@ -4,5 +4,6 @@
   </Folder>
   <Project Path="CruiseApp.Data/CruiseApp.Data.csproj" Id="3ddd1d81-8e49-46a4-9363-c6b4c7b22446" />
   <Project Path="CruiseApp.Seed/CruiseApp.Seed.csproj" Id="2abfdd4b-d337-48d0-95ba-6beb711fe13d" />
-  <Project Path="CruiseApp/CruiseApp.csproj" />
+  <Project Path="CruiseApp.Services/CruiseApp.Services.csproj" Id="3fa946a5-6bde-4276-b6b0-1d8d3a0c74d0" />
+  <Project Path="CruiseApp.Web/CruiseApp.Web.csproj" />
 </Solution>
