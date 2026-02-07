@@ -3,9 +3,12 @@ using CruiseApp.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Point = CruiseApp.Data.Models.Point;
 
+//Console.WriteLine("SEED APP STARTED");
+//Console.ReadLine();
+
 var options = new DbContextOptionsBuilder<ApplicationDbContext>()
     .UseSqlServer(
-        "Server=.;Database=CruiseAppDb;User Id=sa;Password=YourStrongPassword!;TrustServerCertificate=True")
+        "Server=.;Database=CruiseAppDb;User Id=sa;Password=YourPassword!;TrustServerCertificate=True")
     .Options;
 
 
@@ -28,6 +31,15 @@ int[][] routesArr = {
     [ 3,6,4,0,5,8,9,0,7,12 ],
     [ 6,11,4,3,10,0,9,7 ]};
 
+var cruisesArr = new[,] {
+    { 0, 2026, 6, 2, 2026, 6, 11 },
+    { 0, 2026, 6, 30, 2026, 7, 7 },
+    { 1, 2026, 7, 2, 2026, 7, 9 },
+    { 1, 2026, 7, 3, 2026, 7, 10 },
+    { 2, 2026, 9, 1, 2026, 9, 11 },
+    { 2, 2026, 9, 3, 2026, 9, 9 } };
+
+
 var seasonStart = new DateOnly(2026, 6, 1);
 var seasonEnd = new DateOnly(2026, 9, 30);
 
@@ -35,17 +47,61 @@ var seasonEnd = new DateOnly(2026, 9, 30);
 
 using var db = new ApplicationDbContext(options);
 
-// по избор
 db.Database.Migrate();
 
-if (!db.Points.Any())
+
+using var transaction = db.Database.BeginTransaction();
+
+try
 {
-    SeedPoints(pointsList);
+    if (!db.Points.Any())
+    {
+        SeedPoints(pointsList);
+    }
+
+    if (!db.Ships.Any())
+    {
+        SeedShips(shipsList, decksArr, cabinsArr, seasonStart, seasonEnd);
+    }
+
+    if (!db.Cruises.Any())
+    {
+        SeedCruises(cruisesArr);
+    }
+
+    transaction.Commit();
+}
+catch
+{
+    transaction.Rollback();
+    throw;
 }
 
-if (!db.Ships.Any())
+void SeedCruises(int[,] cruisesArr)
 {
-    SeedShips(shipsList, decksArr, cabinsArr, seasonStart, seasonEnd);
+    var cruises = new List<Cruise>();
+    for (int i = 0; i < cruisesArr.GetLength(0); i++)
+    {
+        var shipRoute = db.Routes
+            .Include(r => r.Ship)
+            .Include(r => r.Days)
+            .ThenInclude(rd => rd.Point)
+            .First(r => r.Ship.Name == shipsList[cruisesArr[i, 0]]);
+
+        var cruise = new Cruise(shipRoute,
+            new DateOnly(
+                 cruisesArr[i, 1],
+                 cruisesArr[i, 2],
+                 cruisesArr[i, 3]),
+            new DateOnly(
+                 cruisesArr[i, 4],
+                 cruisesArr[i, 5],
+                 cruisesArr[i, 6]));
+
+        cruises.Add(cruise);
+    }
+    db.Cruises.AddRange(cruises);
+    db.SaveChanges();
 }
 
 void SeedPoints(List<string> pointsList)
@@ -107,9 +163,7 @@ void SeedShips(List<string> shipsList, int[,] decksArr, int[,] cabinsArr, DateOn
             {
                 Date = date,
                 Route = route,
-                PointId = pointsByName[pointsList[routesArr[sh][counter]]]
-            }
-;
+                PointId = pointsByName[pointsList[routesArr[sh][counter]]]};
 
             db.RouteDays.Add(routeDay);
 
