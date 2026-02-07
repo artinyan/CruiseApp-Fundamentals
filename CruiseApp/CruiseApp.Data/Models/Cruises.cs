@@ -5,19 +5,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CruiseApp.Data.Models
 {
     [Comment("Repersents cruise in the system.")]
-
     public class Cruise
     {
-
         private Cruise() { }
 
-        public Cruise(Ship ship, Route route, DateOnly firstDay, DateOnly lastDay)
+        public Cruise(Route route, DateOnly firstDay, DateOnly lastDay)
         {
-            SetShipAndRoute(ship, route);
+            SetRoute(route);
             SetPeriod(firstDay, lastDay);
             ValidateAgainstRoute();
         }
-
 
         [Key]
         [Comment("Primary key for Cruise.")]
@@ -32,30 +29,19 @@ namespace CruiseApp.Data.Models
         public DateOnly LastDay { get; private set; }
 
         [Required]
-        [Comment("The ship of the cruise")]
-        public int ShipId { get; private set; }
-
-        [ForeignKey(nameof(ShipId))]
-        public Ship Ship { get; private set; } = null!;
-
-        [Required]
-        [Comment("The route of the ship of the cruise")]
+        [Comment("The route of the cruise")]
         public int RouteId { get; private set; }
 
         [ForeignKey(nameof(RouteId))]
         public Route Route { get; private set; } = null!;
 
-        public int CruiseLength => (LastDay.DayNumber - FirstDay.DayNumber);
+        [NotMapped]
+        public Ship Ship => Route.Ship;
 
+        public int CruiseLength => LastDay.DayNumber - FirstDay.DayNumber;
 
-        public void SetShipAndRoute(Ship ship, Route route)
+        private void SetRoute(Route route)
         {
-            if (route.ShipId != ship.Id)
-                throw new InvalidOperationException("Route does not belong to ship.");
-
-            Ship = ship;
-            ShipId = ship.Id;
-
             Route = route;
             RouteId = route.Id;
         }
@@ -71,34 +57,23 @@ namespace CruiseApp.Data.Models
             FirstDay = firstDay;
             LastDay = lastDay;
         }
+
         private void ValidateAgainstRoute()
         {
-
-            if(Route.Days == null || !Route.Days.Any())
-            {
+            if (Route.Days == null || !Route.Days.Any())
                 throw new InvalidOperationException("Route days are not loaded.");
-            }
 
-            var firstDayRoute = Route.Days
-                .First(rd => rd.Date == FirstDay);
+            var firstDayRoute = Route.Days.FirstOrDefault(rd => rd.Date == FirstDay);
+            var lastDayRoute = Route.Days.FirstOrDefault(rd => rd.Date == LastDay);
 
-            var lastDayRoute = Route.Days
-                .First(rd => rd.Date == LastDay);
-
-            if(firstDayRoute == null || lastDayRoute == null)
-            {
+            if (firstDayRoute == null || lastDayRoute == null)
                 throw new InvalidOperationException("Cruise dates are outside the route schedule.");
-            }
 
             if (firstDayRoute.Point.IsSea)
-            {
                 throw new InvalidOperationException("Cruise cannot start at sea.");
-            }
 
             if (lastDayRoute.Point.IsSea)
-            {
                 throw new InvalidOperationException("Cruise cannot end at sea.");
-            }
         }
     }
 }

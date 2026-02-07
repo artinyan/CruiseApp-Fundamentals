@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CruiseApp.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -222,7 +222,7 @@ namespace CruiseApp.Data.Migrations
                         column: x => x.ShipId,
                         principalTable: "Ships",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 },
                 comment: "Represents Route in the system.");
 
@@ -248,12 +248,34 @@ namespace CruiseApp.Data.Migrations
                 comment: "Represents Cabin of Deck of Ship in the system.");
 
             migrationBuilder.CreateTable(
+                name: "Cruises",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false, comment: "Primary key for Cruise.")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstDay = table.Column<DateOnly>(type: "date", nullable: false, comment: "Embarkation day of the cruise"),
+                    LastDay = table.Column<DateOnly>(type: "date", nullable: false, comment: "Disembarkation day of the cruise"),
+                    RouteId = table.Column<int>(type: "int", nullable: false, comment: "The route of the cruise")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cruises", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cruises_Routes_RouteId",
+                        column: x => x.RouteId,
+                        principalTable: "Routes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                },
+                comment: "Repersents cruise in the system.");
+
+            migrationBuilder.CreateTable(
                 name: "RouteDays",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false, comment: "Primary key for RouteDay.")
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateOnly>(type: "date", nullable: false, comment: "Calendar date of the RouteDay."),
+                    Date = table.Column<DateTime>(type: "DATE", nullable: false, comment: "Calendar date of the RouteDay."),
                     RouteId = table.Column<int>(type: "int", nullable: false, comment: "The Route of the RouteDay."),
                     PointId = table.Column<int>(type: "int", nullable: false, comment: "The Point of the RouteDay.")
                 },
@@ -321,6 +343,11 @@ namespace CruiseApp.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Cruises_RouteId",
+                table: "Cruises",
+                column: "RouteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Decks_ShipId_Number",
                 table: "Decks",
                 columns: new[] { "ShipId", "Number" },
@@ -370,6 +397,9 @@ namespace CruiseApp.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Cabins");
+
+            migrationBuilder.DropTable(
+                name: "Cruises");
 
             migrationBuilder.DropTable(
                 name: "RouteDays");

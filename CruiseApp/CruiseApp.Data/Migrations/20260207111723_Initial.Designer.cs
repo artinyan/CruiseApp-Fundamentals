@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CruiseApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260202014633_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260207111723_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,37 @@ namespace CruiseApp.Data.Migrations
                     b.ToTable("Cabins", t =>
                         {
                             t.HasComment("Represents Cabin of Deck of Ship in the system.");
+                        });
+                });
+
+            modelBuilder.Entity("CruiseApp.Data.Models.Cruise", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Primary key for Cruise.");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("FirstDay")
+                        .HasColumnType("date")
+                        .HasComment("Embarkation day of the cruise");
+
+                    b.Property<DateOnly>("LastDay")
+                        .HasColumnType("date")
+                        .HasComment("Disembarkation day of the cruise");
+
+                    b.Property<int>("RouteId")
+                        .HasColumnType("int")
+                        .HasComment("The route of the cruise");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RouteId");
+
+                    b.ToTable("Cruises", t =>
+                        {
+                            t.HasComment("Repersents cruise in the system.");
                         });
                 });
 
@@ -141,8 +172,8 @@ namespace CruiseApp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date")
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("DATE")
                         .HasComment("Calendar date of the RouteDay.");
 
                     b.Property<int>("PointId")
@@ -406,6 +437,17 @@ namespace CruiseApp.Data.Migrations
                     b.Navigation("Deck");
                 });
 
+            modelBuilder.Entity("CruiseApp.Data.Models.Cruise", b =>
+                {
+                    b.HasOne("CruiseApp.Data.Models.Route", "Route")
+                        .WithMany()
+                        .HasForeignKey("RouteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Route");
+                });
+
             modelBuilder.Entity("CruiseApp.Data.Models.Deck", b =>
                 {
                     b.HasOne("CruiseApp.Data.Models.Ship", "Ship")
@@ -420,9 +462,9 @@ namespace CruiseApp.Data.Migrations
             modelBuilder.Entity("CruiseApp.Data.Models.Route", b =>
                 {
                     b.HasOne("CruiseApp.Data.Models.Ship", "Ship")
-                        .WithMany()
-                        .HasForeignKey("ShipId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne()
+                        .HasForeignKey("CruiseApp.Data.Models.Route", "ShipId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Ship");
