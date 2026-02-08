@@ -4,62 +4,118 @@
     ViewData["Title"] = "Cruises";
 }
 
-<h1>Cruises</h1>
+<div class="hero-container">
+    <img src="~/images/hero/hero1.jpg" class="hero-image active" />
+    <img src="~/images/hero/hero2.jpg" class="hero-image" />
+    <img src="~/images/hero/hero3.jpg" class="hero-image" />
 
-<form method="get" asp-action="Index">
-    <div class="form-group">
-        <label for="ShipId">Ship</label>
-        <select asp-for="ShipId" class="form-control" asp-items="Model.Ships">
-            <option value="">-- All Ships --</option>
-        </select>
+    @* <div class="hero-overlay">
+        <h1>Explore Mediterranean Cruises</h1>
+        <p>Find your perfect journey at sea</p>
+    </div> *@
+</div>
+
+@* <h1 class="mb-4">Cruises</h1> *@
+
+<!-- ========================= -->
+<!-- Search form               -->
+<!-- ========================= -->
+<form method="get" asp-action="Index" class="mb-4">
+    <div class="row g-3 align-items-end">
+        <div class="col-md-3">
+            <label asp-for="ShipId" class="form-label">Ship</label>
+            <select asp-for="ShipId" class="form-select" asp-items="Model.Ships">
+                <option value="">-- All Ships --</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label asp-for="StartPointId" class="form-label">Start Point</label>
+            <select asp-for="StartPointId" class="form-select" asp-items="Model.StartPoints">
+                <option value="">-- All Ports --</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label asp-for="StartDate" class="form-label">Start Date</label>
+            <input asp-for="StartDate" type="date" class="form-control" />
+        </div>
+
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary w-100">
+                Search
+            </button>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label for="StartPointId">Start Point</label>
-        <select asp-for="StartPointId" class="form-control" asp-items="Model.StartPoints">
-            <option value="">-- All Ports --</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="StartDate">Start Date</label>
-        <input asp-for="StartDate" type="date" class="form-control" />
-    </div>
-
-    <button type="submit" class="btn btn-primary mt-2">Search</button>
 </form>
 
 <hr />
 
+<!-- ========================= -->
+<!-- Cruises list              -->
+<!-- ========================= -->
 @if (Model.Cruises != null && Model.Cruises.Any())
 {
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Ship</th>
-                <th>Route</th>
-                <th>Start Day</th>
-                <th>End Day</th>
-                <th>Nights</th>
-                <th>From → To</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var cruise in Model.Cruises)
-            {
-                <tr>
-                    <td>@cruise.ShipName</td>
-                    <td>@cruise.RouteName</td>
-                    <td>@cruise.FirstDay.ToString("yyyy-MM-dd")</td>
-                    <td>@cruise.LastDay.ToString("yyyy-MM-dd")</td>
-                    <td>@cruise.Nights</td>
-                    <td>@cruise.StartPoint → @cruise.EndPoint</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="cruise-list">
+        @foreach (var cruise in Model.Cruises)
+        {
+            <div class="cruise-card">
+                <!-- IMAGE -->
+                <div class="cruise-image">
+                    <img src="~/images/destinations/@cruise.PointImage"
+                         alt="@cruise.StartPoint" />
+                </div>
+
+                <!-- INFO -->
+                <div class="cruise-info">
+                    <div class="cruise-header">
+                        <span class="nights">@cruise.Nights NIGHTS</span>
+                        <span class="ship">Ship: @cruise.ShipName</span>
+                    </div>
+
+                    <div class="cruise-first">
+                        <strong>FIRST DAY:</strong> @cruise.FirstDay.ToString("yyyy-MM-dd")
+                    </div>
+
+                    <div class="cruise-last">
+                        <strong>LAST DAY:</strong> @cruise.LastDay.ToString("yyyy-MM-dd")
+                    </div>
+
+                    <div class="cruise-from">
+                        <strong>FROM:</strong> @cruise.StartPoint
+                    </div>
+
+                    <div class="cruise-destinations">
+                        <strong>VISITING:</strong><br />
+                        @cruise.Destinations
+                    </div>
+
+                    <div class="cruise-footer">
+                        <a asp-controller="Cruise"
+                           asp-action="Details"
+                           asp-route-id="@cruise.Id"
+                           class="details-link">
+                            View cruise details →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 }
 else
 {
-    <p>No cruises found for the selected criteria.</p>
+    <p class="text-muted">No cruises found for the selected criteria.</p>
 }
+
+<script>
+    const images = document.querySelectorAll('.hero-image');
+    let currentIndex = 0;
+
+    setInterval(() => {
+        images[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % images.length;
+        images[currentIndex].classList.add('active');
+    }, 10000); // 10 seconds
+</script>
+

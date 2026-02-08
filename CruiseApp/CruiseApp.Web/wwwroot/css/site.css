@@ -1,22 +1,143 @@
-html {
-  font-size: 14px;
+/* =========================
+   HERO BANNER
+   ========================= */
+
+.hero-container {
+    position: relative;
+    width: 100%;
+    max-width: 1300px; /* */
+    height: 300px;
+    margin: 0 auto 40px auto;
+    overflow: hidden;
+    border-radius: 12px;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.hero-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    .hero-image.active {
+        opacity: 1;
+    }
+
+/* Overlay text */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient( rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.55) );
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 40px;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+    .hero-overlay h1 {
+        font-size: 2.6rem;
+        margin-bottom: 10px;
+    }
+
+    .hero-overlay p {
+        font-size: 1.2rem;
+    }
+
+
+/* ============================= */
+/* Cruise cards layout           */
+/* ============================= */
+
+.cruise-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
-body {
-  margin-bottom: 60px;
+.cruise-card {
+    display: grid;
+    grid-template-columns: 390px 1fr;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+    .cruise-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+
+/* IMAGE */
+.cruise-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* INFO */
+.cruise-info {
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* HEADER */
+.cruise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nights {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0d6efd;
+}
+
+.ship {
+    font-size: 14px;
+    color: #555;
+}
+
+/* FIRST DAY */
+.cruise-first {
+    font-size: 12px;
+}
+
+/* LAST DAY */
+.cruise-last {
+    font-size: 12px;
+}
+
+/* FROM */
+.cruise-from {
+    font-size: 15px;
+}
+
+/* DESTINATIONS */
+.cruise-destinations {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.5;
+}
+
+/* FOOTER */
+.cruise-footer {
+    margin-top: auto;
+}
+
+.details-link {
+    font-weight: 600;
+    text-decoration: none;
+    color: #0d6efd;
+}
+
+    .details-link:hover {
+        text-decoration: underline;
+    }

@@ -1,8 +1,42 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Welcome to CruiseApp";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="jumbotron text-center bg-light p-5 rounded shadow-sm">
+        <h1 class="display-4 mb-3">Welcome to CruiseApp</h1>
+        <p class="lead mb-4">
+            Explore and search cruises across the Mediterranean! Discover your perfect cruise and plan your adventure.
+        </p>
+        <a class="btn btn-primary btn-lg" href="@Url.Action("Index", "Cruise")" role="button">
+            Browse Cruises
+        </a>
+    </div>
+
+    <div class="row text-center mt-5">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Search Cruises</h5>
+                    <p class="card-text">Filter cruises by ship, start date, or departure port.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Plan Your Trip</h5>
+                    <p class="card-text">Check schedules and see detailed cruise information before booking.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">User Features</h5>
+                    <p class="card-text">Log in to like cruises and track your favorite trips.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

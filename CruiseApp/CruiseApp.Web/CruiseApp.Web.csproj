@@ -22,4 +22,9 @@
     <ProjectReference Include="..\CruiseApp.Services\CruiseApp.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\destinations\" />
+    <Folder Include="wwwroot\images\hero\" />
+  </ItemGroup>
+
 </Project>
