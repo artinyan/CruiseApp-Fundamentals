@@ -1,16 +1,31 @@
 ﻿using CruiseApp.Data;
 using CruiseApp.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using DotNetEnv;
+using System.IO;
 using Point = CruiseApp.Data.Models.Point;
 
-//Console.WriteLine("SEED APP STARTED");
-//Console.ReadLine();
+// 1️ Намери solution root спрямо текущата exe директория
+var exeDir = AppContext.BaseDirectory; // папката, където се стартира .exe
+var solutionRoot = Path.GetFullPath(Path.Combine(exeDir, "..", "..", "..", ".."));
+// 4 пъти ".." защото bin/Debug/net8.0 е на 4 нива под solution root
+
+// 2️ Път към .env в CruiseApp.Web
+var envPath = Path.Combine(solutionRoot, "CruiseApp.Web", ".env");
+
+// 3️ Зареждане на .env
+Env.Load(envPath);
+
+
+var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string not found in environment variables.");
 
 var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-    .UseSqlServer(
-        "Server=.;Database=CruiseAppDb;User Id=sa;Password=YourStrongPassword!;TrustServerCertificate=True")
-        //"Server=.;Database=CruiseAppDb;User Id=sa;Password=YourPassword!;TrustServerCertificate=True")
+    .UseSqlServer(connectionString)
     .Options;
+
+using var db = new ApplicationDbContext(options);
+
 
 
 var shipsList = new List<string> { "Aurora", "Ariel", "Neptune" };
@@ -44,9 +59,6 @@ var cruisesArr = new[,] {
 var seasonStart = new DateOnly(2026, 6, 1);
 var seasonEnd = new DateOnly(2026, 9, 30);
 
-
-
-using var db = new ApplicationDbContext(options);
 
 db.Database.Migrate();
 
