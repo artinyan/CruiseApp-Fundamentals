@@ -8,7 +8,8 @@ using Point = CruiseApp.Data.Models.Point;
 
 var options = new DbContextOptionsBuilder<ApplicationDbContext>()
     .UseSqlServer(
-        "Server=.;Database=CruiseAppDb;User Id=sa;Password=YourPassword!;TrustServerCertificate=True")
+        "Server=.;Database=CruiseAppDb;User Id=sa;Password=YourStrongPassword!;TrustServerCertificate=True")
+        //"Server=.;Database=CruiseAppDb;User Id=sa;Password=YourPassword!;TrustServerCertificate=True")
     .Options;
 
 

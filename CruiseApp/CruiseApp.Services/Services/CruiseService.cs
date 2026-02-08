@@ -14,6 +14,9 @@ namespace CruiseApp.Services.Services
             this.db = db;
         }
 
+        // ============================
+        // ADMIN
+        // ============================
         public async Task<int> CreateCruiseAsync(int shipId, DateOnly firstDay, DateOnly lastDay)
         {
             var route = await db.Routes
@@ -30,6 +33,49 @@ namespace CruiseApp.Services.Services
             await db.SaveChangesAsync();
 
             return cruise.Id;
+        }
+
+        // ============================
+        // PUBLIC SEARCH
+        // ============================
+
+        public async Task<IEnumerable<Cruise>> SearchCruisesAsync(
+            int? shipId, DateOnly? startDate, int? startPointId)
+        {
+            var query = db.Cruises
+                 .AsNoTracking()
+                 .Include(c => c.Route)
+                 .ThenInclude(r => r.Ship)
+                 .Include(c => c.Route)
+                 .ThenInclude(r => r.Days)
+                 .ThenInclude(d => d.Point)
+                 .AsQueryable();
+
+            // Ship filter
+            if (shipId.HasValue)
+            {
+                query = query.Where(c => c.Route.ShipId == shipId.Value);
+            }
+
+            // First Date
+            if (startDate.HasValue)
+            {
+                query = query.Where(c => c.FirstDay == startDate.Value);
+            }
+
+            // First Point
+            if (startPointId.HasValue)
+            {
+                query = query.Where(c =>
+                    c.Route.Days.Any(d =>
+                    d.Date == c.FirstDay &&
+                    d.PointId == startPointId.Value));
+            }
+
+
+            return await query
+                .OrderBy(c => c.FirstDay)
+                .ToListAsync();
         }
     }
 }

@@ -1,0 +1,65 @@
+﻿@model CruiseApp.Web.ViewModels.CruiseSearchViewModel
+
+@{
+    ViewData["Title"] = "Cruises";
+}
+
+<h1>Cruises</h1>
+
+<form method="get" asp-action="Index">
+    <div class="form-group">
+        <label for="ShipId">Ship</label>
+        <select asp-for="ShipId" class="form-control" asp-items="Model.Ships">
+            <option value="">-- All Ships --</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="StartPointId">Start Point</label>
+        <select asp-for="StartPointId" class="form-control" asp-items="Model.StartPoints">
+            <option value="">-- All Ports --</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="StartDate">Start Date</label>
+        <input asp-for="StartDate" type="date" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
+</form>
+
+<hr />
+
+@if (Model.Cruises != null && Model.Cruises.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ship</th>
+                <th>Route</th>
+                <th>Start Day</th>
+                <th>End Day</th>
+                <th>Nights</th>
+                <th>From → To</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cruise in Model.Cruises)
+            {
+                <tr>
+                    <td>@cruise.ShipName</td>
+                    <td>@cruise.RouteName</td>
+                    <td>@cruise.FirstDay.ToString("yyyy-MM-dd")</td>
+                    <td>@cruise.LastDay.ToString("yyyy-MM-dd")</td>
+                    <td>@cruise.Nights</td>
+                    <td>@cruise.StartPoint → @cruise.EndPoint</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No cruises found for the selected criteria.</p>
+}

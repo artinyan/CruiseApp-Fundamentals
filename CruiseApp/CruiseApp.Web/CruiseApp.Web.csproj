@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CruiseApp.Data\CruiseApp.Data.csproj" />
+    <ProjectReference Include="..\CruiseApp.Services\CruiseApp.Services.csproj" />
   </ItemGroup>
 
 </Project>
