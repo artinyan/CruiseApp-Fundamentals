@@ -3,55 +3,62 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 **Description:**  
-CruiseApp-Fundamentals is the initial scaffold of a web application for a cruise company, developed with ASP.NET Core MVC (.NET 8). This project demonstrates the basic architecture, models, controllers, and Razor Views, providing a foundation to expand during the ASP.NET Fundamentals and Advanced courses.
+CruiseApp-Fundamentals is the initial scaffold of a web application for a cruise company, developed with ASP.NET Core MVC (.NET 8).
 
-System contains some ships. Any ship contains some decks with cabins. Ani ship has one route. Any route is for one ship. Routes are for whole season. Any route contains RouteDays with point for any day of the season. There are some cruises. Any cruise is for one ship, and contains first and last day into the season. Ship route determins points (destinations) of the cruise. First and last day of the cruise can't be point "At Sea". Any ship can contains many cruises. Two different crushes of one ship can have some same RouteDays.
-Cruises length are restricted up to 14 days. CRUD is applied only to cruises.
+The project demonstrates the basic application architecture, domain models, controllers, and Razor Views.
+It serves as a foundation to be expanded during the ASP.NET Fundamentals and ASP.NET Advanced courses.
 
-Instructions:
+**Domain Overview**
+The system contains multiple ships
+Each ship contains multiple decks, and each deck contains cabins
+Each ship has exactly one route
+A route belongs to one ship and is defined for the entire season
+Routes consist of RouteDays, each associated with a Point (destination) for a specific date
+The system contains multiple cruises
+Each cruise:
+	Belongs to one ship
+	Has a start date and end date within the season
+	Uses the ship’s route to determine its destinations
+	Cannot start or end at the point "At Sea"
+	Has a maximum duration of 14 days
+A ship can have multiple cruises
+Different cruises of the same ship may share some RouteDays
+CRUD operations are implemented only for Cruises
 
-Database Setup
+**Database Setup**
 1. Configure environment variables
-
 Open the file .env.example in the CruiseApp.Web folder
-
-Replace YourStrongPassword with your own SQL Server password
-
-Change the user if it is different from sa
-
-Save the file and rename it from .env.example to .env
-
-
-
+Replace YourStrongPassword with your SQL Server password
+Change the database user if it is different from sa
+Save the file and rename it to .env
+The .env file must not be committed to source control.
 
 2. Apply database migrations
-
 Open Package Manager Console
-
 Set Default Project to CruiseApp.Data
-
-Run:
+Run the following commands:
 
 Add-Migration Initial
 Update-Database
 
-
-
-Admin functionality
-
+**Admin Functionality**
 An admin user can perform CRUD operations on Cruises.
 
 This is a fundamental version of the application.
 There are no CRUD operations for:
 
 Ships
-
 Decks
-
 Cabins
-
 Routes
-
 RouteDays
-
 Points
+
+**Project Status**
+This project focuses on:
+Domain modeling
+Entity relationships
+EF Core configuration
+MVC architecture
+
+It is intentionally limited in functionality and will be extended in future iterations.
