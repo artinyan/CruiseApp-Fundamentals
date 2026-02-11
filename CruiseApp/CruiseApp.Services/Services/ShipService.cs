@@ -22,33 +22,3 @@ namespace CruiseApp.Services.Services
         }
     }
 }
-
-
-//using CruiseApp.Data;
-//using CruiseApp.Services.Interfaces;
-//using Microsoft.EntityFrameworkCore;
-
-//namespace CruiseApp.Services.Services
-//{
-//    public class ShipService : IShipService
-//    {
-//        private readonly ApplicationDbContext db;
-
-//        public ShipService(ApplicationDbContext db)
-//        {
-//            this.db = db;
-//        }
-
-//        public async Task<IEnumerable<ShipSelectItemViewModel>> GetAllAsync()
-//        {
-//            return await db.Ships
-//                .AsNoTracking()
-//                .Select(s => new ShipSelectItemViewModel
-//                {
-//                    Id = s.Id,
-//                    Name = s.Name
-//                })
-//                .ToListAsync();
-//        }
-//    }
-//}

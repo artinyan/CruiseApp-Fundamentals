@@ -1,0 +1,38 @@
+﻿@model CruiseApp.Web.ViewModels.CruiseDetailsViewModel
+
+@{
+    ViewData["Title"] = "Cruise Details";
+}
+
+<div class="container mt-4">
+
+    <a asp-action="Index" class="btn btn-link mb-3">
+        ← Back to cruises
+    </a>
+
+    <div class="card shadow-sm">
+        <img src="~/images/destinations/@(Model.StartPoint).jpg"
+             onerror="this.src='/images/noimage.jpg'"
+             class="card-img-top"
+             alt="@Model.StartPoint" />
+
+        <div class="card-body">
+            <h2>@Model.ShipName</h2>
+
+            <p class="text-muted">
+                @Model.FirstDay.ToString("dd MMM yyyy")
+                –
+                @Model.LastDay.ToString("dd MMM yyyy")
+                · @Model.Nights nights
+            </p>
+
+            <hr />
+
+            <h5>Destinations</h5>
+            <p>@Model.Destinations</p>
+
+            <h5>From Port of:</h5>
+            <p>@Model.StartPoint</p>
+        </div>
+    </div>
+</div>

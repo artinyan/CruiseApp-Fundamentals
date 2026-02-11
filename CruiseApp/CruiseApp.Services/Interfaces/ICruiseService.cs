@@ -15,5 +15,7 @@ namespace CruiseApp.Services.Interfaces
             int? shipId,
             DateOnly? startDate,
             int? startPointId);
+
+        Task<Cruise?> GetByIdAsync(int id);
     }
 }

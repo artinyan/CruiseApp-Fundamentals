@@ -38,6 +38,13 @@ Add-Migration Initial
 Update-Database
 ```
 
+
+### **Seed Items**
+#### Right click on project CruiseApp.Seed -> Debug -> Start New Istance
+#### This will load:
+#### 15 destinations, 3 ships, many decks for each ship, hundreds cabins for each ship, Route and RouteDays for each ship (in season 01/06/2026 - 30/09/2026), 6 cruises.
+
+
 ### **Admin Functionality**
 #### An admin user can perform CRUD operations on Cruises. This is a fundamental version of the application.
 #### There are no CRUD operations for:

@@ -35,6 +35,7 @@ namespace CruiseApp.Services.Services
             return cruise.Id;
         }
 
+
         // ============================
         // PUBLIC SEARCH
         // ============================
@@ -76,6 +77,16 @@ namespace CruiseApp.Services.Services
             return await query
                 .OrderBy(c => c.FirstDay)
                 .ToListAsync();
+        }
+        public async Task<Cruise?> GetByIdAsync(int id)
+        {
+            return await db.Cruises
+                .Include(c => c.Route)
+                    .ThenInclude(c => c.Ship)
+                .Include(c => c.Route)
+                    .ThenInclude(r => r.Days)
+                        .ThenInclude(d => d.Point)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

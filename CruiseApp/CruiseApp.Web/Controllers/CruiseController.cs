@@ -36,7 +36,7 @@ namespace CruiseApp.Web.Controllers
                 })
                 .ToList();
 
-            // Start points dropdown (без "At Sea")
+            // Start points dropdown (without "At Sea")
             model.StartPoints = (await pointService.GetAllAsync())
                 .Where(p => !p.IsSea)
                 .Select(p => new SelectListItem
@@ -52,30 +52,6 @@ namespace CruiseApp.Web.Controllers
                 model.StartDate,
                 model.StartPointId);
 
-            //model.Cruises = cruises.Select(c =>
-            //{
-            //    var firstDayRoute = c.Route.Days.FirstOrDefault(rd => rd.Date == c.FirstDay);
-            //    var lastDayRoute = c.Route.Days.FirstOrDefault(rd => rd.Date == c.LastDay);
-
-            //    return new CruiseListItemViewModel
-            //    {
-            //        Id = c.Id,
-            //        ShipName = c.Route.Ship.Name,
-            //        RouteName = $"{c.Route.Ship.Name} Route",
-            //        FirstDay = c.FirstDay,
-            //        LastDay = c.LastDay,
-            //        Nights = c.CruiseLength,
-            //        StartPoint = firstDayRoute?.Point.Name ?? "Unknown",
-            //        EndPoint = lastDayRoute?.Point.Name ?? "Unknown",
-            //        IsLiked = false
-            //    };
-            //}).ToList();
-
-
-
-
-
-
             model.Cruises = cruises.Select(c => new CruiseListItemViewModel
             {
                 Id = c.Id,
@@ -90,27 +66,73 @@ namespace CruiseApp.Web.Controllers
                     .Select(rd => rd.Point.Name)
                     .FirstOrDefault() ?? string.Empty,
 
-
-                // Покажи целия маршрут като редица от имена, разделени с "•"
                 Destinations = string.Join(" • ", c.Route.Days
                     .Where(rd => rd.Date >= c.FirstDay && rd.Date <= c.LastDay)
                     .OrderBy(rd => rd.Date)
                     .Select(rd => rd.Point.Name)),
-                EndPoint = string.Empty 
+                EndPoint = string.Empty
             }).ToList();
-
-
-
-
-
-
-
-
-
-
-
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var cruise = await cruiseService.GetByIdAsync(id);
+
+            if (cruise == null)
+            {
+                return NotFound();
+            }
+
+            var model = new CruiseDetailsViewModel
+            {
+                Id = cruise.Id,
+                ShipName = cruise.Ship.Name,
+                FirstDay = cruise.FirstDay,
+                LastDay = cruise.LastDay,
+                Nights = cruise.CruiseLength,
+
+                StartPoint = cruise.Route.Days
+                    .Where(rd => rd.Date >= cruise.FirstDay && rd.Date <= cruise.LastDay)
+                    .OrderBy(rd => rd.Date)
+                    .Select(rd => rd.Point.Name)
+                    .FirstOrDefault() ?? string.Empty,
+
+                Destinations = string.Join(" → ", cruise.Route.Days
+                    .Where(rd => rd.Date >= cruise.FirstDay && rd.Date <= cruise.LastDay)
+                    .OrderBy(rd => rd.Date)
+                    .Select(rd => rd.Point.Name)),
+                EndPoint = string.Empty
+            };
+
+            return View(model);
+        }
+
+        //[HttpGet]
+        //public async Task<IActionResult> Details(int id)
+        //{
+        //    var cruise = await cruiseService.GetByIdAsync(id);
+
+        //    if (cruise == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var model = new CruiseDetailsViewModel
+        //    {
+        //        Id = cruise.Id,
+        //        ShipName = cruise.Ship.Name,
+        //        FirstDay = cruise.FirstDay,
+        //        LastDay = cruise.LastDay,
+        //        Nights = cruise.CruiseLength,
+        //        StartPoint = cruise.Route.Days.First().Point.Name,
+        //        Destinations = string.Join(" → ",
+        //            cruise.Route.Days.Select(d => d.Point.Name))
+        //    };
+
+        //    return View(model);
+        //}
     }
 }
