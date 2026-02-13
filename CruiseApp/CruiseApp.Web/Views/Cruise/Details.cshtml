@@ -4,48 +4,72 @@
     ViewData["Title"] = "Cruise Details";
 }
 
+<!-- ========================= -->
+<!-- Hero Section              -->
+<!-- ========================= -->
+<div class="hero-container mb-4">
+    <img src="~/images/hero/hero1.jpg" class="hero-image active" />
+    <img src="~/images/hero/hero2.jpg" class="hero-image" />
+    <img src="~/images/hero/hero3.jpg" class="hero-image" />
+</div>
+
 <div class="container mt-4">
 
     <a asp-action="Index" class="btn btn-link mb-3">
         ← Back to cruises
     </a>
 
-    <div class="card shadow-sm">
-        <img src="~/images/destinations/@(Model.StartPoint).jpg"
-             onerror="this.src='/images/noimage.jpg'"
-             class="card-img-top"
-             alt="@Model.StartPoint" />
+    <div class="cruise-card shadow-sm mb-4">
+        <!-- IMAGE -->
+        <div class="cruise-image">
+            <img src="~/images/destinations/@(Model.StartPoint).jpg"
+                 onerror="this.src='/images/noimage.jpg'"
+                 alt="@Model.StartPoint" />
+        </div>
 
-        <div class="card-body">
-            <h2>@Model.ShipName</h2>
-
-            <p class="text-muted">
-                @Model.FirstDay.ToString("dd MMM yyyy")
-                –
-                @Model.LastDay.ToString("dd MMM yyyy")
-                · @Model.Nights nights
-            </p>
+        <!-- INFO -->
+        <div class="cruise-info p-3">
+            <div class="cruise-header mb-2">
+                <h2 class="mb-1">@Model.ShipName</h2>
+                <span class="nights text-muted">
+                    @Model.FirstDay.ToString("dd MMM yyyy") – @Model.LastDay.ToString("dd MMM yyyy")
+                    · @Model.Nights nights
+                </span>
+            </div>
 
             <hr />
 
-            <h5>Destinations</h5>
-            <p>@Model.Destinations</p>
+            <div class="cruise-destinations mb-2">
+                <strong>Destinations:</strong>
+                <p>@Model.Destinations</p>
+            </div>
 
-            <h5>From Port of:</h5>
-            <p>@Model.StartPoint</p>
+            <div class="cruise-from mb-3">
+                <strong>From Port of:</strong>
+                <p>@Model.StartPoint</p>
+            </div>
 
             @if (User.IsInRole("User"))
             {
-                <form asp-action="@(Model.IsLiked ? "Unlike" : "Like")" method="post">
+                <form asp-action="@(Model.IsLiked ? "Unlike" : "Like")" method="post" class="d-inline-block">
                     <input type="hidden" name="id" value="@Model.Id" />
-
-                    <button class="btn btn-outline-danger">
-                        @(Model.IsLiked ? "❤️ Unlike" : "🤍 Like")
-                        (@Model.LikesCount)
+                    <button class="btn @(Model.IsLiked ? "btn-danger" : "btn-outline-danger")">
+                        @(Model.IsLiked ? "❤️ Unlike" : "🤍 Like") (@Model.LikesCount)
                     </button>
                 </form>
             }
-
         </div>
     </div>
 </div>
+
+<!-- Hero Image Carousel Script -->
+<script>
+    const images = document.querySelectorAll('.hero-image');
+    let currentIndex = 0;
+
+    setInterval(() => {
+        images[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % images.length;
+        images[currentIndex].classList.add('active');
+    }, 10000);
+</script>

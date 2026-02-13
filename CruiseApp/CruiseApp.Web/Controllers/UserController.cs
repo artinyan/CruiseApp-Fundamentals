@@ -28,7 +28,7 @@ public class UserController : Controller
             StartPoint = c.Route.Days
                     .Where(d => d.Date == c.FirstDay)
                     .Select(d => d.Point.Name)
-                    .FirstOrDefault() ?? "default",   // fallback
+                    .FirstOrDefault() ?? "default",
             EndPoint = c.Route.Days
                     .Where(d => d.Date == c.LastDay)
                     .Select(d => d.Point.Name)

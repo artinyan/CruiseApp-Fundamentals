@@ -44,19 +44,6 @@ public class CruiseLikeService : ICruiseLikeService
     public async Task<int> GetLikesCountAsync(int cruiseId)
         => await db.CruiseLikes.CountAsync(l => l.CruiseId == cruiseId);
 
-    //public async Task<IEnumerable<Cruise>> GetLikedCruisesAsync(string userId)
-    //{
-    //    return await db.CruiseLikes
-    //        .Where(cl => cl.UserId == userId)
-    //        .Select(cl => cl.Cruise)
-    //        .Include(c => c.Ship)
-    //        .Include(c => c.Route)
-    //            .ThenInclude(r => r.Days)
-    //                .ThenInclude(d => d.Point)
-    //        .ToListAsync();
-    //}
-
-
     public async Task<IEnumerable<Cruise>> GetLikedCruisesAsync(string userId)
     {
         return await db.CruiseLikes
