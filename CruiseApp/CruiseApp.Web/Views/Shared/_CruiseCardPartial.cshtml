@@ -1,0 +1,48 @@
+﻿@using CruiseApp.Web.ViewModels
+@model CruiseListItemViewModel
+
+<div class="cruise-card">
+    <!-- IMAGE -->
+    <div class="cruise-image">
+        <img src="~/images/destinations/@Model.PointImage"
+             alt="@Model.StartPoint" />
+    </div>
+
+    <!-- INFO -->
+    <div class="cruise-info">
+        <div class="cruise-header">
+            <span class="nights">@Model.Nights NIGHTS</span>
+            <span class="ship">Ship: @Model.ShipName</span>
+        </div>
+
+        @if (Model.FirstDay != default)
+        {
+            <div class="cruise-first">
+                <strong>FIRST DAY:</strong> @Model.FirstDay.ToString("yyyy-MM-dd")
+            </div>
+
+            <div class="cruise-last">
+                <strong>LAST DAY:</strong> @Model.LastDay.ToString("yyyy-MM-dd")
+            </div>
+        }
+
+        <div class="cruise-from">
+            <strong>FROM:</strong> @Model.StartPoint
+        </div>
+
+        <div class="cruise-destinations">
+            <strong>VISITING:</strong><br />
+            @Model.Destinations
+        </div>
+
+        <div class="cruise-footer">
+            <a asp-controller="Cruise"
+               asp-action="Details"
+               asp-route-id="@Model.Id"
+               class="details-link">
+                View cruise details →
+            </a>
+        </div>
+    </div>
+</div>
+

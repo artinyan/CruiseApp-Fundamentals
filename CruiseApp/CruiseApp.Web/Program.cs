@@ -47,6 +47,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICruiseService, CruiseService>();
 builder.Services.AddScoped<IShipService, ShipService>();
 builder.Services.AddScoped<IPointService, PointService>();
+builder.Services.AddScoped<ICruiseLikeService, CruiseLikeService>();
 // ===========================================
 
 var app = builder.Build();

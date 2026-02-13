@@ -18,6 +18,7 @@ namespace CruiseApp.Data
         public DbSet<Deck> Decks { get; set; } = null!;
         public DbSet<Cabin> Cabins { get; set; } = null!;
         public DbSet<Cruise> Cruises { get; set; } = null!;
+        public DbSet<CruiseLike> CruiseLikes { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -66,6 +67,9 @@ namespace CruiseApp.Data
                 .WithMany()
                 .HasForeignKey(c => c.RouteId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<CruiseLike>()
+                .HasKey(cl => new { cl.UserId, cl.CruiseId });
         }
     }
 }

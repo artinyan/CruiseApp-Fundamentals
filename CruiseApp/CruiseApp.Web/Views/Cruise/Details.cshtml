@@ -33,6 +33,19 @@
 
             <h5>From Port of:</h5>
             <p>@Model.StartPoint</p>
+
+            @if (User.IsInRole("User"))
+            {
+                <form asp-action="@(Model.IsLiked ? "Unlike" : "Like")" method="post">
+                    <input type="hidden" name="id" value="@Model.Id" />
+
+                    <button class="btn btn-outline-danger">
+                        @(Model.IsLiked ? "❤️ Unlike" : "🤍 Like")
+                        (@Model.LikesCount)
+                    </button>
+                </form>
+            }
+
         </div>
     </div>
 </div>

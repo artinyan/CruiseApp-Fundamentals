@@ -18,5 +18,10 @@
 
         // Image
         public string StartPointImage { get; set; } = string.Empty;
+
+        // Likes
+        public bool IsLiked { get; set; }
+        public int LikesCount { get; set; }
+
     }
 }

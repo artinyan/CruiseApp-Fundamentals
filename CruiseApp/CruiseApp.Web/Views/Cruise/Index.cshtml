@@ -4,18 +4,14 @@
     ViewData["Title"] = "Cruises";
 }
 
+<!-- ========================= -->
+<!-- Hero section              -->
+<!-- ========================= -->
 <div class="hero-container">
     <img src="~/images/hero/hero1.jpg" class="hero-image active" />
     <img src="~/images/hero/hero2.jpg" class="hero-image" />
     <img src="~/images/hero/hero3.jpg" class="hero-image" />
-
-    @* <div class="hero-overlay">
-        <h1>Explore Mediterranean Cruises</h1>
-        <p>Find your perfect journey at sea</p>
-    </div> *@
 </div>
-
-@* <h1 class="mb-4">Cruises</h1> *@
 
 <!-- ========================= -->
 <!-- Search form               -->
@@ -41,14 +37,6 @@
             <input asp-for="StartDate" type="date" class="form-control" />
         </div>
 
-        @* <div class="col-md-3">
-            <label asp-for="StartDate" class="form-label">Start Date</label>
-            <input asp-for="StartDate"
-                   type="date"
-                   class="form-control"
-                   value="" />
-        </div> *@
-
         <div class="col-md-3">
             <button type="submit" class="btn btn-primary w-100">
                 Search
@@ -67,47 +55,7 @@
     <div class="cruise-list">
         @foreach (var cruise in Model.Cruises)
         {
-            <div class="cruise-card">
-                <!-- IMAGE -->
-                <div class="cruise-image">
-                    <img src="~/images/destinations/@cruise.PointImage"
-                         alt="@cruise.StartPoint" />
-                </div>
-
-                <!-- INFO -->
-                <div class="cruise-info">
-                    <div class="cruise-header">
-                        <span class="nights">@cruise.Nights NIGHTS</span>
-                        <span class="ship">Ship: @cruise.ShipName</span>
-                    </div>
-
-                    <div class="cruise-first">
-                        <strong>FIRST DAY:</strong> @cruise.FirstDay.ToString("yyyy-MM-dd")
-                    </div>
-
-                    <div class="cruise-last">
-                        <strong>LAST DAY:</strong> @cruise.LastDay.ToString("yyyy-MM-dd")
-                    </div>
-
-                    <div class="cruise-from">
-                        <strong>FROM:</strong> @cruise.StartPoint
-                    </div>
-
-                    <div class="cruise-destinations">
-                        <strong>VISITING:</strong><br />
-                        @cruise.Destinations
-                    </div>
-
-                    <div class="cruise-footer">
-                        <a asp-controller="Cruise"
-                           asp-action="Details"
-                           asp-route-id="@cruise.Id"
-                           class="details-link">
-                            View cruise details →
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <partial name="_CruiseCardPartial" model="cruise" />
         }
     </div>
 }
@@ -124,6 +72,7 @@ else
         images[currentIndex].classList.remove('active');
         currentIndex = (currentIndex + 1) % images.length;
         images[currentIndex].classList.add('active');
-    }, 10000); // 10 seconds
+    }, 10000);
 </script>
+
 

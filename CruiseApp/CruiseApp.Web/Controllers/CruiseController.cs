@@ -1,7 +1,11 @@
 ﻿using CruiseApp.Services.Interfaces;
+using CruiseApp.Web.Common;
+using CruiseApp.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using CruiseApp.Web.ViewModels;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using System.Security.Claims;
 
 namespace CruiseApp.Web.Controllers
 {
@@ -10,14 +14,18 @@ namespace CruiseApp.Web.Controllers
         private readonly ICruiseService cruiseService;
         private readonly IShipService shipService;
         private readonly IPointService pointService;
+        private readonly ICruiseLikeService cruiseLikeService;
 
         public CruiseController(
             ICruiseService cruiseService,
             IShipService shipService,
-            IPointService pointService)
+            IPointService pointService,
+            ICruiseLikeService cruiseLikeService)
         {
             this.cruiseService = cruiseService;
             this.shipService = shipService;
+            this.cruiseService = cruiseService;
+            this.cruiseLikeService = cruiseLikeService;
             this.pointService = pointService;
         }
 
@@ -107,32 +115,37 @@ namespace CruiseApp.Web.Controllers
                 EndPoint = string.Empty
             };
 
+            if (User.Identity?.IsAuthenticated == true && User.IsInRole(Roles.User))
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                model.IsLiked = await cruiseLikeService.IsLikedAsync(cruise.Id, userId);
+            }
+
+            model.LikesCount = await cruiseLikeService.GetLikesCountAsync(cruise.Id);
+
             return View(model);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Details(int id)
-        //{
-        //    var cruise = await cruiseService.GetByIdAsync(id);
 
-        //    if (cruise == null)
-        //    {
-        //        return NotFound();
-        //    }
 
-        //    var model = new CruiseDetailsViewModel
-        //    {
-        //        Id = cruise.Id,
-        //        ShipName = cruise.Ship.Name,
-        //        FirstDay = cruise.FirstDay,
-        //        LastDay = cruise.LastDay,
-        //        Nights = cruise.CruiseLength,
-        //        StartPoint = cruise.Route.Days.First().Point.Name,
-        //        Destinations = string.Join(" → ",
-        //            cruise.Route.Days.Select(d => d.Point.Name))
-        //    };
+        [Authorize(Roles = Roles.User)]
+        [HttpPost]
+        public async Task<IActionResult> Like(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            await cruiseLikeService.LikeAsync(id, userId);
+            return RedirectToAction(nameof(Details), new { id });
+        }
 
-        //    return View(model);
-        //}
+        [Authorize(Roles = Roles.User)]
+        [HttpPost]
+        public async Task<IActionResult> Unlike(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            await cruiseLikeService.UnlikeAsync(id, userId);
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+
     }
 }
