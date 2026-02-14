@@ -66,8 +66,11 @@ namespace CruiseApp.Web.Controllers
             {
                 ShipId = model.ShipId,
                 FirstDay = model.FirstDay,
-                LastDay = model.LastDay
+                LastDay = model.LastDay,
+                Description = model.Description
             };
+
+
 
             try
             {
@@ -101,10 +104,11 @@ namespace CruiseApp.Web.Controllers
             {
                 Id = id,
                 FirstDay = serviceModel.FirstDay,
-                LastDay = serviceModel.LastDay
+                LastDay = serviceModel.LastDay,
+                Description = serviceModel.Description
             };
 
-            ViewBag.ShipName = serviceModel.ShipName; // вече ще има стойност
+            ViewBag.ShipName = serviceModel.ShipName; 
             return View(model);
         }
 
@@ -122,7 +126,8 @@ namespace CruiseApp.Web.Controllers
             var serviceModel = new AdminCruiseFormModel
             {
                 FirstDay = model.FirstDay,
-                LastDay = model.LastDay
+                LastDay = model.LastDay,
+                Description = model.Description
             };
 
             try

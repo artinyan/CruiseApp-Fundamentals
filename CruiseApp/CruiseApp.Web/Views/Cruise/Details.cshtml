@@ -39,6 +39,19 @@
 
             <hr />
 
+
+
+            @if (!string.IsNullOrWhiteSpace(Model.Description))
+            {
+                <div class="cruise-description mb-3">
+                    <strong>Description:</strong>
+                    <p>@Model.Description</p>
+                </div>
+
+                <hr />
+            }
+
+
             <div class="cruise-destinations mb-2">
                 <strong>Destinations:</strong>
                 <p>@Model.Destinations</p>

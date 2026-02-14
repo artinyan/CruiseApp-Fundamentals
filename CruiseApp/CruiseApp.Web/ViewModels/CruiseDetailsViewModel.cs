@@ -23,5 +23,8 @@
         public bool IsLiked { get; set; }
         public int LikesCount { get; set; }
 
+
+        // Details
+        public string? Description { get; set; }
     }
 }

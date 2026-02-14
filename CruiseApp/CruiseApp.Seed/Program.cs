@@ -93,30 +93,46 @@ catch
 
 void SeedCruises(int[,] cruisesArr)
 {
+    var cruiseDescriptions = new[]
+    {
+        "A Mediterranean journey through iconic ports, combining culture, history, and breathtaking coastlines.",
+        "An unforgettable summer cruise featuring vibrant cities, crystal-clear waters, and authentic cuisine.",
+        "A relaxing Adriatic and Ionian Sea cruise with charming old towns and scenic island views.",
+        "Discover Southern Europe with a perfect balance of leisure days at sea and cultural excursions.",
+        "An early autumn cruise offering mild weather, stunning sunsets, and historic Mediterranean destinations.",
+        "A short but enriching cruise ideal for first-time travelers and weekend explorers."
+    };
+
     var cruises = new List<Cruise>();
+
     for (int i = 0; i < cruisesArr.GetLength(0); i++)
     {
         var shipRoute = db.Routes
             .Include(r => r.Ship)
             .Include(r => r.Days)
-            .ThenInclude(rd => rd.Point)
+                .ThenInclude(rd => rd.Point)
             .First(r => r.Ship.Name == shipsList[cruisesArr[i, 0]]);
 
-        var cruise = new Cruise(shipRoute,
+        var cruise = new Cruise(
+            shipRoute,
             new DateOnly(
-                 cruisesArr[i, 1],
-                 cruisesArr[i, 2],
-                 cruisesArr[i, 3]),
+                cruisesArr[i, 1],
+                cruisesArr[i, 2],
+                cruisesArr[i, 3]),
             new DateOnly(
-                 cruisesArr[i, 4],
-                 cruisesArr[i, 5],
-                 cruisesArr[i, 6]));
+                cruisesArr[i, 4],
+                cruisesArr[i, 5],
+                cruisesArr[i, 6]),
+            cruiseDescriptions[i]
+        );
 
         cruises.Add(cruise);
     }
+
     db.Cruises.AddRange(cruises);
     db.SaveChanges();
 }
+
 
 void SeedPoints(List<string> pointsList)
 {

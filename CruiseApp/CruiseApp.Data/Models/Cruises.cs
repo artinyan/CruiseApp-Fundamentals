@@ -4,32 +4,29 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CruiseApp.Data.Models
 {
-    [Comment("Repersents cruise in the system.")]
+    [Comment("Represents cruise in the system.")]
     public class Cruise
     {
         private Cruise() { }
 
-        public Cruise(Route route, DateOnly firstDay, DateOnly lastDay)
+        public Cruise(Route route, DateOnly firstDay, DateOnly lastDay, string? description = null)
         {
             SetRoute(route);
             SetPeriod(firstDay, lastDay);
+            SetDescription(description);
             ValidateAgainstRoute();
         }
 
         [Key]
-        [Comment("Primary key for Cruise.")]
         public int Id { get; set; }
 
         [Required]
-        [Comment("Embarkation day of the cruise")]
         public DateOnly FirstDay { get; private set; }
 
         [Required]
-        [Comment("Disembarkation day of the cruise")]
         public DateOnly LastDay { get; private set; }
 
         [Required]
-        [Comment("The route of the cruise")]
         public int RouteId { get; private set; }
 
         [ForeignKey(nameof(RouteId))]
@@ -38,6 +35,10 @@ namespace CruiseApp.Data.Models
         [NotMapped]
         public Ship Ship => Route.Ship;
 
+        [MaxLength(1000)]
+        [Comment("Optional cruise description")]
+        public string? Description { get; private set; }
+
         public int CruiseLength => LastDay.DayNumber - FirstDay.DayNumber;
 
         private void SetRoute(Route route)
@@ -45,6 +46,18 @@ namespace CruiseApp.Data.Models
             Route = route;
             RouteId = route.Id;
         }
+
+
+        private void SetDescription(string? description)
+        {
+            Description = string.IsNullOrWhiteSpace(description) ? null : description.Trim();
+        }
+
+        public void ChangeDescription(string? description)
+        {
+            SetDescription(description);
+        }
+
 
         public void SetPeriod(DateOnly firstDay, DateOnly lastDay)
         {
@@ -70,16 +83,23 @@ namespace CruiseApp.Data.Models
                 throw new InvalidOperationException("Cruise dates are outside the route schedule.");
 
             if (firstDayRoute.Point.IsSea)
-                throw new InvalidOperationException("This Start Day the ship is at sea. Cruise cannot start at sea.");
+                throw new InvalidOperationException("Cruise cannot start at sea.");
 
             if (lastDayRoute.Point.IsSea)
-                throw new InvalidOperationException("This End Day the ship is at sea. Cruise cannot end at sea.");
+                throw new InvalidOperationException("Cruise cannot end at sea.");
+        }
+
+        public void ChangePeriod(DateOnly firstDay, DateOnly lastDay, string? description)
+        {
+            SetPeriod(firstDay, lastDay);
+            SetDescription(description);
+            ValidateAgainstRoute();
         }
 
         public void ChangePeriod(DateOnly firstDay, DateOnly lastDay)
         {
-            SetPeriod(firstDay, lastDay);
-            ValidateAgainstRoute();
+            ChangePeriod(firstDay, lastDay, Description);
         }
+
     }
 }

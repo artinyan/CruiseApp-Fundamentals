@@ -10,10 +10,14 @@ namespace CruiseApp.Services.Models.Admin
         [Required]
         public string ShipName { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "First day is required")]
         public DateOnly FirstDay { get; set; }
 
-        [Required]
+
+        [Required(ErrorMessage = "Last day is required")]
         public DateOnly LastDay { get; set; }
+
+        [StringLength(1000)]
+        public string? Description { get; set; }
     }
 }

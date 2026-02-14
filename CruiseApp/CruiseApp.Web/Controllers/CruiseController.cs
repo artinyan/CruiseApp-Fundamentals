@@ -102,6 +102,8 @@ namespace CruiseApp.Web.Controllers
                 LastDay = cruise.LastDay,
                 Nights = cruise.CruiseLength,
 
+                Description = cruise.Description,
+
                 StartPoint = cruise.Route.Days
                     .Where(rd => rd.Date >= cruise.FirstDay && rd.Date <= cruise.LastDay)
                     .OrderBy(rd => rd.Date)

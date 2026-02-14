@@ -17,10 +17,12 @@ namespace CruiseApp.Web.ViewModels.Admin
         [Required(ErrorMessage = "First day is required")]
         public DateOnly FirstDay { get; set; }
 
+        [StringLength(1000)]
+        public string? Description { get; set; }
+
         [Required(ErrorMessage = "Last day is required")]
         [DateRange("FirstDay", ErrorMessage = "Last day must be after first day")]
         public DateOnly LastDay { get; set; }
     }
-
 }
 
