@@ -1,4 +1,5 @@
-﻿using CruiseApp.Services.Interfaces;
+﻿using CruiseApp.Data.Models;
+using CruiseApp.Services.Interfaces;
 using CruiseApp.Services.Models.Admin;
 using CruiseApp.Web.Common;
 using CruiseApp.Web.ViewModels.Admin;
@@ -26,7 +27,6 @@ namespace CruiseApp.Web.Controllers
         // LIST
         // ============================
 
-
         public async Task<IActionResult> Index()
         {
             var serviceModel = await cruiseService.GetAllAdminAsync();
@@ -52,8 +52,6 @@ namespace CruiseApp.Web.Controllers
             await LoadShips();
             return View();
         }
-
-
 
         [HttpPost]
         public async Task<IActionResult> Create(AdminCruiseFormViewModel model)

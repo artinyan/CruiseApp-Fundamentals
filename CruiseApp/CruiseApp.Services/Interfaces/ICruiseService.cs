@@ -39,5 +39,10 @@ namespace CruiseApp.Services.Interfaces
             DateOnly? startDate,
             int? startPointId);
         Task<Cruise?> GetByIdAsync(int id);
+
+        // ============================
+        // Validation helpers
+        // ============================
+        Task EnsureUniqueCruiseAsync(int shipId, DateOnly firstDay, DateOnly lastDay, int? ignoreCruiseId = null);
     }
 }
