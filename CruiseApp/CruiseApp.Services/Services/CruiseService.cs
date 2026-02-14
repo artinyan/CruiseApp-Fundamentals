@@ -98,32 +98,45 @@ namespace CruiseApp.Services.Services
             await db.SaveChangesAsync();
         }
 
+
         public async Task<AdminCruiseFormModel?> GetForEditAsync(int id)
         {
             return await db.Cruises
+                .Include(c => c.Route)
+                    .ThenInclude(r => r.Ship)
                 .Where(c => c.Id == id)
                 .Select(c => new AdminCruiseFormModel
                 {
                     ShipId = c.Route.ShipId,
+                    ShipName = c.Route.Ship.Name, 
                     FirstDay = c.FirstDay,
                     LastDay = c.LastDay
                 })
                 .FirstOrDefaultAsync();
         }
 
+
+
+
         public async Task UpdateAsync(int id, AdminCruiseFormModel model)
         {
             var cruise = await db.Cruises
                 .Include(c => c.Route)
+                    .ThenInclude(r => r.Ship)
+                .Include(c => c.Route)
+                    .ThenInclude(r => r.Days)
+                        .ThenInclude(d => d.Point)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (cruise == null)
                 throw new InvalidOperationException("Cruise not found.");
 
             cruise.ChangePeriod(model.FirstDay, model.LastDay);
+            cruise.ValidateAgainstRoute();
 
             await db.SaveChangesAsync();
         }
+
 
         public async Task<AdminCruiseListModel?> GetForDeleteAsync(int id)
         {

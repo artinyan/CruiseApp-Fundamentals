@@ -8,13 +8,11 @@
 
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="mb-3">
-        <label asp-for="ShipId" class="form-label"></label>
-        <select asp-for="ShipId" asp-items="ViewBag.Ships" class="form-select">
-            <option value="">-- Select Ship --</option>
-        </select>
-        <span asp-validation-for="ShipId" class="text-danger"></span>
+        <label class="form-label">Ship</label>
+        <input class="form-control" value="@ViewBag.ShipName" disabled />
     </div>
 
     <div class="mb-3">
@@ -36,4 +34,3 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-

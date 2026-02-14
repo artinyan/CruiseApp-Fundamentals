@@ -58,7 +58,7 @@ namespace CruiseApp.Data.Models
             LastDay = lastDay;
         }
 
-        private void ValidateAgainstRoute()
+        public void ValidateAgainstRoute()
         {
             if (Route.Days == null || !Route.Days.Any())
                 throw new InvalidOperationException("Route days are not loaded.");
@@ -70,19 +70,16 @@ namespace CruiseApp.Data.Models
                 throw new InvalidOperationException("Cruise dates are outside the route schedule.");
 
             if (firstDayRoute.Point.IsSea)
-                throw new InvalidOperationException("Cruise cannot start at sea.");
+                throw new InvalidOperationException("This Start Day the ship is at sea. Cruise cannot start at sea.");
 
             if (lastDayRoute.Point.IsSea)
-                throw new InvalidOperationException("Cruise cannot end at sea.");
+                throw new InvalidOperationException("This End Day the ship is at sea. Cruise cannot end at sea.");
         }
 
         public void ChangePeriod(DateOnly firstDay, DateOnly lastDay)
         {
-            if (lastDay < firstDay)
-                throw new ArgumentException("Last day cannot be before first day.");
-
-            FirstDay = firstDay;
-            LastDay = lastDay;
+            SetPeriod(firstDay, lastDay);
+            ValidateAgainstRoute();
         }
     }
 }

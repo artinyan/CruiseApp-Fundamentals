@@ -12,7 +12,7 @@ namespace CruiseApp.Web.ViewModels.Admin
         [Required]
         public int RouteId { get; set; }
 
-        [Required]
+        //[Required]
         public DateOnly FirstDay { get; set; }
 
         [Required]

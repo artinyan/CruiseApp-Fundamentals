@@ -8,6 +8,9 @@ namespace CruiseApp.Services.Models.Admin
         public int ShipId { get; set; }
 
         [Required]
+        public string ShipName { get; set; } = string.Empty;
+
+        [Required]
         public DateOnly FirstDay { get; set; }
 
         [Required]

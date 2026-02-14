@@ -53,6 +53,8 @@ namespace CruiseApp.Web.Controllers
             return View();
         }
 
+
+
         [HttpPost]
         public async Task<IActionResult> Create(AdminCruiseFormViewModel model)
         {
@@ -69,13 +71,29 @@ namespace CruiseApp.Web.Controllers
                 LastDay = model.LastDay
             };
 
-            await cruiseService.CreateAsync(serviceModel);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await cruiseService.CreateAsync(serviceModel);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (InvalidOperationException ex)
+            {
+                // ❗ Domain validation → UI validation
+                ModelState.AddModelError(string.Empty, ex.Message);
+
+                await LoadShips();
+                return View(model);
+            }
         }
+
+
 
         // ============================
         // EDIT
         // ============================
+
+
+        // GET
         public async Task<IActionResult> Edit(int id)
         {
             var serviceModel = await cruiseService.GetForEditAsync(id);
@@ -83,34 +101,45 @@ namespace CruiseApp.Web.Controllers
 
             var model = new AdminCruiseFormViewModel
             {
-                ShipId = serviceModel.ShipId,
+                Id = id,
                 FirstDay = serviceModel.FirstDay,
                 LastDay = serviceModel.LastDay
             };
 
-            await LoadShips();
+            ViewBag.ShipName = serviceModel.ShipName; // вече ще има стойност
             return View(model);
         }
 
+
+        // POST
         [HttpPost]
         public async Task<IActionResult> Edit(int id, AdminCruiseFormViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                await LoadShips();
+                ViewBag.ShipName = (await cruiseService.GetForEditAsync(id))?.ShipName;
                 return View(model);
             }
 
             var serviceModel = new AdminCruiseFormModel
             {
-                ShipId = model.ShipId,
                 FirstDay = model.FirstDay,
                 LastDay = model.LastDay
             };
 
-            await cruiseService.UpdateAsync(id, serviceModel);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await cruiseService.UpdateAsync(id, serviceModel);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                ViewBag.ShipName = (await cruiseService.GetForEditAsync(id))?.ShipName;
+                return View(model);
+            }
         }
+
 
         // ============================
         // DELETE
