@@ -8,22 +8,31 @@
 
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+    <!-- Покажи всички грешки (client + server) -->
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    <!-- Ship (readonly, cannot change) -->
     <div class="mb-3">
         <label class="form-label">Ship</label>
         <input class="form-control" value="@ViewBag.ShipName" disabled />
     </div>
 
+    <!-- First Day -->
     <div class="mb-3">
         <label asp-for="FirstDay" class="form-label"></label>
         <input asp-for="FirstDay" class="form-control" type="date" />
         <span asp-validation-for="FirstDay" class="text-danger"></span>
     </div>
 
+    <!-- Last Day -->
     <div class="mb-3">
         <label asp-for="LastDay" class="form-label"></label>
-        <input asp-for="LastDay" class="form-control" type="date" />
+        <input asp-for="LastDay" class="form-control" type="date"
+               data-val="true"
+               data-val-daterange="@ViewData.ModelMetadata.Properties
+               .First(p=> p.PropertyName == nameof(Model.FirstDay))
+        .DisplayName ?? "First day"" />
         <span asp-validation-for="LastDay" class="text-danger"></span>
     </div>
 
@@ -32,5 +41,20 @@
 </form>
 
 @section Scripts {
+    <!-- Client-side validation scripts -->
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Minimal client-side adapter for DateRange
+        $.validator.addMethod("daterange", function (value, element, params) {
+            var start = $("#" + params.startpropertyname).val();
+            if (!start || !value) return true;
+            return value > start;
+        });
+
+        $.validator.unobtrusive.adapters.add("daterange", ["startpropertyname"], function (options) {
+            options.rules["daterange"] = { startpropertyname: options.params.startpropertyname };
+            options.messages["daterange"] = options.message;
+        });
+    </script>
 }

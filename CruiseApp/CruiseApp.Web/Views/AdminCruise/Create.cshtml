@@ -6,10 +6,11 @@
 
 <h2>Create Cruise</h2>
 
-
 <form asp-action="Create" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <!-- Покажи всички съобщения за грешки -->
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
+    <!-- Ship -->
     <div class="mb-3">
         <label asp-for="ShipId" class="form-label"></label>
         <select asp-for="ShipId" asp-items="ViewBag.Ships" class="form-select">
@@ -18,12 +19,14 @@
         <span asp-validation-for="ShipId" class="text-danger"></span>
     </div>
 
+    <!-- First Day -->
     <div class="mb-3">
         <label asp-for="FirstDay" class="form-label"></label>
         <input asp-for="FirstDay" class="form-control" type="date" />
         <span asp-validation-for="FirstDay" class="text-danger"></span>
     </div>
 
+    <!-- Last Day -->
     <div class="mb-3">
         <label asp-for="LastDay" class="form-label"></label>
         <input asp-for="LastDay" class="form-control" type="date" />
@@ -35,5 +38,6 @@
 </form>
 
 @section Scripts {
+    <!-- Client-side validation scripts -->
     <partial name="_ValidationScriptsPartial" />
 }

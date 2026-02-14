@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using CruiseApp.Web.Validation;
+
 namespace CruiseApp.Web.ViewModels.Admin
 {
     public class AdminCruiseFormViewModel
@@ -12,10 +14,13 @@ namespace CruiseApp.Web.ViewModels.Admin
         [Required]
         public int RouteId { get; set; }
 
-        //[Required]
+        [Required(ErrorMessage = "First day is required")]
         public DateOnly FirstDay { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Last day is required")]
+        [DateRange("FirstDay", ErrorMessage = "Last day must be after first day")]
         public DateOnly LastDay { get; set; }
     }
+
 }
+
