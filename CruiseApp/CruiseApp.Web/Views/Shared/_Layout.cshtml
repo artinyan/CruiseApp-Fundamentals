@@ -58,6 +58,14 @@
                             </a>
                         </li>
 
+                        @if (User.IsInRole(Roles.Administrator))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="AdminCruise" asp-action="Index">
+                                    ⚙ Edit Cruises
+                                </a>
+                            </li>
+                        }
 
                         @if (User.Identity?.IsAuthenticated == true &&
                                                 User.IsInRole(Roles.User))

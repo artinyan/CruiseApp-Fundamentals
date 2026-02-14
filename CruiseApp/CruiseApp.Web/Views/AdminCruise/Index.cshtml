@@ -1,0 +1,34 @@
+﻿@using CruiseApp.Web.ViewModels.Admin
+@model IEnumerable<AdminCruiseListViewModel>
+
+<h1>Admin – Cruises</h1>
+
+<a asp-action="Create" class="btn btn-success mb-3">➕ Add Cruise</a>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Ship</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Nights</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.ShipName</td>
+                <td>@c.FirstDay.ToShortDateString()</td>
+                <td>@c.LastDay.ToShortDateString()</td>
+                <td>@c.CruiseLength</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@c.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@c.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -75,5 +75,14 @@ namespace CruiseApp.Data.Models
             if (lastDayRoute.Point.IsSea)
                 throw new InvalidOperationException("Cruise cannot end at sea.");
         }
+
+        public void ChangePeriod(DateOnly firstDay, DateOnly lastDay)
+        {
+            if (lastDay < firstDay)
+                throw new ArgumentException("Last day cannot be before first day.");
+
+            FirstDay = firstDay;
+            LastDay = lastDay;
+        }
     }
 }

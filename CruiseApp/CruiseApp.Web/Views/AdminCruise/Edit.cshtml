@@ -1,0 +1,39 @@
+﻿@model CruiseApp.Web.ViewModels.Admin.AdminCruiseFormViewModel
+
+@{
+    ViewData["Title"] = "Edit Cruise";
+}
+
+<h2>Edit Cruise</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="ShipId" class="form-label"></label>
+        <select asp-for="ShipId" asp-items="ViewBag.Ships" class="form-select">
+            <option value="">-- Select Ship --</option>
+        </select>
+        <span asp-validation-for="ShipId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FirstDay" class="form-label"></label>
+        <input asp-for="FirstDay" class="form-control" type="date" />
+        <span asp-validation-for="FirstDay" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LastDay" class="form-label"></label>
+        <input asp-for="LastDay" class="form-control" type="date" />
+        <span asp-validation-for="LastDay" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
