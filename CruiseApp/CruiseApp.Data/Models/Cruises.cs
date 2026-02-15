@@ -76,11 +76,18 @@ namespace CruiseApp.Data.Models
             if (Route.Days == null || !Route.Days.Any())
                 throw new InvalidOperationException("Route days are not loaded.");
 
+            var seasonStart = Route.Days.Min(d => d.Date);
+            var seasonEnd = Route.Days.Max(d => d.Date);
+
             var firstDayRoute = Route.Days.FirstOrDefault(rd => rd.Date == FirstDay);
             var lastDayRoute = Route.Days.FirstOrDefault(rd => rd.Date == LastDay);
 
             if (firstDayRoute == null || lastDayRoute == null)
-                throw new InvalidOperationException("Cruise dates are outside the route schedule.");
+            {
+                throw new InvalidOperationException(
+                    $"Cruise dates are outside the route schedule ({seasonStart:dd.MM.yy} - {seasonEnd:dd.MM.yy})"
+                    );
+            }
 
             if (firstDayRoute.Point.IsSea)
                 throw new InvalidOperationException("Cruise cannot start at sea.");

@@ -87,7 +87,7 @@ Rules:
 - Cruises are **unique** per Ship, First Day, and Last Day
 
 **Season duration:**  
-📅 01-06-2026 → 30-09-2026
+📅 01.06.2026 - 30.09.2026
 
 ---
 
@@ -114,14 +114,23 @@ Update-Database
 ---
 ## 🌱 Seed Data
 
+⚠️ CRUD operations are implemented only for Cruises. For the application to work correctly, the following related data must be seeded first:
+
+- Destinations (Points)
+- Ships
+- Routes
+- RouteDays
+
+#### How to Seed the Database
+
 1. Right-click CruiseApp.Seed
 2. Debug → Start New Instance
-- This will seed:
+#### This will seed:
 - 15 destinations
 - 3 ships
 - Multiple decks per ship
 - Hundreds of cabins
-- Routes and RouteDays (season 01/06/2026 – 30/09/2026)
+- Routes and RouteDays (season 01.06.2026 – 30.09.2026)
 - 6 Cruises
 
 ## 🚧 Project Status

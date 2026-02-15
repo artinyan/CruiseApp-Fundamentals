@@ -5,15 +5,15 @@ using DotNetEnv;
 using System.IO;
 using Point = CruiseApp.Data.Models.Point;
 
-// 1️ Намери solution root спрямо текущата exe директория
-var exeDir = AppContext.BaseDirectory; // папката, където се стартира .exe
+// 1️. Find solution root depending current exe directory
+var exeDir = AppContext.BaseDirectory; // the folder where starts .exe
 var solutionRoot = Path.GetFullPath(Path.Combine(exeDir, "..", "..", "..", ".."));
-// 4 пъти ".." защото bin/Debug/net8.0 е на 4 нива под solution root
+// 4 times ".." because bin/Debug/net8.0 is on 4 levels under solution root
 
-// 2️ Път към .env в CruiseApp.Web
+// 2️. Path to .env in CruiseApp.Web
 var envPath = Path.Combine(solutionRoot, "CruiseApp.Web", ".env");
 
-// 3️ Зареждане на .env
+// 3️. Load .env
 Env.Load(envPath);
 
 
