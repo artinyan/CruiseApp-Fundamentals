@@ -1,5 +1,64 @@
 ﻿@model CruiseApp.Web.ViewModels.Admin.AdminCruiseListViewModel
 
+@{
+    ViewData["Title"] = "Delete Cruise";
+}
+
+<div class="page-container mt-4">
+
+    <h2 class="mb-3">Delete Cruise</h2>
+
+    <div class="alert alert-warning">
+        Are you sure you want to delete this cruise?
+    </div>
+
+    <div class="cruise-card shadow-sm">
+        <div class="cruise-info">
+
+            <div class="mb-3">
+                <strong>Ship:</strong>
+                <div class="text-muted">@Model.ShipName</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <strong>First Day:</strong>
+                    <div class="text-muted">
+                        @Model.FirstDay.ToString("dd MMM yyyy")
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Last Day:</strong>
+                    <div class="text-muted">
+                        @Model.LastDay.ToString("dd MMM yyyy")
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <form asp-action="Delete" method="post" class="d-flex flex-column flex-sm-row gap-2">
+                <input type="hidden" asp-for="Id" />
+
+                <button type="submit" class="btn btn-danger">
+                    🗑 Delete
+                </button>
+
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+@* @model CruiseApp.Web.ViewModels.Admin.AdminCruiseListViewModel
+
 <h1>Debug</h1>
 <p>@(Model.GetType().FullName)</p>
 
@@ -28,4 +87,4 @@
     <input type="hidden" asp-for="Id" />
     <button type="submit" class="btn btn-danger">Delete</button>
     <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+</form> *@

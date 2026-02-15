@@ -5,75 +5,102 @@
 }
 
 <!-- ========================= -->
-<!-- Hero Section              -->
+<!-- HERO SECTION              -->
 <!-- ========================= -->
-<div class="hero-container mb-4">
-    <img src="~/images/hero/hero1.jpg" class="hero-image active" />
-    <img src="~/images/hero/hero2.jpg" class="hero-image" />
-    <img src="~/images/hero/hero3.jpg" class="hero-image" />
+
+<div class="container-fluid px-3 px-md-4 mb-4">
+    <div class="hero-container">
+        <img src="~/images/hero/hero1.jpg" class="hero-image active" />
+        <img src="~/images/hero/hero2.jpg" class="hero-image" />
+        <img src="~/images/hero/hero3.jpg" class="hero-image" />
+    </div>
 </div>
 
-<div class="container mt-4">
 
-    <a asp-action="Index" class="btn btn-link mb-3">
+@* <div class="container-fluid px-0 mb-4">
+    <div class="hero-container position-relative overflow-hidden"
+         style="height: clamp(220px, 40vh, 420px);">
+
+        <img src="~/images/hero/hero1.jpg" class="hero-image active" />
+        <img src="~/images/hero/hero2.jpg" class="hero-image" />
+        <img src="~/images/hero/hero3.jpg" class="hero-image" />
+    </div>
+</div> *@
+
+<div class="container page-container">
+    <a asp-action="Index" class="btn btn-link px-0 mb-3">
         ← Back to cruises
     </a>
 
-    <div class="cruise-card shadow-sm mb-4">
-        <!-- IMAGE -->
-        <div class="cruise-image">
-            <img src="~/images/destinations/@(Model.StartPoint).jpg"
-                 onerror="this.src='/images/noimage.jpg'"
-                 alt="@Model.StartPoint" />
-        </div>
+    <!-- ========================= -->
+    <!-- CRUISE CARD               -->
+    <!-- ========================= -->
+    <div class="card shadow-sm mb-4 overflow-hidden">
 
-        <!-- INFO -->
-        <div class="cruise-info p-3">
-            <div class="cruise-header mb-2">
-                <h2 class="mb-1">@Model.ShipName</h2>
-                <span class="nights text-muted">
-                    @Model.FirstDay.ToString("dd MMM yyyy") – @Model.LastDay.ToString("dd MMM yyyy")
-                    · @Model.Nights nights
-                </span>
+        <div class="row g-0">
+
+            <!-- IMAGE -->
+            <div class="col-md-5">
+                <img src="~/images/destinations/@(Model.StartPoint).jpg"
+                     onerror="this.src='/images/noimage.jpg'"
+                     alt="@Model.StartPoint"
+                     class="img-fluid h-100 w-100 object-fit-cover" />
             </div>
 
-            <hr />
+            <!-- INFO -->
+            <div class="col-md-7 d-flex flex-column">
+                <div class="card-body">
 
+                    <!-- HEADER -->
+                    <h2 class="h4 mb-1">@Model.ShipName</h2>
 
+                    <div class="text-muted small mb-3">
+                        @Model.FirstDay.ToString("dd MMM yyyy")
+                        –
+                        @Model.LastDay.ToString("dd MMM yyyy")
+                        · <strong>@Model.Nights</strong> nights
+                    </div>
 
-            @if (!string.IsNullOrWhiteSpace(Model.Description))
-            {
-                <div class="cruise-description mb-3">
-                    <strong>Description:</strong>
-                    <p>@Model.Description</p>
+                    @if (!string.IsNullOrWhiteSpace(Model.Description))
+                    {
+                        <div class="mb-3">
+                            <strong>Description</strong>
+                            <p class="mb-0">@Model.Description</p>
+                        </div>
+                    }
+
+                    <div class="mb-3">
+                        <strong>From</strong>
+                        <p class="mb-0">@Model.StartPoint</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Destinations</strong>
+                        <p class="mb-0">@Model.Destinations</p>
+                    </div>
                 </div>
 
-                <hr />
-            }
+                <!-- ACTIONS -->
+                @if (User.IsInRole("User"))
+                {
+                    <div class="card-footer bg-white border-top">
+                        <form asp-action="@(Model.IsLiked ? "Unlike" : "Like")"
+                              method="post"
+                              class="d-grid">
+                            <input type="hidden" name="id" value="@Model.Id" />
 
-
-            <div class="cruise-destinations mb-2">
-                <strong>Destinations:</strong>
-                <p>@Model.Destinations</p>
+                            <button class="btn @(Model.IsLiked ? "btn-danger" : "btn-outline-danger")">
+                                @(Model.IsLiked ? "❤️ Unlike" : "🤍 Like")
+                                <span class="ms-1">(@Model.LikesCount)</span>
+                            </button>
+                        </form>
+                    </div>
+                }
             </div>
-
-            <div class="cruise-from mb-3">
-                <strong>From Port of:</strong>
-                <p>@Model.StartPoint</p>
-            </div>
-
-            @if (User.IsInRole("User"))
-            {
-                <form asp-action="@(Model.IsLiked ? "Unlike" : "Like")" method="post" class="d-inline-block">
-                    <input type="hidden" name="id" value="@Model.Id" />
-                    <button class="btn @(Model.IsLiked ? "btn-danger" : "btn-outline-danger")">
-                        @(Model.IsLiked ? "❤️ Unlike" : "🤍 Like") (@Model.LikesCount)
-                    </button>
-                </form>
-            }
         </div>
     </div>
 </div>
+
 
 <!-- Hero Image Carousel Script -->
 <script>
@@ -84,5 +111,5 @@
         images[currentIndex].classList.remove('active');
         currentIndex = (currentIndex + 1) % images.length;
         images[currentIndex].classList.add('active');
-    }, 10000);
+    }, 5000);
 </script>

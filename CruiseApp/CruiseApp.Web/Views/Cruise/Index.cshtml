@@ -7,56 +7,61 @@
 <!-- ========================= -->
 <!-- Hero section              -->
 <!-- ========================= -->
-<div class="hero-container">
-    <img src="~/images/hero/hero1.jpg" class="hero-image active" />
-    <img src="~/images/hero/hero2.jpg" class="hero-image" />
-    <img src="~/images/hero/hero3.jpg" class="hero-image" />
+<div class="container-fluid px-3 px-md-4 mb-4">
+    <div class="hero-container">
+
+        <img src="~/images/hero/hero1.jpg" class="hero-image active" />
+        <img src="~/images/hero/hero2.jpg" class="hero-image" />
+        <img src="~/images/hero/hero3.jpg" class="hero-image" />
+    </div>
 </div>
 
 <!-- ========================= -->
 <!-- Search form               -->
 <!-- ========================= -->
-<form method="get" asp-action="Index" class="mb-4">
-    <div class="row g-3 align-items-end">
-        <div class="col-md-3">
-            <label asp-for="ShipId" class="form-label">Ship</label>
-            <select asp-for="ShipId" class="form-select" asp-items="Model.Ships">
-                <option value="">-- All Ships --</option>
-            </select>
-        </div>
+<div class="page-container mb-4">
+    <form method="get" asp-action="Index">
+        <div class="row g-3 align-items-end">
+            <div class="col-12 col-md-6 col-lg-3">
+                <label asp-for="ShipId" class="form-label">Ship</label>
+                <select asp-for="ShipId" class="form-select" asp-items="Model.Ships">
+                    <option value="">-- All Ships --</option>
+                </select>
+            </div>
 
-        <div class="col-md-3">
-            <label asp-for="StartPointId" class="form-label">Start Point</label>
-            <select asp-for="StartPointId" class="form-select" asp-items="Model.StartPoints">
-                <option value="">-- All Ports --</option>
-            </select>
-        </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <label asp-for="StartPointId" class="form-label">Start Point</label>
+                <select asp-for="StartPointId" class="form-select" asp-items="Model.StartPoints">
+                    <option value="">-- All Ports --</option>
+                </select>
+            </div>
 
-        <div class="col-md-3">
-            <label asp-for="StartDate" class="form-label">Start Date</label>
-            <input asp-for="StartDate" type="date" class="form-control" />
-        </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <label asp-for="StartDate" class="form-label">Start Date</label>
+                <input asp-for="StartDate" type="date" class="form-control" />
+            </div>
 
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-primary w-100">
-                Search
-            </button>
+            <div class="col-12 col-md-6 col-lg-3">
+                <button type="submit" class="btn btn-primary w-100">
+                    Search
+                </button>
+            </div>
         </div>
-    </div>
-</form>
-
-<hr />
+    </form>
+</div>
 
 <!-- ========================= -->
 <!-- Cruises list              -->
 <!-- ========================= -->
 @if (Model.Cruises != null && Model.Cruises.Any())
 {
-    <div class="cruise-list">
-        @foreach (var cruise in Model.Cruises)
-        {
-            <partial name="_CruiseCardPartial" model="cruise" />
-        }
+    <div class="page-container mb-5">
+        <div class="cruise-list">
+            @foreach (var cruise in Model.Cruises)
+            {
+                <partial name="_CruiseCardPartial" model="cruise" />
+            }
+        </div>
     </div>
 }
 else
@@ -74,5 +79,3 @@ else
         images[currentIndex].classList.add('active');
     }, 10000);
 </script>
-
-

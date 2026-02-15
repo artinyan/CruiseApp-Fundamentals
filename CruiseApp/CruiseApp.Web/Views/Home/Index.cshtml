@@ -1,10 +1,21 @@
 ﻿@{
-    ViewData["Title"] = "Welcome to CruiseApp";
+    ViewData["Title"] = "Welcome to Dolphin Cruises";
 }
 
-<div class="container mt-5">
+<!-- ========================= -->
+<!-- Hero section              -->
+<!-- ========================= -->
+<div class="container-fluid px-3 px-md-4 mb-4">
+    <div class="hero-container">
+        <img src="~/images/hero/hero1.jpg" class="hero-image active" />
+        <img src="~/images/hero/hero2.jpg" class="hero-image" />
+        <img src="~/images/hero/hero3.jpg" class="hero-image" />
+    </div>
+</div>
+
+<div class="page-container mb-5">
     <div class="jumbotron text-center bg-light p-5 rounded shadow-sm">
-        <h1 class="display-4 mb-3">Welcome to CruiseApp</h1>
+        <h1 class="display-4 mb-3">Welcome to Dolphin Cruises</h1>
         <p class="lead mb-4">
             Explore and search cruises across the Mediterranean! Discover your perfect cruise and plan your adventure.
         </p>
@@ -13,7 +24,7 @@
         </a>
     </div>
 
-    <div class="row text-center mt-5">
+    @* <div class="row text-center mt-5">
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm h-100">
                 <div class="card-body">
@@ -38,5 +49,17 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
 </div>
+
+<!-- Hero Image Carousel Script -->
+<script>
+    const images = document.querySelectorAll('.hero-image');
+    let currentIndex = 0;
+
+    setInterval(() => {
+        images[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % images.length;
+        images[currentIndex].classList.add('active');
+    }, 5000);
+</script>

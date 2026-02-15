@@ -46,6 +46,19 @@
         font-size: 1.2rem;
     }
 
+/* =========================
+   PAGE CONTAINER
+   ========================= */
+
+.page-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+
+
 
 /* ============================= */
 /* Cruise cards layout           */
@@ -57,15 +70,17 @@
     gap: 24px;
 }
 
+
 .cruise-card {
     display: grid;
-    grid-template-columns: 390px 1fr;
+    grid-template-columns: 390px minmax(0, 1fr);
     background: #ffffff;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 14px rgba(0,0,0,0.08);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
 
     .cruise-card:hover {
         transform: translateY(-2px);
@@ -138,6 +153,18 @@
     color: #0d6efd;
 }
 
-    .details-link:hover {
-        text-decoration: underline;
+.details-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .cruise-card {
+        grid-template-columns: 1fr;
     }
+
+    .cruise-image {
+        height: 220px;
+    }
+}
+
+

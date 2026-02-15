@@ -15,7 +15,6 @@ Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-//
 builder.Configuration.AddEnvironmentVariables();
 
 // ===========================================
@@ -30,9 +29,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-//builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-//        options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
@@ -77,8 +73,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
-
-
 
 
 using (var scope = app.Services.CreateScope())

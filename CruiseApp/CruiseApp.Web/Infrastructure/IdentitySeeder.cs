@@ -18,7 +18,7 @@ namespace CruiseApp.Web.Infrastructure
             if (!await roleManager.RoleExistsAsync(Roles.User))
                 await roleManager.CreateAsync(new IdentityRole(Roles.User));
 
-            // Optional admin user (ще говорим след малко)
+            // Optional admin user
             var adminEmail = "admin@cruise.com";
             var admin = await userManager.FindByEmailAsync(adminEmail);
 
