@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using CruiseApp.Web.Infrastructure;
 
+
+
+
+
 // ===========================================
 // LOAD .env (BEFORE builder)
 // ===========================================
@@ -16,6 +20,7 @@ Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
+
 
 // ===========================================
 // Add services to the container.
@@ -47,6 +52,15 @@ builder.Services.AddScoped<ICruiseLikeService, CruiseLikeService>();
 // ===========================================
 
 var app = builder.Build();
+
+
+// Print cabins ==============================
+// ===========================================
+//using var scope2 = app.Services.CreateScope();
+//var db = scope2.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//await CabinPrinter.PrintCabinsForShipAsync(db, shipId: 1);
+// ===========================================
+
 
 // ===========================================
 // Configure the HTTP request pipeline.

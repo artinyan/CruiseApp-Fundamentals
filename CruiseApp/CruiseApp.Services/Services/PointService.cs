@@ -8,7 +8,6 @@ namespace CruiseApp.Services.Services
     public class PointService : IPointService
     {
         private readonly ApplicationDbContext db;
-
         public PointService(ApplicationDbContext db)
         {
             this.db = db;

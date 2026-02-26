@@ -107,6 +107,5 @@ namespace CruiseApp.Data.Models
         {
             ChangePeriod(firstDay, lastDay, Description);
         }
-
     }
 }

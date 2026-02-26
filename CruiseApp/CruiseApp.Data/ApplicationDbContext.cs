@@ -19,6 +19,10 @@ namespace CruiseApp.Data
         public DbSet<Cabin> Cabins { get; set; } = null!;
         public DbSet<Cruise> Cruises { get; set; } = null!;
         public DbSet<CruiseLike> CruiseLikes { get; set; } = null!;
+        public DbSet<CabinReservation> CabinReservations { get; set; } = null!;
+        public DbSet<ReservationPassenger> ReservationPassengers { get; set; } = null!;
+        public DbSet<Passenger> Passengers { get; set; } = null!;
+        public DbSet<CruiseCabinPrice> CruiseCabinPrices { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -70,6 +74,24 @@ namespace CruiseApp.Data
 
             builder.Entity<CruiseLike>()
                 .HasKey(cl => new { cl.UserId, cl.CruiseId });
+
+            builder.Entity<CabinReservation>()
+                .HasIndex(r => new { r.CruiseId, r.CabinId, r.UserId })
+                .IsUnique();
+
+            builder.Entity<ReservationPassenger>()
+                .HasIndex(rp => new { rp.CabinReservationId, rp.PassengerOrder })
+                .IsUnique();
+
+            builder.Entity<CruiseCabinPrice>()
+                .HasIndex(p => new { p.CruiseId, p.CabinType })
+                .IsUnique();
+
+            builder.Entity<CruiseCabinPrice>()
+                .HasOne(p => p.Cruise)
+                .WithMany()
+                .HasForeignKey(p => p.CruiseId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
