@@ -120,7 +120,11 @@ namespace CruiseApp.Web.Controllers
             if (User.Identity?.IsAuthenticated == true && User.IsInRole(Roles.User))
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                model.IsLiked = await cruiseLikeService.IsLikedAsync(cruise.Id, userId);
+
+                if (userId != null)
+                {
+                    model.IsLiked = await cruiseLikeService.IsLikedAsync(cruise.Id, userId);
+                }
             }
 
             model.LikesCount = await cruiseLikeService.GetLikesCountAsync(cruise.Id);

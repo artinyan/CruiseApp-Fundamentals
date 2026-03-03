@@ -35,10 +35,10 @@ namespace CruiseApp.Data.Models
         [NotMapped]
         public int Capacity => CabinType switch
         {
-            CabinType.Internal => 2,
+            CabinType.Interior => 2,
             CabinType.SeaView => 2,
             CabinType.Balcony => 2,
-            CabinType.Apartment => 4,
+            CabinType.Suite => 4,
             _ => 0
         };
     }

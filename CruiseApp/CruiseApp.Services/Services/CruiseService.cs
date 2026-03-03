@@ -100,13 +100,35 @@ namespace CruiseApp.Services.Services
 
             if (exists)
                 throw new InvalidOperationException("A cruise with the same ship and dates already exists.");
+            
+            // Price Validation
+            if(model.CabinPrices.Count != 4)
+            {
+                throw new InvalidOperationException("All 4 cabin prices are required.");
+            }
+
+            if(model.CabinPrices.Select(p => p.CabinType).Distinct().Count() != 4)
+            {
+                throw new InvalidOperationException("Each cabin type must have exactly one price.");
+            }
 
             var cruise = new Cruise(route, model.FirstDay, model.LastDay);
 
-            // ✅ Добавяне на Description
+            // ✅ Adding Description
             cruise.ChangeDescription(model.Description);
 
             db.Cruises.Add(cruise);
+            await db.SaveChangesAsync();
+
+            // Price creaton
+            var prices = model.CabinPrices.Select(p => new CruiseCabinPrice
+            {
+                CruiseId = cruise.Id,
+                CabinType = p.CabinType,
+                Price = p.Price,
+            });
+
+            db.CruiseCabinPrices.AddRange(prices);
             await db.SaveChangesAsync();
         }
 
@@ -127,24 +149,6 @@ namespace CruiseApp.Services.Services
                 })
                 .FirstOrDefaultAsync();
         }
-
-
-
-        //public async Task<AdminCruiseFormModel?> GetForEditAsync(int id)
-        //{
-        //    return await db.Cruises
-        //        .Include(c => c.Route)
-        //            .ThenInclude(r => r.Ship)
-        //        .Where(c => c.Id == id)
-        //        .Select(c => new AdminCruiseFormModel
-        //        {
-        //            ShipId = c.Route.ShipId,
-        //            ShipName = c.Route.Ship.Name, 
-        //            FirstDay = c.FirstDay,
-        //            LastDay = c.LastDay
-        //        })
-        //        .FirstOrDefaultAsync();
-        //}
 
         public async Task UpdateAsync(int id, AdminCruiseFormModel model)
         {
@@ -171,41 +175,11 @@ namespace CruiseApp.Services.Services
             cruise.ChangePeriod(model.FirstDay, model.LastDay);
             cruise.ValidateAgainstRoute();
 
-            // ✅ Update Description
+            // Update Description
             cruise.ChangeDescription(model.Description);
 
             await db.SaveChangesAsync();
         }
-
-
-        //public async Task UpdateAsync(int id, AdminCruiseFormModel model)
-        //{
-        //    var cruise = await db.Cruises
-        //        .Include(c => c.Route)
-        //            .ThenInclude(r => r.Ship)
-        //        .Include(c => c.Route)
-        //            .ThenInclude(r => r.Days)
-        //                .ThenInclude(d => d.Point)
-        //        .FirstOrDefaultAsync(c => c.Id == id);
-
-        //    if (cruise == null)
-        //        throw new InvalidOperationException("Cruise not found.");
-
-        //    // Check for uniquness - there is not other cruise with same ship and dates.
-        //    bool exists = await db.Cruises.AnyAsync(c =>
-        //        c.Id != id &&
-        //        c.Route.ShipId == cruise.Route.ShipId &&
-        //        c.FirstDay == model.FirstDay &&
-        //        c.LastDay == model.LastDay);
-
-        //    if (exists)
-        //        throw new InvalidOperationException("A cruise with the same ship and dates already exists.");
-
-        //    cruise.ChangePeriod(model.FirstDay, model.LastDay);
-        //    cruise.ValidateAgainstRoute();
-
-        //    await db.SaveChangesAsync();
-        //}
 
         public async Task<AdminCruiseListModel?> GetForDeleteAsync(int id)
         {

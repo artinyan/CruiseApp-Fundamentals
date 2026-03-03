@@ -1,4 +1,5 @@
 ﻿using CruiseApp.Data.Models;
+using CruiseApp.Data.Models.Enums;
 using CruiseApp.Services.Interfaces;
 using CruiseApp.Services.Models.Admin;
 using CruiseApp.Web.Common;
@@ -50,11 +51,24 @@ namespace CruiseApp.Web.Controllers
         public async Task<IActionResult> Create()
         {
             await LoadShips();
-            return View();
+            DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+            var model = new AdminCruiseCreateViewModel
+            {
+                FirstDay = today,
+                LastDay = today.AddDays(1), // или today, или +1 – твой избор
+                CabinPrices = Enum.GetValues<CabinType>()
+                    .Select(ct => new AdminCruiseCabinPriceViewModel
+                    {
+                        CabinType = ct
+                    })
+                    .ToList()
+            };
+
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AdminCruiseFormViewModel model)
+        public async Task<IActionResult> Create(AdminCruiseCreateViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +81,14 @@ namespace CruiseApp.Web.Controllers
                 ShipId = model.ShipId,
                 FirstDay = model.FirstDay,
                 LastDay = model.LastDay,
-                Description = model.Description
+                Description = model.Description,
+                CabinPrices = model.CabinPrices
+                    .Select(p => new AdminCruiseCabinPriceFormModel
+                    {
+                        CabinType = p.CabinType,
+                        Price = p.Price
+                    })
+                    .ToList()
             };
 
 
@@ -100,7 +121,7 @@ namespace CruiseApp.Web.Controllers
             var serviceModel = await cruiseService.GetForEditAsync(id);
             if (serviceModel == null) return NotFound();
 
-            var model = new AdminCruiseFormViewModel
+            var model = new AdminCruiseEditViewModel
             {
                 Id = id,
                 FirstDay = serviceModel.FirstDay,
@@ -108,14 +129,14 @@ namespace CruiseApp.Web.Controllers
                 Description = serviceModel.Description
             };
 
-            ViewBag.ShipName = serviceModel.ShipName; 
+            ViewBag.ShipName = serviceModel.ShipName;
             return View(model);
         }
 
 
         // POST
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, AdminCruiseFormViewModel model)
+        public async Task<IActionResult> Edit(int id, AdminCruiseEditViewModel model)
         {
             if (!ModelState.IsValid)
             {

@@ -1,8 +1,11 @@
 ﻿using CruiseApp.Data;
 using CruiseApp.Data.Models;
-using Microsoft.EntityFrameworkCore;
+using CruiseApp.Data.Models.Enums;
 using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.IO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using Point = CruiseApp.Data.Models.Point;
 
 // 1️. Find solution root depending current exe directory
@@ -39,8 +42,8 @@ var decksArr = new[,] {
 
 var cabinsArr = new[,] {
     { 84, 8 },
-    { 92, 6 },
-    { 124, 10 }};
+    { 92, 4 },
+    { 124, 8 }};
 
 int[][] routesArr = {
     [ 5,9,0,4,3,14,7,13,1,10,2,12,6,11,8 ],
@@ -53,13 +56,18 @@ var cruisesArr = new[,] {
     { 1, 2026, 7, 2, 2026, 7, 9 },
     { 1, 2026, 7, 5, 2026, 7, 12 },
     { 2, 2026, 9, 1, 2026, 9, 11 },
-    { 2, 2026, 9, 3, 2026, 9, 9 } 
+    { 2, 2026, 9, 3, 2026, 9, 9 }
 };
 
 
 var seasonStart = new DateOnly(2026, 6, 1);
 var seasonEnd = new DateOnly(2026, 9, 30);
+var cabinCoefficient = new[] { 1, 1.2, 1.3, 1.6 };
 
+decimal initialPrice = 150.23m;
+decimal minimalPrice = 198.87m;
+double seasonHighCoefficient = 1.51;
+int seasonMiddle = seasonEnd.DayNumber - seasonStart.DayNumber;
 
 db.Database.Migrate();
 
@@ -131,6 +139,52 @@ void SeedCruises(int[,] cruisesArr)
 
     db.Cruises.AddRange(cruises);
     db.SaveChanges();
+
+
+    // Add Price
+    var cruisePrices = new List<CruiseCabinPrice>();
+
+    foreach (var cruise in cruises)
+    {
+        int cruiseMiddle = ((cruise.LastDay.DayNumber - cruise.FirstDay.DayNumber) / 2) + cruise.FirstDay.DayNumber;
+        double cruiseCoefficient = ((Math.Abs(seasonMiddle - cruiseMiddle) / cruiseMiddle) * (seasonHighCoefficient - 1)) + 1;
+
+        cruisePrices.AddRange(new[]
+        {
+            new CruiseCabinPrice
+            {
+                CruiseId = cruise.Id,
+                CabinType = CabinType.Interior,
+                Price = CalculatePrice(cabinCoefficient[0], cruise.CruiseLength)
+            },
+            new CruiseCabinPrice
+            {
+                CruiseId = cruise.Id,
+                CabinType = CabinType.SeaView,
+                Price = CalculatePrice(cabinCoefficient[1], cruise.CruiseLength)
+            },
+            new CruiseCabinPrice
+            {
+                CruiseId = cruise.Id,
+                CabinType = CabinType.Balcony,
+                Price = CalculatePrice(cabinCoefficient[2], cruise.CruiseLength)
+            },
+            new CruiseCabinPrice
+            {
+                CruiseId = cruise.Id,
+                CabinType = CabinType.Suite,
+                Price = CalculatePrice(cabinCoefficient[3], cruise.CruiseLength)
+            }
+        });
+    }
+
+    db.CruiseCabinPrices.AddRange(cruisePrices);
+    db.SaveChanges();
+}
+
+decimal CalculatePrice(double cabinCoeff, int cruiseLength)
+{
+    return initialPrice + (minimalPrice * (decimal)(seasonHighCoefficient * cabinCoeff * cruiseLength));
 }
 
 
@@ -160,26 +214,49 @@ void SeedShips(List<string> shipsList, int[,] decksArr, int[,] cabinsArr, DateOn
         int cabinLess = cabinsArr[sh, 1];
         for (int dk = deckLow; dk <= deckUp; dk++)
         {
+            int deckElement = dk % 3;
+
             var deck = new Deck
             {
                 Ship = ship,
                 Number = dk
             };
+
             db.Decks.Add(deck);
 
-            if (cabinAmount > 0)
+            if (cabinAmount <= 0)
+                continue;
+
+            for (int i = 1; i <= cabinAmount; i++)
             {
-                for (int i = 1; i <= cabinAmount; i++)
+                int element = i % 4;
+                CabinType cabinType;
+
+                if (element == 1 || element == 2)
                 {
-                    var cabin = new Cabin
-                    {
-                        Deck = deck,
-                        SequenceNumber = i
-                    };
-                    db.Cabins.Add(cabin);
+                    cabinType = CabinType.Interior;
                 }
-                cabinAmount = Math.Max(0, cabinAmount - cabinLess);
+                else
+                {
+                    cabinType = deckElement switch
+                    {
+                        1 => CabinType.SeaView,
+                        2 => CabinType.Balcony,
+                        _ => CabinType.Suite
+                    };
+                }
+
+                var cabin = new Cabin
+                {
+                    Deck = deck,
+                    SequenceNumber = i,
+                    CabinType = cabinType
+                };
+
+                db.Cabins.Add(cabin);
             }
+
+            cabinAmount = Math.Max(0, cabinAmount - cabinLess);
         }
         db.SaveChanges();
 
@@ -193,7 +270,8 @@ void SeedShips(List<string> shipsList, int[,] decksArr, int[,] cabinsArr, DateOn
             {
                 Date = date,
                 Route = route,
-                PointId = pointsByName[pointsList[routesArr[sh][counter]]]};
+                PointId = pointsByName[pointsList[routesArr[sh][counter]]]
+            };
 
             db.RouteDays.Add(routeDay);
 

@@ -2,9 +2,9 @@
 {
     public enum CabinType
     {
-        Internal = 1,
+        Interior = 1,
         SeaView = 2,
         Balcony = 3,
-        Apartment = 4
+        Suite = 4
     }
 }
