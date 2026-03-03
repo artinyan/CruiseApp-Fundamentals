@@ -12,7 +12,6 @@
 
                 <form asp-action="Edit" method="post">
                     <input type="hidden" asp-for="Id" />
-
                     <!-- Покажи всички грешки (client + server) -->
                     <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
@@ -42,6 +41,30 @@
                         <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
+
+                    <!-- Cabin Prices -->
+                    <h5 class="mt-4 mb-3">Cabin Prices</h5>
+
+                    @for (int i = 0; i < Model.CabinPrices.Count; i++)
+                    {
+                        <div class="mb-3 row align-items-center">
+                            <div class="col-6">
+                                <label class="form-label">
+                                    @Model.CabinPrices[i].CabinType
+                                </label>
+                                <input type="hidden"
+                                       asp-for="CabinPrices[@i].CabinType" />
+                            </div>
+
+                            <div class="col-6">
+                                <input asp-for="CabinPrices[@i].Price"
+                                       class="form-control"
+                                       placeholder="Price" />
+                                <span asp-validation-for="CabinPrices[@i].Price"
+                                      class="text-danger"></span>
+                            </div>
+                        </div>
+                    }
 
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-primary flex-grow-1">Save</button>

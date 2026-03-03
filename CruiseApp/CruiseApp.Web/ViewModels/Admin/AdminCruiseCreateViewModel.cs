@@ -25,6 +25,7 @@ namespace CruiseApp.Web.ViewModels.Admin
 
         //public ICollection<AdminCruiseCabinPriceViewModel> CabinPrices { get; set; }
         //    = new List<AdminCruiseCabinPriceViewModel>();
+
         public List<AdminCruiseCabinPriceViewModel> CabinPrices { get; set; }
             = new();
     }

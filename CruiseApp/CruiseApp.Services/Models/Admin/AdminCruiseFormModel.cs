@@ -23,6 +23,7 @@ namespace CruiseApp.Services.Models.Admin
         [Required]
         public ICollection<AdminCruiseCabinPriceFormModel> CabinPrices { get; set; }
             = new List<AdminCruiseCabinPriceFormModel>();
+
     }
 }
 

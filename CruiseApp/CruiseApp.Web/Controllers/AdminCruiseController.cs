@@ -142,7 +142,15 @@ namespace CruiseApp.Web.Controllers
                 Id = id,
                 FirstDay = serviceModel.FirstDay,
                 LastDay = serviceModel.LastDay,
-                Description = serviceModel.Description
+                Description = serviceModel.Description,
+                CabinPrices = serviceModel.CabinPrices
+                    .OrderBy(p => p.CabinType)
+                    .Select(p => new AdminCruiseCabinPriceViewModel
+                    {
+                        CabinType = p.CabinType, 
+                        Price = p.Price
+                    })
+                    .ToList()
             };
 
             ViewBag.ShipName = serviceModel.ShipName;
@@ -160,11 +168,32 @@ namespace CruiseApp.Web.Controllers
                 return View(model);
             }
 
+            if (model.CabinPrices.Count != cabinTypesCount)
+            {
+                ModelState.AddModelError(string.Empty, "All cabin prices are required.");
+                ViewBag.ShipName = (await cruiseService.GetForEditAsync(id))?.ShipName;
+                return View(model);
+            }
+
+            if (model.CabinPrices.Select(p => p.CabinType).Distinct().Count() != cabinTypesCount)
+            {
+                ModelState.AddModelError(string.Empty, "Each cabin type must have exactly one price.");
+                ViewBag.ShipName = (await cruiseService.GetForEditAsync(id))?.ShipName;
+                return View(model);
+            }
+
             var serviceModel = new AdminCruiseFormModel
             {
                 FirstDay = model.FirstDay,
                 LastDay = model.LastDay,
-                Description = model.Description
+                Description = model.Description,
+                CabinPrices = model.CabinPrices
+                    .Select(p => new AdminCruiseCabinPriceFormModel
+                    {
+                        CabinType = p.CabinType,
+                        Price = p.Price
+                    })
+                    .ToList()
             };
 
             try

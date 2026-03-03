@@ -24,7 +24,10 @@ namespace CruiseApp.Web.ViewModels.Admin
         [DateRange("FirstDay", ErrorMessage = "Last day must be after first day")]
         public DateOnly LastDay { get; set; }
 
-        public ICollection<AdminCruiseCabinPriceViewModel> CabinPrices { get; set; }
-            = new List<AdminCruiseCabinPriceViewModel>();
+        //public ICollection<AdminCruiseCabinPriceViewModel> CabinPrices { get; set; }
+        //    = new List<AdminCruiseCabinPriceViewModel>();
+
+        public List<AdminCruiseCabinPriceViewModel> CabinPrices { get; set; }
+            = new();
     }
 }

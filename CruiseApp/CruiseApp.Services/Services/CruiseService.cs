@@ -138,6 +138,7 @@ namespace CruiseApp.Services.Services
             return await db.Cruises
                 .Include(c => c.Route)
                     .ThenInclude(r => r.Ship)
+                .Include(c => c.CabinPrices)
                 .Where(c => c.Id == id)
                 .Select(c => new AdminCruiseFormModel
                 {
@@ -145,7 +146,14 @@ namespace CruiseApp.Services.Services
                     ShipName = c.Route.Ship.Name,
                     FirstDay = c.FirstDay,
                     LastDay = c.LastDay,
-                    Description = c.Description // ✅ Връщаме Description
+                    Description = c.Description, // ✅ Връщаме Description
+                    CabinPrices = c.CabinPrices
+                        .Select(p => new AdminCruiseCabinPriceFormModel
+                        {
+                            CabinType = p.CabinType, 
+                            Price = p.Price
+                        })
+                        .ToList()
                 })
                 .FirstOrDefaultAsync();
         }
@@ -158,6 +166,7 @@ namespace CruiseApp.Services.Services
                 .Include(c => c.Route)
                     .ThenInclude(r => r.Days)
                         .ThenInclude(d => d.Point)
+                .Include(c => c.CabinPrices) // <- задължително за update на цените
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (cruise == null)
@@ -177,6 +186,15 @@ namespace CruiseApp.Services.Services
 
             // Update Description
             cruise.ChangeDescription(model.Description);
+
+            // Update prices
+            foreach (var price in cruise.CabinPrices)
+            {
+                var newPrice = model.CabinPrices
+                    .First(p => p.CabinType == price.CabinType);
+
+                price.Price = newPrice.Price;
+            }
 
             await db.SaveChangesAsync();
         }
