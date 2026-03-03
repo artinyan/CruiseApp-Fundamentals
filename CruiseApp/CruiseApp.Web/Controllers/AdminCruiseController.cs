@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CruiseApp.Web.Controllers
 {
+
     [Authorize(Roles = Roles.Administrator)]
     public class AdminCruiseController : Controller
     {
@@ -27,6 +28,7 @@ namespace CruiseApp.Web.Controllers
         // ============================
         // LIST
         // ============================
+        int cabinTypesCount = Enum.GetValues<CabinType>().Length;
 
         public async Task<IActionResult> Index()
         {
@@ -55,7 +57,7 @@ namespace CruiseApp.Web.Controllers
             var model = new AdminCruiseCreateViewModel
             {
                 FirstDay = today,
-                LastDay = today.AddDays(1), // или today, или +1 – твой избор
+                LastDay = today.AddDays(1), //  +1
                 CabinPrices = Enum.GetValues<CabinType>()
                     .Select(ct => new AdminCruiseCabinPriceViewModel
                     {
@@ -72,6 +74,20 @@ namespace CruiseApp.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                await LoadShips();
+                return View(model);
+            }
+
+            if (model.CabinPrices.Count != cabinTypesCount)
+            {
+                ModelState.AddModelError(string.Empty, "All 4 cabin prices are required.");
+                await LoadShips();
+                return View(model);
+            }
+
+            if (model.CabinPrices.Select(p => p.CabinType).Distinct().Count() != cabinTypesCount)
+            {
+                ModelState.AddModelError(string.Empty, "Each cabin type must have exactly one price.");
                 await LoadShips();
                 return View(model);
             }

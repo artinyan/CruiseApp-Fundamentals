@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using CruiseApp.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using CruiseApp.Data.Models;
+using System.Reflection.Emit;
 
 namespace CruiseApp.Data
 {
@@ -28,11 +29,9 @@ namespace CruiseApp.Data
         {
             base.OnModelCreating(builder);
 
-
             builder.Entity<Ship>()
                 .HasIndex(s => s.Name)
                 .IsUnique();
-
 
             builder.Entity<Route>()
                 .HasIndex(r => r.ShipId)
@@ -44,16 +43,13 @@ namespace CruiseApp.Data
                 .HasForeignKey<Route>(r => r.ShipId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
             builder.Entity<Deck>()
                 .HasIndex(d => new { d.ShipId, d.Number })
                 .IsUnique();
 
-
             builder.Entity<Cabin>()
                 .HasIndex(c => new { c.DeckId, c.SequenceNumber })
                 .IsUnique();
-
 
             builder.Entity<RouteDay>()
                 .HasIndex(rd => new { rd.RouteId, rd.Date })
@@ -89,9 +85,9 @@ namespace CruiseApp.Data
 
             builder.Entity<CruiseCabinPrice>()
                 .HasOne(p => p.Cruise)
-                .WithMany()
+                .WithMany(c => c.CabinPrices)
                 .HasForeignKey(p => p.CruiseId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
