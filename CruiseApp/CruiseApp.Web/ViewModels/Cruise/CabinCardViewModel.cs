@@ -1,4 +1,5 @@
 ﻿using CruiseApp.Data.Models.Enums;
+using CruiseApp.Web.Infrastructure;
 
 namespace CruiseApp.Web.ViewModels.Cruise
 {
@@ -9,11 +10,11 @@ namespace CruiseApp.Web.ViewModels.Cruise
 
         public string Title { get; set; } = string.Empty;
 
-        public string Description { get; set; } = string.Empty;
+        public string Description =>
+            CabinDescriptionProvider.Get(ShipName, CabinType);
 
         public string CabinImage =>
          $"{ShipName.Replace(" ", "").ToLowerInvariant()}{CabinType.ToString().ToLowerInvariant()}.jpg";
-        //$"{ShipName.Replace(" ", "").ToLower()}{CabinType.ToString().ToLower()}.jpg";
 
         public decimal Price { get; set; }
     }

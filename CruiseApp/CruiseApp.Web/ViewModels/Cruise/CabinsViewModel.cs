@@ -9,7 +9,9 @@
         public DateOnly FirstDay { get; set; }
 
         public DateOnly LastDay { get; set; }
+
         public string StartPoint { get; set; } = string.Empty;
+
         public int Nights { get; set; }
 
         public ICollection<CabinCardViewModel> Cabins { get; set; }

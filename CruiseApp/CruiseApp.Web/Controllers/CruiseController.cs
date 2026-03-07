@@ -5,7 +5,6 @@ using CruiseApp.Web.ViewModels.Cruise;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using System.Security.Claims;
 
 namespace CruiseApp.Web.Controllers
@@ -164,6 +163,10 @@ namespace CruiseApp.Web.Controllers
             {
                 CruiseId = serviceModel.CruiseId,
                 ShipName = serviceModel.ShipName,
+                StartPoint = serviceModel.StartPoint,
+                FirstDay = serviceModel.FirstDay,
+                LastDay = serviceModel.LastDay,
+                Nights = serviceModel.Nights,
 
                 Cabins = serviceModel.Cabins
                     .Select(c => new CabinCardViewModel

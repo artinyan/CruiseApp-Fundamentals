@@ -9,12 +9,13 @@
 <div class="page-container mb-5">
 <h2 class="h4 mb-1">Ship: @Model.ShipName</h2>
 
-@* <div class="text-muted small mb-3">
-    @Model.FirstDay.ToString("dd MMM yyyy")
-    –
-    @Model.LastDay.ToString("dd MMM yyyy")
-    <strong>@Model.Nights</strong> nights
-</div> *@
+    <div class="text-muted small mb-3">
+        From <strong>@Model.StartPoint</strong>,
+        @Model.FirstDay.ToString("dd MMM yyyy")
+        –
+        @Model.LastDay.ToString("dd MMM yyyy")
+        · <strong>@Model.Nights</strong> nights
+    </div>
 
 
 <!-- ========================= -->

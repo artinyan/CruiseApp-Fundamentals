@@ -71,6 +71,16 @@ namespace CruiseApp.Services.Services
                     CruiseId = c.Id,
                     ShipName = c.Route.Ship.Name,
 
+                    StartPoint = c.Route.Days
+                        .Where(d => d.Date == c.FirstDay)
+                        .Select(d => d.Point.Name)
+                        .FirstOrDefault(),
+
+                    FirstDay = c.FirstDay,
+                    LastDay = c.LastDay,
+
+                    Nights = c.LastDay.DayNumber - c.FirstDay.DayNumber,
+
                     Cabins = c.CabinPrices
                         .Select(p => new CabinCardServiceModel
                         {

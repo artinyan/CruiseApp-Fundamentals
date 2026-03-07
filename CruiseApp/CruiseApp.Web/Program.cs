@@ -10,6 +10,7 @@ using CruiseApp.Web.Infrastructure;
 
 
 
+
 // ===========================================
 // LOAD .env (BEFORE builder)
 // ===========================================
@@ -21,6 +22,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
 
+// ===========================================
+// Load JSON file: cabinDescriptions.json
+// ===========================================
+
+var path = Path.Combine(builder.Environment.ContentRootPath,
+                        "Config",
+                        "cabinDescriptions.json");
+
+CabinDescriptionProvider.Load(path);
 
 // ===========================================
 // Add services to the container.
