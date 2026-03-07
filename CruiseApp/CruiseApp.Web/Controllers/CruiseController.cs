@@ -1,6 +1,7 @@
 ﻿using CruiseApp.Services.Interfaces;
 using CruiseApp.Web.Common;
 using CruiseApp.Web.ViewModels;
+using CruiseApp.Web.ViewModels.Cruise;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -152,6 +153,29 @@ namespace CruiseApp.Web.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
+        public async Task<IActionResult> Cabins(int id)
+        {
+            var serviceModel = await cruiseService.GetCabinsAsync(id);
 
+            if (serviceModel == null)
+                return NotFound();
+
+            var model = new CabinsViewModel
+            {
+                CruiseId = serviceModel.CruiseId,
+                ShipName = serviceModel.ShipName,
+
+                Cabins = serviceModel.Cabins
+                    .Select(c => new CabinCardViewModel
+                    {
+                        ShipName = serviceModel.ShipName,
+                        CabinType = c.CabinType,
+                        Price = c.Price
+                    })
+                    .ToList()
+            };
+
+            return View(model);
+        }
     }
 }

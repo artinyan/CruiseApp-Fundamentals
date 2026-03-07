@@ -16,20 +16,20 @@
     </div>
 </div>
 
-<div class="container page-container">
+@* <div class="container page-container"> *@
+
+<!-- ========================= -->
+<!-- CRUISE CARD               -->
+<!-- ========================= -->
+<div class="page-container mb-5">
     <a asp-action="Index" class="btn btn-link px-0 mb-3">
         ← Back to cruises
     </a>
-
-    <!-- ========================= -->
-    <!-- CRUISE CARD               -->
-    <!-- ========================= -->
-    <div class="card shadow-sm mb-4 overflow-hidden">
-
-        <div class="row g-0">
+    <div class="cruise-list">
+        <div class="cruise-card">
 
             <!-- IMAGE -->
-            <div class="col-md-5">
+            <div class="cruise-image">
                 <img src="~/images/destinations/@(Model.StartPoint).jpg"
                      onerror="this.src='/images/noimage.jpg'"
                      alt="@Model.StartPoint"
@@ -37,36 +37,42 @@
             </div>
 
             <!-- INFO -->
-            <div class="col-md-7 d-flex flex-column">
-                <div class="card-body">
+            <div class="cruise-info">
 
-                    <!-- HEADER -->
-                    <h2 class="h4 mb-1">@Model.ShipName</h2>
+                <!-- HEADER -->
+                <h2 class="h4 mb-1">@Model.ShipName</h2>
 
-                    <div class="text-muted small mb-3">
-                        @Model.FirstDay.ToString("dd MMM yyyy")
-                        –
-                        @Model.LastDay.ToString("dd MMM yyyy")
-                        · <strong>@Model.Nights</strong> nights
-                    </div>
+                <div class="text-muted small mb-3">
+                    @Model.FirstDay.ToString("dd MMM yyyy")
+                    –
+                    @Model.LastDay.ToString("dd MMM yyyy")
+                    · <strong>@Model.Nights</strong> nights
+                </div>
 
-                    @if (!string.IsNullOrWhiteSpace(Model.Description))
-                    {
-                        <div class="mb-3">
-                            <strong>Description</strong>
-                            <p class="mb-0">@Model.Description</p>
-                        </div>
-                    }
-
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
                     <div class="mb-3">
-                        <strong>From</strong>
-                        <p class="mb-0">@Model.StartPoint</p>
+                        <strong>Description</strong>
+                        <p class="mb-0">@Model.Description</p>
                     </div>
+                }
 
-                    <div class="mb-3">
-                        <strong>Destinations</strong>
-                        <p class="mb-0">@Model.Destinations</p>
-                    </div>
+                <div class="mb-3">
+                    <strong>From</strong>
+                    <p class="mb-0">@Model.StartPoint</p>
+                </div>
+
+                <div class="mb-3">
+                    <strong>Destinations</strong>
+                    <p class="mb-0">@Model.Destinations</p>
+                </div>
+
+                <div class="cruise-footer">
+                    <a asp-action="Cabins"
+                       asp-route-id="@Model.Id"
+                       class="details-link">
+                        View Cabins →
+                    </a>
                 </div>
 
                 <!-- ACTIONS -->
@@ -89,6 +95,7 @@
         </div>
     </div>
 </div>
+@* </div> *@
 
 
 <!-- Hero Image Carousel Script -->

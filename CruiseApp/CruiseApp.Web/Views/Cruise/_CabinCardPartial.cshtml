@@ -1,0 +1,24 @@
+﻿@model CruiseApp.Web.ViewModels.Cruise.CabinCardViewModel
+
+<div class="cabin-card">
+    <!-- IMAGE -->
+    <div class="cabin-image">
+        <img src="~/images/cabins/@Model.CabinImage"
+             alt="@Model.CabinImage" />
+    </div>
+
+    <div class="cabin-info">
+        <div class="nights">
+            CABIN TYPE: @Model.CabinType
+        </div>
+
+        <div class="cabin-discription">
+            <strong>Description</strong>
+            <p class="mb-0">Cabin discription. Bla bla.</p>
+        </div>
+
+        <div class="cabin-discription">
+            <strong>Price for whole cabin: </strong>@Model.Price €
+        </div>
+    </div>
+</div>

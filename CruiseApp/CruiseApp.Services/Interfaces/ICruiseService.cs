@@ -1,5 +1,6 @@
 ﻿using CruiseApp.Data.Models;
 using CruiseApp.Services.Models.Admin;
+using CruiseApp.Services.Models.Cruise;
 
 
 
@@ -44,5 +45,7 @@ namespace CruiseApp.Services.Interfaces
         // Validation helpers
         // ============================
         Task EnsureUniqueCruiseAsync(int shipId, DateOnly firstDay, DateOnly lastDay, int? ignoreCruiseId = null);
+
+        Task<CabinsServiceModel?> GetCabinsAsync(int cruiseId);
     }
 }

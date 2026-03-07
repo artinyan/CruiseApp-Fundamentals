@@ -2,6 +2,7 @@
 using CruiseApp.Data.Models;
 using CruiseApp.Services.Interfaces;
 using CruiseApp.Services.Models.Admin;
+using CruiseApp.Services.Models.Cruise;
 using Microsoft.EntityFrameworkCore;
 
 namespace CruiseApp.Services.Services
@@ -60,6 +61,28 @@ namespace CruiseApp.Services.Services
                         .ThenInclude(d => d.Point)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
+
+        public async Task<CabinsServiceModel?> GetCabinsAsync(int cruiseId)
+        {
+            return await db.Cruises
+                .Where(c => c.Id == cruiseId)
+                .Select(c => new CabinsServiceModel
+                {
+                    CruiseId = c.Id,
+                    ShipName = c.Route.Ship.Name,
+
+                    Cabins = c.CabinPrices
+                        .Select(p => new CabinCardServiceModel
+                        {
+                            CabinType = p.CabinType,
+                            Price = p.Price
+                        })
+                        .OrderBy(c => c.CabinType)
+                        .ToList()
+                })
+                .FirstOrDefaultAsync();
+        }
+
 
         // ============================
         // ADMIN

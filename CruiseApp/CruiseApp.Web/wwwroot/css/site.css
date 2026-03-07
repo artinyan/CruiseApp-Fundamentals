@@ -168,3 +168,89 @@
 }
 
 
+
+/* ============================= */
+/* Cabin cards layout           */
+/* ============================= */
+
+.cabin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+
+.cabin-card {
+    display: grid;
+    grid-template-columns: 390px minmax(0, 1fr);
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+    .cabin-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+
+/* IMAGE */
+.cabin-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* INFO */
+.cabin-info {
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* CABIN TYPE */
+.cabin-type {
+    font-size: 15px;
+}
+
+/* DISCRIPTION */
+.cabin-discription {
+    font-size: 15px;
+}
+
+/* HEADER */
+.cabin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* FOOTER */
+.cabin-footer {
+    margin-top: auto;
+}
+
+.details-link {
+    font-weight: 600;
+    text-decoration: none;
+    color: #0d6efd;
+}
+
+    .details-link:hover {
+        text-decoration: underline;
+    }
+
+@media (max-width: 768px) {
+    .cabin-card {
+        grid-template-columns: 1fr;
+    }
+
+    .cabin-image {
+        height: 220px;
+    }
+}
+
+
