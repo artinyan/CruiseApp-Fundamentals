@@ -4,7 +4,6 @@ using CruiseApp.Data.Models.Enums;
 using CruiseApp.Services.Interfaces;
 using CruiseApp.Services.Models.Admin;
 using CruiseApp.Services.Models.Cruise;
-using CruiseApp.Web.ViewModels.Cruise;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -132,7 +131,7 @@ namespace CruiseApp.Services.Services
 
                     Cabins = d.Cabins
                         .Where(c => c.CabinType == cabinType)
-                        .Select(c => new CabinButtonViewModel
+                        .Select(c => new CabinButtonServiceModel
                         {
                             Id = c.Id,
                             Number = c.SequenceNumber.ToString(),

@@ -1,6 +1,4 @@
-﻿using CruiseApp.Web.ViewModels.Cruise;
-
-namespace CruiseApp.Services.Models.Cruise
+﻿namespace CruiseApp.Services.Models.Cruise
 {
     public class DeckCabinsServiceModel
     {
@@ -8,7 +6,7 @@ namespace CruiseApp.Services.Models.Cruise
 
         public string DeckName { get; set; }
 
-        public IEnumerable<CabinButtonViewModel> Cabins { get; set; }
-            = new List<CabinButtonViewModel>();
+        public IEnumerable<CabinButtonServiceModel> Cabins { get; set; }
+            = new List<CabinButtonServiceModel>();
     }
 }
