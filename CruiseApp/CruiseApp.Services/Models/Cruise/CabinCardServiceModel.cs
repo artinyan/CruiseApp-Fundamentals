@@ -7,4 +7,7 @@ public class CabinCardServiceModel
     public CabinType CabinType { get; set; }
 
     public decimal Price { get; set; }
+
+    public IEnumerable<DeckButtonServiceModel> Decks { get; set; }
+        = new List<DeckButtonServiceModel>();
 }

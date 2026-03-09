@@ -1,5 +1,6 @@
 ﻿using CruiseApp.Data.Models.Enums;
 using CruiseApp.Web.Infrastructure;
+using CruiseApp.Web.ViewModels.Deck;
 
 namespace CruiseApp.Web.ViewModels.Cruise
 {
@@ -8,7 +9,7 @@ namespace CruiseApp.Web.ViewModels.Cruise
         public string ShipName { get; set; } = string.Empty;
         public CabinType CabinType { get; set; }
 
-        public string Title { get; set; } = string.Empty;
+        //public string Title { get; set; } = string.Empty;
 
         public string Description =>
             CabinDescriptionProvider.Get(ShipName, CabinType);
@@ -17,5 +18,9 @@ namespace CruiseApp.Web.ViewModels.Cruise
          $"{ShipName.Replace(" ", "").ToLowerInvariant()}{CabinType.ToString().ToLowerInvariant()}.jpg";
 
         public decimal Price { get; set; }
+
+        // дековете, които имат този тип кабина
+        public IEnumerable<DeckButtonViewModel> Decks { get; set; }
+            = new List<DeckButtonViewModel>();
     }
 }

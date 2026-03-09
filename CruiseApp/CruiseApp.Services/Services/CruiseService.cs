@@ -1,9 +1,12 @@
 ﻿using CruiseApp.Data;
 using CruiseApp.Data.Models;
+using CruiseApp.Data.Models.Enums;
 using CruiseApp.Services.Interfaces;
 using CruiseApp.Services.Models.Admin;
 using CruiseApp.Services.Models.Cruise;
+using CruiseApp.Web.ViewModels.Cruise;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace CruiseApp.Services.Services
 {
@@ -64,33 +67,87 @@ namespace CruiseApp.Services.Services
 
         public async Task<CabinsServiceModel?> GetCabinsAsync(int cruiseId)
         {
-            return await db.Cruises
-                .Where(c => c.Id == cruiseId)
-                .Select(c => new CabinsServiceModel
+            var cruise = await db.Cruises
+                .AsNoTracking()
+                .Include(c => c.Route)
+                    .ThenInclude(r => r.Ship)
+                        .ThenInclude(s => s.Decks)
+                            .ThenInclude(d => d.Cabins)
+                .Include(c => c.Route)
+                    .ThenInclude(r => r.Days)
+                        .ThenInclude(d => d.Point)
+                .Include(c => c.CabinPrices)
+                .FirstOrDefaultAsync(c => c.Id == cruiseId);
+
+            if (cruise == null)
+                return null;
+
+            var result = new CabinsServiceModel
+            {
+                CruiseId = cruise.Id,
+                ShipName = cruise.Route.Ship.Name,
+
+                StartPoint = cruise.Route.Days
+                    .FirstOrDefault(d => d.Date == cruise.FirstDay)?.Point.Name,
+
+                FirstDay = cruise.FirstDay,
+                LastDay = cruise.LastDay,
+
+                Nights = cruise.LastDay.DayNumber - cruise.FirstDay.DayNumber,
+
+                Cabins = cruise.CabinPrices
+                    .OrderBy(p => p.CabinType)
+                    .Select(p => new CabinCardServiceModel
+                    {
+                        CabinType = p.CabinType,
+                        Price = p.Price,
+
+                        Decks = cruise.Route.Ship.Decks
+                            .Where(d => d.Cabins.Any(c => c.CabinType == p.CabinType))
+                            .OrderBy(d => d.Number)
+                            .Select(d => new DeckButtonServiceModel
+                            {
+                                Id = d.Id,
+                                Name = $"Deck {d.Number}"
+                            })
+                            .ToList()
+                    })
+                    .ToList()
+            };
+
+            return result;
+        }
+
+        public async Task<DeckCabinsServiceModel> GetDeckCabinsAsync(
+    int cruiseId,
+    int deckId,
+    CabinType cabinType)
+        {
+            var deck = await db.Decks
+                .Where(d => d.Id == deckId)
+                .Select(d => new DeckCabinsServiceModel
                 {
-                    CruiseId = c.Id,
-                    ShipName = c.Route.Ship.Name,
+                    DeckId = d.Id,
+                    DeckName = d.Name,
 
-                    StartPoint = c.Route.Days
-                        .Where(d => d.Date == c.FirstDay)
-                        .Select(d => d.Point.Name)
-                        .FirstOrDefault(),
-
-                    FirstDay = c.FirstDay,
-                    LastDay = c.LastDay,
-
-                    Nights = c.LastDay.DayNumber - c.FirstDay.DayNumber,
-
-                    Cabins = c.CabinPrices
-                        .Select(p => new CabinCardServiceModel
+                    Cabins = d.Cabins
+                        .Where(c => c.CabinType == cabinType)
+                        .Select(c => new CabinButtonViewModel
                         {
-                            CabinType = p.CabinType,
-                            Price = p.Price
+                            Id = c.Id,
+                            Number = c.SequenceNumber.ToString(),
+                            CabinType = c.CabinType,
+
+                            IsAvailable = !db.CabinReservations
+                                .Any(r => r.CruiseId == cruiseId
+                                       && r.CabinId == c.Id)
                         })
-                        .OrderBy(c => c.CabinType)
+                        .OrderBy(c => c.Number)
                         .ToList()
                 })
                 .FirstOrDefaultAsync();
+
+            return deck!;
         }
 
 
@@ -133,14 +190,14 @@ namespace CruiseApp.Services.Services
 
             if (exists)
                 throw new InvalidOperationException("A cruise with the same ship and dates already exists.");
-            
+
             // Price Validation
-            if(model.CabinPrices.Count != 4)
+            if (model.CabinPrices.Count != 4)
             {
                 throw new InvalidOperationException("All 4 cabin prices are required.");
             }
 
-            if(model.CabinPrices.Select(p => p.CabinType).Distinct().Count() != 4)
+            if (model.CabinPrices.Select(p => p.CabinType).Distinct().Count() != 4)
             {
                 throw new InvalidOperationException("Each cabin type must have exactly one price.");
             }
@@ -183,7 +240,7 @@ namespace CruiseApp.Services.Services
                     CabinPrices = c.CabinPrices
                         .Select(p => new AdminCruiseCabinPriceFormModel
                         {
-                            CabinType = p.CabinType, 
+                            CabinType = p.CabinType,
                             Price = p.Price
                         })
                         .ToList()

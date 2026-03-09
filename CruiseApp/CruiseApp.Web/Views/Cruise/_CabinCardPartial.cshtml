@@ -20,5 +20,28 @@
         <div class="cabin-discription">
             <strong>Price for whole cabin: </strong>@Model.Price €
         </div>
+
+        @if (User.Identity?.IsAuthenticated ?? false)
+        {
+            <div class="mt-3">
+                <div class="small text-muted mb-1">Choose Deck</div>
+
+                <div class="deck-buttons">
+                    @foreach (var deck in Model.Decks)
+                    {
+                        <a asp-controller="Cruise"
+                           asp-action="Deck"
+                           asp-route-shipName="@Model.ShipName"
+                           asp-route-deckId="@deck.Id"
+                           asp-route-cabinType="@Model.CabinType"
+                           class="btn btn-outline-primary btn-sm">
+
+                            @deck.Name
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+
     </div>
 </div>

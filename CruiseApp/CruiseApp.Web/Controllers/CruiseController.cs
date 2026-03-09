@@ -1,7 +1,9 @@
-﻿using CruiseApp.Services.Interfaces;
+﻿using CruiseApp.Data.Models.Enums;
+using CruiseApp.Services.Interfaces;
 using CruiseApp.Web.Common;
 using CruiseApp.Web.ViewModels;
 using CruiseApp.Web.ViewModels.Cruise;
+using CruiseApp.Web.ViewModels.Deck;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -173,10 +175,28 @@ namespace CruiseApp.Web.Controllers
                     {
                         ShipName = serviceModel.ShipName,
                         CabinType = c.CabinType,
-                        Price = c.Price
+                        Price = c.Price,
+
+                        Decks = c.Decks.Select(d => new DeckButtonViewModel
+                        {
+                            Id = d.Id,
+                            Name = d.Name
+                        })
                     })
                     .ToList()
             };
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> Deck(int cruiseId, int deckId, CabinType cabinType)
+        {
+            var model = await cruiseService.GetDeckCabinsAsync(cruiseId, deckId, cabinType);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
 
             return View(model);
         }
