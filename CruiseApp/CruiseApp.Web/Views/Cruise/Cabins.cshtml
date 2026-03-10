@@ -1,0 +1,35 @@
+﻿@model CruiseApp.Web.ViewModels.Cruise.CabinsViewModel
+
+@{
+    ViewData["Title"] = "Cabin Details";
+}
+
+<!-- ========================= -->
+<!-- HEADER -->
+<div class="page-container mb-5">
+<h2 class="h4 mb-1">Ship: @Model.ShipName</h2>
+
+    <div class="text-muted small mb-3">
+        From <strong>@Model.StartPoint</strong>,
+        @Model.FirstDay.ToString("dd MMM yyyy")
+        –
+        @Model.LastDay.ToString("dd MMM yyyy")
+        · <strong>@Model.Nights</strong> nights
+    </div>
+
+
+<!-- ========================= -->
+    @if (Model.Cabins != null && Model.Cabins.Any())
+    {
+        <div class="cabin-list">
+            @foreach (var cabin in Model.Cabins)
+            {
+                <partial name="_CabinCardPartial" model="cabin" />
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-muted">No cabins found for the selected criteria.</p>
+    }
+</div>

@@ -4,6 +4,7 @@ using CruiseApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CruiseApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260225114551_AddReservationsAndPrices")]
+    partial class AddReservationsAndPrices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -751,17 +754,6 @@ namespace CruiseApp.Data.Migrations
                     b.Navigation("Route");
                 });
 
-            modelBuilder.Entity("CruiseCabinPrice", b =>
-                {
-                    b.HasOne("CruiseApp.Data.Models.Cruise", "Cruise")
-                        .WithMany("CabinPrices")
-                        .HasForeignKey("CruiseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cruise");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -811,11 +803,6 @@ namespace CruiseApp.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CruiseApp.Data.Models.Cruise", b =>
-                {
-                    b.Navigation("CabinPrices");
                 });
 
             modelBuilder.Entity("CruiseApp.Data.Models.Deck", b =>

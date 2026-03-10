@@ -4,6 +4,7 @@ using CruiseApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CruiseApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260225121553_AddCruiseCabinPriceFK")]
+    partial class AddCruiseCabinPriceFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -754,9 +757,9 @@ namespace CruiseApp.Data.Migrations
             modelBuilder.Entity("CruiseCabinPrice", b =>
                 {
                     b.HasOne("CruiseApp.Data.Models.Cruise", "Cruise")
-                        .WithMany("CabinPrices")
+                        .WithMany()
                         .HasForeignKey("CruiseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Cruise");
@@ -811,11 +814,6 @@ namespace CruiseApp.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CruiseApp.Data.Models.Cruise", b =>
-                {
-                    b.Navigation("CabinPrices");
                 });
 
             modelBuilder.Entity("CruiseApp.Data.Models.Deck", b =>

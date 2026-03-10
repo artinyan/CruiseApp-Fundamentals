@@ -1,0 +1,20 @@
+{
+  "Aurora": {
+    "Interior": "Interior cabins offer cozy, budget-friendly, and often quiet accommodation, focusing on space-saving design with premium, White Company toiletries, queen/twin beds, and daily service. They feature modern amenities like TVs, air conditioning, and, occasionally, virtual, balconies or, portholes. Perfect for travelers prioritizing destination, exploration over room size.",
+    "SeaView": "Perfect blend of comfort and scenic beauty, typically featuring large, panoramic windows that showcase stunning ocean or coastal views. These well-appointed, cozy retreats include modern amenities like en-suite bathrooms, comfortable bedding, and, in some cases, private hot tubs or balconies, making them ideal for a romantic getaway or a relaxing, nature-focused escape.",
+    "Balcony": "Private outdoor oasis, featuring floor-to-ceiling glass doors that open to a furnished balcony with chairs and a table. Ideal for scenic cruising and fresh air, these rooms typically include a cozy sitting area, a queen or two twin beds, and an en-suite bathroom.",
+    "Suite": "Elevate your guest experience with a luxurious, spacious suite designed for ultimate comfort and sophistication. Featuring breathtaking panoramic views from a private, furnished balcony, these suites include premium amenities like plush king-sized bedding, en-suite marble bathrooms with rain showers, personal butler service, and exclusive, high-end perks to ensure an unforgettable, pampered getaway."
+  },
+  "Ariel": {
+    "Interior": "A smart choice for the savvy traveler, our Interior cabins provide a peaceful sanctuary with a focus on sleek, functional design. Each room features ambient lighting, high-quality linens, and integrated smart-room technology. It’s the ultimate quiet retreat for those who spend their days chasing adventures on deck.",
+    "SeaView": "Wake up to the ever-changing horizon in our SeaView cabins. These bright, airy rooms are centered around expansive picture windows, bringing the ocean's beauty right to your bedside. Enhanced with elegant maritime decor and premium comfort, they offer a constant connection to the sea.",
+    "Balcony": "Step into your own private slice of paradise. Our Balcony rooms bridge the gap between indoor luxury and the open sea, featuring spacious verandas perfect for a sunset toast. Inside, you’ll find a generous living area and floor-to-ceiling windows that bathe the room in natural light.",
+    "Suite": "The pinnacle of maritime living. Our Suites are sprawling masterpieces of design, boasting separate lounge areas, walk-in wardrobes, and expansive wrap-around balconies. Guests enjoy priority boarding, a dedicated concierge, and bespoke in-room dining, creating a 'ship-within-a-ship' experience."
+  },
+  "neptune": {
+    "Interior": "Discover a hidden gem of comfort. Our Interior staterooms are masterfully designed to maximize space and tranquility, offering a restful haven after a day of exploration. Featuring soft, warm textures and a state-of-the-art entertainment system, it is the perfect nest for a deep, undisturbed sleep.",
+    "SeaView": "Frame your journey with breathtaking vistas. The SeaView cabins offer a front-row seat to the world’s most beautiful ports through large, crystal-clear windows. These rooms combine classic charm with modern convenience, ensuring every morning starts with an inspiring view of the blue.",
+    "Balcony": "Embrace the salt air and the sound of the waves from your personal teak-decked balcony. These cabins are designed for the traveler who loves the breeze, offering a seamless flow between the stylish interior and the outdoor lounging area. It is your private theater for every sunrise.",
+    "Suite": "Indulge in an atmosphere of pure opulence. Our Suites offer a grand sanctuary featuring hand-crafted furniture, deep-soaking tubs, and a private bar. With 24-hour personalized service and access to exclusive VIP lounges, every moment spent here is a testament to the art of luxury travel."
+  }
+}

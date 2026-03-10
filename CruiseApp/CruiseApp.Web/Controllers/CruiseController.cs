@@ -1,10 +1,12 @@
-﻿using CruiseApp.Services.Interfaces;
+﻿using CruiseApp.Data.Models.Enums;
+using CruiseApp.Services.Interfaces;
 using CruiseApp.Web.Common;
 using CruiseApp.Web.ViewModels;
+using CruiseApp.Web.ViewModels.Cruise;
+using CruiseApp.Web.ViewModels.Deck;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using System.Security.Claims;
 
 namespace CruiseApp.Web.Controllers
@@ -120,7 +122,11 @@ namespace CruiseApp.Web.Controllers
             if (User.Identity?.IsAuthenticated == true && User.IsInRole(Roles.User))
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                model.IsLiked = await cruiseLikeService.IsLikedAsync(cruise.Id, userId);
+
+                if (userId != null)
+                {
+                    model.IsLiked = await cruiseLikeService.IsLikedAsync(cruise.Id, userId);
+                }
             }
 
             model.LikesCount = await cruiseLikeService.GetLikesCountAsync(cruise.Id);
@@ -148,6 +154,51 @@ namespace CruiseApp.Web.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
+        public async Task<IActionResult> Cabins(int id)
+        {
+            var serviceModel = await cruiseService.GetCabinsAsync(id);
 
+            if (serviceModel == null)
+                return NotFound();
+
+            var model = new CabinsViewModel
+            {
+                CruiseId = serviceModel.CruiseId,
+                ShipName = serviceModel.ShipName,
+                StartPoint = serviceModel.StartPoint,
+                FirstDay = serviceModel.FirstDay,
+                LastDay = serviceModel.LastDay,
+                Nights = serviceModel.Nights,
+
+                Cabins = serviceModel.Cabins
+                    .Select(c => new CabinCardViewModel
+                    {
+                        ShipName = serviceModel.ShipName,
+                        CabinType = c.CabinType,
+                        Price = c.Price,
+
+                        Decks = c.Decks.Select(d => new DeckButtonViewModel
+                        {
+                            Id = d.Id,
+                            Name = d.Name
+                        })
+                    })
+                    .ToList()
+            };
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> Deck(int cruiseId, int deckId, CabinType cabinType)
+        {
+            var model = await cruiseService.GetDeckCabinsAsync(cruiseId, deckId, cabinType);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
     }
 }
