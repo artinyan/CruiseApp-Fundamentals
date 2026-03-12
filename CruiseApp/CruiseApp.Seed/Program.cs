@@ -3,9 +3,6 @@ using CruiseApp.Data.Models;
 using CruiseApp.Data.Models.Enums;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using System.IO;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using Point = CruiseApp.Data.Models.Point;
 
 // 1️. Find solution root depending current exe directory
@@ -186,7 +183,6 @@ decimal CalculatePrice(double cabinCoeff, int cruiseLength)
 {
     return initialPrice + (minimalPrice * (decimal)(seasonHighCoefficient * cabinCoeff * cruiseLength));
 }
-
 
 void SeedPoints(List<string> pointsList)
 {
