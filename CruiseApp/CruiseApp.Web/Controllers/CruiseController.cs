@@ -189,16 +189,38 @@ namespace CruiseApp.Web.Controllers
             return View(model);
         }
 
+      
+
         public async Task<IActionResult> Deck(int cruiseId, int deckId, CabinType cabinType)
         {
-            var model = await cruiseService.GetDeckCabinsAsync(cruiseId, deckId, cabinType);
+            var serviceModel = await cruiseService
+                .GetDeckCabinsAsync(cruiseId, deckId, cabinType);
 
-            if (model == null)
-            {
+            if (serviceModel == null)
                 return NotFound();
-            }
+
+            var model = new DeckCabinsViewModel
+            {
+                ShipName = serviceModel.ShipName,
+                DeckName = serviceModel.DeckName,
+
+                Cabins = serviceModel.Cabins
+                    .Select(c => new CabinButtonViewModel
+                    {
+                        Id = c.Id,
+                        Number = c.Number,
+                        Name = c.Name,
+                        CabinType = c.CabinType,
+                        IsAvailable = c.IsAvailable
+                    })
+                    .ToList()
+            };
+
+
 
             return View(model);
         }
+
+
     }
 }

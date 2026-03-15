@@ -254,3 +254,39 @@
 }
 
 
+.cabins-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
+}
+
+.cabin-button {
+    display: block;
+    padding: 8px;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 14px;
+    text-decoration: none;
+    color: white;
+}
+
+.cabin-blue {
+    background: #3498db;
+}
+
+.cabin-green {
+    background: #2ecc71;
+}
+
+.cabin-orange {
+    background: #e67e22;
+}
+
+.cabin-purple {
+    background: #9b59b6;
+}
+
+.cabin-unavailable {
+    background: #bdc3c7;
+    color: #666;
+}
