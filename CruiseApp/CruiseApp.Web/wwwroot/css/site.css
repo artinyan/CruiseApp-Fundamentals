@@ -264,7 +264,6 @@
     border-radius: 0px;
     text-decoration: none;
     color: white;
-/*    color: #CCCCCC;*/
     display: block;
     border: 1px solid rgba(0,0,0,0.2);
 }
@@ -273,7 +272,6 @@
 
 .cabin-blue {
     background-color: #3498db;
-/*    background-color: #FFFFFF;*/
 }
 
 .cabin:hover {
