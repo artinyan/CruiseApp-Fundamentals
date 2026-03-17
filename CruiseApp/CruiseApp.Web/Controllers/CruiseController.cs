@@ -203,6 +203,7 @@ namespace CruiseApp.Web.Controllers
             {
                 ShipName = serviceModel.ShipName,
                 DeckName = serviceModel.DeckName,
+                DeckImage = serviceModel.DeckImage,
 
                 Cabins = serviceModel.Cabins
                     .Select(c => new CabinButtonViewModel
@@ -211,13 +212,12 @@ namespace CruiseApp.Web.Controllers
                         Number = c.Number,
                         Name = c.Name,
                         CabinType = c.CabinType,
+                        PosX = c.PosX,
+                        PosY = c.PosY,
                         IsAvailable = c.IsAvailable
                     })
                     .ToList()
             };
-
-
-
             return View(model);
         }
 

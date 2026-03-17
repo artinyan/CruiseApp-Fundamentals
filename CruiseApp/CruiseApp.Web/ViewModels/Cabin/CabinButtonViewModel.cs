@@ -9,7 +9,9 @@ namespace CruiseApp.Web.ViewModels.Cruise
 
         public string Number { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
-        public string SequenceNumber { get; set; } = string.Empty;
+
+        public int PosX { get; set; }
+        public int PosY { get; set; }
 
         public CabinType CabinType { get; set; }
 
@@ -24,5 +26,7 @@ namespace CruiseApp.Web.ViewModels.Cruise
                 CabinType.Suite => "cabin-purple",
                 _ => "cabin-gray"
             };
+
+        //public string SequenceNumber { get; set; } = string.Empty;
     }
 }

@@ -29,6 +29,7 @@
     <Folder Include="wwwroot\images\destinations\" />
     <Folder Include="wwwroot\images\hero\" />
     <Folder Include="wwwroot\images\cabins\" />
+    <Folder Include="wwwroot\images\decks\" />
   </ItemGroup>
 
 </Project>

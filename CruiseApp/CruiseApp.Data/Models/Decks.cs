@@ -12,7 +12,7 @@ namespace CruiseApp.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [Range (1, 99, ErrorMessage = "Deck number must be between 1 and 99.")] // Second Validation. (first sould be javascript frontend), third sould be in migration
+        [Range(1, 99, ErrorMessage = "Deck number must be between 1 and 99.")] // Second Validation. (first sould be javascript frontend), third sould be in migration
         [Comment("Numeric identifier of the Deck.")]
         public int Number { get; set; }
 
@@ -26,6 +26,12 @@ namespace CruiseApp.Data.Models
         [ForeignKey(nameof(ShipId))]
         public Ship Ship { get; set; } = null!;
 
+        [Required]
+        [MaxLength(200)]
+        public string DeckPlanImage { get; set; } = null!;
+
         public ICollection<Cabin> Cabins { get; set; } = new List<Cabin>();
+
+        public ICollection<CabinLayout> CabinLayouts { get; set; } = new List<CabinLayout>();
     }
 }

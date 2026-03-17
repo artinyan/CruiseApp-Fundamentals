@@ -24,6 +24,7 @@ namespace CruiseApp.Data
         public DbSet<ReservationPassenger> ReservationPassengers { get; set; } = null!;
         public DbSet<Passenger> Passengers { get; set; } = null!;
         public DbSet<CruiseCabinPrice> CruiseCabinPrices { get; set; } = null!;
+        public DbSet<CabinLayout> CabinLayouts { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -50,6 +51,26 @@ namespace CruiseApp.Data
             builder.Entity<Cabin>()
                 .HasIndex(c => new { c.DeckId, c.SequenceNumber })
                 .IsUnique();
+
+            builder.Entity<CabinLayout>()
+                .HasIndex(c => new { c.DeckId, c.CabinId })
+                .IsUnique();
+
+            builder.Entity<CabinLayout>()
+                .HasIndex(c => new { c.DeckId, c.PosX, c.PosY })
+                .IsUnique();
+
+
+            builder.Entity<CabinLayout>()
+                .HasOne(cl => cl.Cabin)
+                .WithOne(c => c.Layout)
+                .HasForeignKey<CabinLayout>(cl => cl.CabinId);
+
+            builder.Entity<CabinLayout>()
+                .HasOne(cl => cl.Deck)
+                .WithMany(d => d.CabinLayouts)
+                .HasForeignKey(cl => cl.DeckId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<RouteDay>()
                 .HasIndex(rd => new { rd.RouteId, rd.Date })

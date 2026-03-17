@@ -153,9 +153,9 @@
     color: #0d6efd;
 }
 
-.details-link:hover {
-    text-decoration: underline;
-}
+    .details-link:hover {
+        text-decoration: underline;
+    }
 
 @media (max-width: 768px) {
     .cruise-card {
@@ -253,40 +253,59 @@
     }
 }
 
-
-.cabins-grid {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 8px;
-}
-
-.cabin-button {
-    display: block;
-    padding: 8px;
+.cabin {
+    position: absolute;
+    width: 60px;
+    height: 20px;
+    line-height: 20px;
     text-align: center;
-    border-radius: 6px;
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 0px;
     text-decoration: none;
     color: white;
+/*    color: #CCCCCC;*/
+    display: block;
+    border: 1px solid rgba(0,0,0,0.2);
 }
 
+/* Cabin type colors */
+
 .cabin-blue {
-    background: #3498db;
+    background-color: #3498db;
+/*    background-color: #FFFFFF;*/
+}
+
+.cabin:hover {
+    transform: scale(1.08);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
 .cabin-green {
-    background: #2ecc71;
+    background-color: #2ecc71;
 }
 
 .cabin-orange {
-    background: #e67e22;
+    background-color: #e67e22;
 }
 
 .cabin-purple {
-    background: #9b59b6;
+    background-color: #9b59b6;
 }
 
 .cabin-unavailable {
-    background: #bdc3c7;
+    background-color: #bdc3c7;
     color: #666;
 }
+
+/* Deck container */
+
+.deck-map {
+    position: relative;
+}
+
+    .deck-map img {
+        width: 440px;
+        display: block;
+    }

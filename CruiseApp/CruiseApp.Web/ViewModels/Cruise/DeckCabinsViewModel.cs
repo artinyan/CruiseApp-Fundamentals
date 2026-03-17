@@ -7,6 +7,7 @@ namespace CruiseApp.Web.ViewModels.Cruise
         public string ShipName { get; set; } = string.Empty;
 
         public string DeckName { get; set; } = string.Empty;
+        public string DeckImage {  get; set; } = string.Empty;
 
         public List<CabinButtonViewModel> Cabins { get; set; } = new();
     }

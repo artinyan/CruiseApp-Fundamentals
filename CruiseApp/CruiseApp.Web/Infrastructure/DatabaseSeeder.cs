@@ -27,9 +27,9 @@ public static class DatabaseSeeder
 
         var cabinsArr = new[,]
         {
-            { 84, 8 },
-            { 92, 4 },
-            { 124, 8 }
+            { 284, 8 },
+            { 292, 4 },
+            { 324, 8 }
         };
 
         int[][] routesArr =
@@ -125,13 +125,17 @@ public static class DatabaseSeeder
                 var deck = new Deck
                 {
                     Ship = ship,
-                    Number = dk
+                    Number = dk,
+                    DeckPlanImage = $"{ship.Name}-deck-{dk}.png"
                 };
 
                 db.Decks.Add(deck);
 
                 if (cabinAmount <= 0)
                     continue;
+
+                int posX = 135;
+                int posY = 499;
 
                 for (int i = 1; i <= cabinAmount; i++)
                 {
@@ -153,11 +157,40 @@ public static class DatabaseSeeder
                         };
                     }
 
-                    db.Cabins.Add(new Cabin
+                    var cabin = new Cabin
                     {
                         Deck = deck,
                         SequenceNumber = i,
                         CabinType = cabinType
+                    };
+
+                    db.Cabins.Add(cabin);
+
+
+                    switch (element)
+                    {
+                        case 1:
+                            posX = 135;
+                            posY += 21;
+                            break;
+                        case 2:
+                            posX = 245;
+                            break;
+                        case 3:
+                            posX = 60;
+                            break;
+                        case 0:
+                            posX = 320;
+                            break;
+                        default:
+                            break;
+                    }
+                    db.CabinLayouts.Add(new CabinLayout
+                    {
+                        Deck = deck,
+                        Cabin = cabin,
+                        PosX = posX,
+                        PosY = posY
                     });
                 }
 

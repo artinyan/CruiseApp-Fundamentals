@@ -30,7 +30,7 @@ namespace CruiseApp.Data.Models
         [NotMapped]
         public string Name => $"{Deck.Name}{SequenceNumber:D3}";
 
-
+        public CabinLayout? Layout { get; set; }
 
         [NotMapped]
         public int Capacity => CabinType switch

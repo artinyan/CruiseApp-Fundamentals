@@ -7,11 +7,15 @@ namespace CruiseApp.Services.Models.Cruise
         public int Id { get; set; }
 
         public string Number { get; set; } = string.Empty;
-        public string SequenceNumber { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
+
+        public int PosX { get; set; }
+        public int PosY { get; set; }
 
         public CabinType CabinType { get; set; }
 
         public bool IsAvailable { get; set; }
+
+        //public string SequenceNumber { get; set; } = string.Empty;
     }
 }
