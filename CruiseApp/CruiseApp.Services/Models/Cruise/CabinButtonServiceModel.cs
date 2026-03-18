@@ -15,7 +15,5 @@ namespace CruiseApp.Services.Models.Cruise
         public CabinType CabinType { get; set; }
 
         public bool IsAvailable { get; set; }
-
-        //public string SequenceNumber { get; set; } = string.Empty;
     }
 }

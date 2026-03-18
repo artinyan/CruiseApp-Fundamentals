@@ -16,8 +16,6 @@
     </div>
 </div>
 
-@* <div class="container page-container"> *@
-
 <!-- ========================= -->
 <!-- CRUISE CARD               -->
 <!-- ========================= -->
@@ -68,8 +66,10 @@
                 </div>
 
                 <div class="cruise-footer">
+                    @* <a asp-action="Cabins"
+                       asp-route-id="@Model.Id" *@
                     <a asp-action="Cabins"
-                       asp-route-id="@Model.Id"
+                       asp-route-cruiseId="@Model.Id"
                        class="details-link">
                         View Cabins →
                     </a>

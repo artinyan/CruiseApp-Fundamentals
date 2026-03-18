@@ -7,9 +7,9 @@ namespace CruiseApp.Web.ViewModels.Cruise
     public class CabinCardViewModel
     {
         public string ShipName { get; set; } = string.Empty;
-        public CabinType CabinType { get; set; }
 
-        //public string Title { get; set; } = string.Empty;
+        public int CruiseId { get; set; }
+        public CabinType CabinType { get; set; }
 
         public string Description =>
             CabinDescriptionProvider.Get(ShipName, CabinType);

@@ -63,6 +63,7 @@ namespace CruiseApp.Services.Services
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
+
         public async Task<CabinsServiceModel?> GetCabinsAsync(int cruiseId)
         {
             var cruise = await db.Cruises
@@ -125,7 +126,8 @@ namespace CruiseApp.Services.Services
                 {
                     DeckId = d.Id,
                     DeckName = d.Name,
-                    //DeckImage = d.DeckPlanImage,
+                    CabinType = cabinType,
+                    CruiseId = cruiseId,
                     DeckImage = $"{d.Ship.Name}-deck-{d.Number}.png",
 
                     Cabins = d.CabinLayouts
@@ -151,36 +153,6 @@ namespace CruiseApp.Services.Services
 
             return deck!;
         }
-
-        //public async Task<DeckCabinsServiceModel> GetDeckCabinsAsync(int cruiseId, int deckId, CabinType cabinType)
-        //{
-        //    var deck = await db.Decks
-        //        .Where(d => d.Id == deckId)
-        //        .Select(d => new DeckCabinsServiceModel
-        //        {
-        //            DeckId = d.Id,
-        //            DeckName = d.Name,
-
-        //            Cabins = d.Cabins
-        //                .Where(c => c.CabinType == cabinType)
-        //                .OrderBy(c => c.SequenceNumber)
-        //                .Select(c => new CabinButtonServiceModel
-        //                {
-        //                    Id = c.Id,
-        //                    Number = c.SequenceNumber.ToString(),
-        //                    Name = c.Name,
-        //                    CabinType = c.CabinType,
-
-        //                    IsAvailable = !db.CabinReservations
-        //                        .Any(r => r.CruiseId == cruiseId
-        //                               && r.CabinId == c.Id)
-        //                })
-        //                .ToList()
-        //        })
-        //        .FirstOrDefaultAsync();
-
-        //    return deck!;
-        //}
 
 
         // ============================

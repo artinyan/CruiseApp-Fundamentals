@@ -26,7 +26,5 @@ namespace CruiseApp.Web.ViewModels.Cruise
                 CabinType.Suite => "cabin-purple",
                 _ => "cabin-gray"
             };
-
-        //public string SequenceNumber { get; set; } = string.Empty;
     }
 }
