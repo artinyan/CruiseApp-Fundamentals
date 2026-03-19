@@ -1,4 +1,4 @@
-﻿namespace CruiseApp.Web.ViewModels.Deck
+﻿namespace CruiseApp.ViewModels.Deck
 {
     public class DeckButtonViewModel
     {

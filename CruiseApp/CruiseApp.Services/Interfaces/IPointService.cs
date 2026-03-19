@@ -1,6 +1,6 @@
 ﻿using CruiseApp.Data.Models;
 
-namespace CruiseApp.Services.Interfaces
+namespace CruiseApp.Services.Core.Interfaces
 {
     public interface IPointService
     {

@@ -1,9 +1,9 @@
 ﻿using CruiseApp.Data;
 using CruiseApp.Data.Models;
-using CruiseApp.Services.Interfaces;
+using CruiseApp.Services.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace CruiseApp.Services.Services
+namespace CruiseApp.Services.Core.Services
 {
     public class ShipService : IShipService
     {

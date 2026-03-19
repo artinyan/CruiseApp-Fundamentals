@@ -1,7 +1,7 @@
 ﻿using CruiseApp.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace CruiseApp.Services.Models.Admin
+namespace CruiseApp.Services.Core.Models.Admin
 {
     public class AdminCruiseCabinPriceFormModel
     {

@@ -2,7 +2,10 @@
   <Folder Name="/Documentation/">
     <File Path="../README.md" />
   </Folder>
+  <Project Path="CruiseApp.Common/CruiseApp.Common.csproj" Id="536fe3b9-3d94-4963-af69-57bd071f488e" />
+  <Project Path="CruiseApp.Data.Models/CruiseApp.Data.Models.csproj" Id="92db79a0-9705-4d7c-929f-fda2af877b98" />
   <Project Path="CruiseApp.Data/CruiseApp.Data.csproj" Id="3ddd1d81-8e49-46a4-9363-c6b4c7b22446" />
-  <Project Path="CruiseApp.Services/CruiseApp.Services.csproj" Id="3fa946a5-6bde-4276-b6b0-1d8d3a0c74d0" />
+  <Project Path="CruiseApp.Services/CruiseApp.Services.Core.csproj" Id="3fa946a5-6bde-4276-b6b0-1d8d3a0c74d0" />
+  <Project Path="CruiseApp.ViewModels/CruiseApp.ViewModels.csproj" Id="611996f5-b5dc-431e-9c61-c5e8c02cbf5c" />
   <Project Path="CruiseApp.Web/CruiseApp.Web.csproj" />
 </Solution>

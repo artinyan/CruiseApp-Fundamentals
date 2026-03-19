@@ -1,7 +1,7 @@
 ﻿
 using CruiseApp.Data.Models.Enums;
 
-namespace CruiseApp.Web.ViewModels.Cruise
+namespace CruiseApp.ViewModels.Cruise
 {
     public class CabinButtonViewModel
     {

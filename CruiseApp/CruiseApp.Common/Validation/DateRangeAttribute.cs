@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CruiseApp.Web.Validation
+namespace CruiseApp.Common.Validation
 {
     public class DateRangeAttribute : ValidationAttribute
     {

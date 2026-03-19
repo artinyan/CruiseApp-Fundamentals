@@ -1,5 +1,5 @@
-﻿using CruiseApp.Web.Common;
-using CruiseApp.Web.ViewModels;
+﻿using CruiseApp.ViewModels;
+using CruiseApp.Web.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

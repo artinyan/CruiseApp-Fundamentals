@@ -1,21 +1,14 @@
 ﻿using CruiseApp.Data.Models;
 using CruiseApp.Data.Models.Enums;
-using CruiseApp.Services.Models.Admin;
-using CruiseApp.Services.Models.Cruise;
+using CruiseApp.Services.Core.Models.Admin;
+using CruiseApp.Services.Core.Models.Cruise;
 
 
 
-namespace CruiseApp.Services.Interfaces
+namespace CruiseApp.Services.Core.Interfaces
 {
     public interface ICruiseService
     {
-        // ADMIN
-        //Task<int> CreateCruiseAsync(
-        //    int shipId,
-        //    DateOnly firstDay,
-        //    DateOnly lastDay);
-
-
         // ======================
         // ADMIN
         // ======================

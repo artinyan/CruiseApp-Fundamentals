@@ -1,4 +1,4 @@
-﻿namespace CruiseApp.Web.ViewModels.Cruise
+﻿namespace CruiseApp.ViewModels.Cruise
 {
     public class CabinsViewModel
     {

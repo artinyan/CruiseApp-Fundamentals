@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using CruiseApp.Data.Models.Enums;
 
-namespace CruiseApp.Web.Infrastructure;
+namespace CruiseApp.Common.Infrastructure;
 
 public static class CabinDescriptionProvider
 {

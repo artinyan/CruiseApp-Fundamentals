@@ -1,7 +1,5 @@
-﻿
-using Microsoft.AspNetCore.Mvc.Rendering;
-
-namespace CruiseApp.Web.ViewModels
+﻿using CruiseApp.ViewModels.Cruise;
+namespace CruiseApp.ViewModels
 {
     public class CruiseSearchViewModel
     {
@@ -15,18 +13,16 @@ namespace CruiseApp.Web.ViewModels
         // ============================
         // Dropdown data
         // ============================
-        public IEnumerable<SelectListItem> Ships { get; set; }
-            = new List<SelectListItem>();
+        //public IEnumerable<SelectListItem> Ships { get; set; } = new List<SelectListItem>();
+        public IEnumerable<SelectOptionViewModel> Ships { get; set; } = new List<SelectOptionViewModel>();
 
-        public IEnumerable<SelectListItem> StartPoints { get; set; }
-            = new List<SelectListItem>();
+        public IEnumerable<SelectOptionViewModel> StartPoints { get; set; } = new List<SelectOptionViewModel>();
 
         // ============================
         // Search results
         // ============================
 
-        public IEnumerable<CruiseListItemViewModel> Cruises { get; set; }
-            = new List<CruiseListItemViewModel>();
+        public IEnumerable<CruiseListItemViewModel> Cruises { get; set; } = new List<CruiseListItemViewModel>();
     }
 }
 

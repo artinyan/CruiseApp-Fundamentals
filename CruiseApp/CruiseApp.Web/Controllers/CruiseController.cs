@@ -1,10 +1,10 @@
 ﻿using CruiseApp.Data.Models;
 using CruiseApp.Data.Models.Enums;
-using CruiseApp.Services.Interfaces;
+using CruiseApp.Services.Core.Interfaces;
+using CruiseApp.ViewModels;
 using CruiseApp.Web.Common;
-using CruiseApp.Web.ViewModels;
-using CruiseApp.Web.ViewModels.Cruise;
-using CruiseApp.Web.ViewModels.Deck;
+using CruiseApp.ViewModels.Cruise;
+using CruiseApp.ViewModels.Deck;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -40,7 +40,7 @@ namespace CruiseApp.Web.Controllers
         {
             // Ships dropdown
             model.Ships = (await shipService.GetAllAsync())
-                .Select(s => new SelectListItem
+                .Select(s => new SelectOptionViewModel
                 {
                     Value = s.Id.ToString(),
                     Text = s.Name
@@ -50,14 +50,14 @@ namespace CruiseApp.Web.Controllers
             // Start points dropdown (without "At Sea")
             model.StartPoints = (await pointService.GetAllAsync())
                 .Where(p => !p.IsSea)
-                .Select(p => new SelectListItem
+                .Select(p => new SelectOptionViewModel
                 {
                     Value = p.Id.ToString(),
                     Text = p.Name
                 })
                 .ToList();
 
-            // Search cruises (map от Cruise -> CruiseListItemViewModel)
+            // Search cruises
             var cruises = await cruiseService.SearchCruisesAsync(
                 model.ShipId,
                 model.StartDate,
@@ -81,11 +81,67 @@ namespace CruiseApp.Web.Controllers
                     .Where(rd => rd.Date >= c.FirstDay && rd.Date <= c.LastDay)
                     .OrderBy(rd => rd.Date)
                     .Select(rd => rd.Point.Name)),
+
                 EndPoint = string.Empty
             }).ToList();
 
             return View(model);
         }
+
+        //// ============================
+        //// GET: /Cruise
+        //// ============================
+        //[HttpGet]
+        //public async Task<IActionResult> Index([FromQuery] CruiseSearchViewModel model)
+        //{
+        //    // Ships dropdown
+        //    model.Ships = (await shipService.GetAllAsync())
+        //        .Select(s => new SelectListItem
+        //        {
+        //            Value = s.Id.ToString(),
+        //            Text = s.Name
+        //        })
+        //        .ToList();
+
+        //    // Start points dropdown (without "At Sea")
+        //    model.StartPoints = (await pointService.GetAllAsync())
+        //        .Where(p => !p.IsSea)
+        //        .Select(p => new SelectListItem
+        //        {
+        //            Value = p.Id.ToString(),
+        //            Text = p.Name
+        //        })
+        //        .ToList();
+
+        //    // Search cruises (map от Cruise -> CruiseListItemViewModel)
+        //    var cruises = await cruiseService.SearchCruisesAsync(
+        //        model.ShipId,
+        //        model.StartDate,
+        //        model.StartPointId);
+
+        //    model.Cruises = cruises.Select(c => new CruiseListItemViewModel
+        //    {
+        //        Id = c.Id,
+        //        ShipName = c.Ship.Name,
+        //        FirstDay = c.FirstDay,
+        //        LastDay = c.LastDay,
+        //        Nights = c.CruiseLength,
+
+        //        StartPoint = c.Route.Days
+        //            .Where(rd => rd.Date >= c.FirstDay && rd.Date <= c.LastDay)
+        //            .OrderBy(rd => rd.Date)
+        //            .Select(rd => rd.Point.Name)
+        //            .FirstOrDefault() ?? string.Empty,
+
+        //        Destinations = string.Join(" • ", c.Route.Days
+        //            .Where(rd => rd.Date >= c.FirstDay && rd.Date <= c.LastDay)
+        //            .OrderBy(rd => rd.Date)
+        //            .Select(rd => rd.Point.Name)),
+        //        EndPoint = string.Empty
+        //    }).ToList();
+
+        //    return View(model);
+        //}
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)

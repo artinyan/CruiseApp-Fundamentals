@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using CruiseApp.Web.Models;
+using CruiseApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CruiseApp.Web.Controllers

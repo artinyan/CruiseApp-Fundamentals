@@ -1,4 +1,4 @@
-﻿namespace CruiseApp.Services.Models.Cruise;
+﻿namespace CruiseApp.Services.Core.Models.Cruise;
 
 public class CabinsServiceModel
 {

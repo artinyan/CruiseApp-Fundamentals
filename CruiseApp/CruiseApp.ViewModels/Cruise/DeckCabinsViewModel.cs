@@ -1,7 +1,6 @@
 ﻿using CruiseApp.Data.Models.Enums;
-using CruiseApp.Web.ViewModels.Cruise;
 
-namespace CruiseApp.Web.ViewModels.Cruise
+namespace CruiseApp.ViewModels.Cruise
 {
     public class DeckCabinsViewModel
     {

@@ -1,4 +1,4 @@
-namespace CruiseApp.Web.Models
+namespace CruiseApp.ViewModels
 {
     public class ErrorViewModel
     {

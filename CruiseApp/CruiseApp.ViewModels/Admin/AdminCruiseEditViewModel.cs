@@ -1,10 +1,11 @@
-﻿using CruiseApp.Web.Validation;
+﻿using CruiseApp.Common.Validation;
 using System.ComponentModel.DataAnnotations;
 
-namespace CruiseApp.Web.ViewModels.Admin
+namespace CruiseApp.ViewModels.Admin
 {
-    public class AdminCruiseCreateViewModel
+    public class AdminCruiseEditViewModel
     {
+        [Required]
         public int Id { get; set; }
 
         [Required]

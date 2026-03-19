@@ -1,4 +1,4 @@
-﻿namespace CruiseApp.Web.ViewModels
+﻿namespace CruiseApp.ViewModels
 {
     /// <summary>
     /// ViewModel for showing cruise.

@@ -1,8 +1,8 @@
 ﻿using CruiseApp.Data.Models.Enums;
-using CruiseApp.Web.Infrastructure;
-using CruiseApp.Web.ViewModels.Deck;
+using CruiseApp.Common.Infrastructure;
+using CruiseApp.ViewModels.Deck;
 
-namespace CruiseApp.Web.ViewModels.Cruise
+namespace CruiseApp.ViewModels.Cruise
 {
     public class CabinCardViewModel
     {

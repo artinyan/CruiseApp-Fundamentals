@@ -1,4 +1,4 @@
-﻿namespace CruiseApp.Web.ViewModels.Admin
+﻿namespace CruiseApp.ViewModels.Admin
 {
     public class AdminCruiseListViewModel
     {

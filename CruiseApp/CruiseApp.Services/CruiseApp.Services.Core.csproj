@@ -8,17 +8,18 @@
 
   <ItemGroup>
     <PackageReference Include="DotNetEnv" Version="3.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.23" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.23" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.23" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.23">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.23">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.23" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CruiseApp.Common\CruiseApp.Common.csproj" />
     <ProjectReference Include="..\CruiseApp.Data.Models\CruiseApp.Data.Models.csproj" />
+    <ProjectReference Include="..\CruiseApp.Data\CruiseApp.Data.csproj" />
   </ItemGroup>
 
 </Project>

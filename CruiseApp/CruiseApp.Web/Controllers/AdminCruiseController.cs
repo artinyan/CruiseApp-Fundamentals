@@ -1,12 +1,12 @@
 ﻿using CruiseApp.Data.Models;
 using CruiseApp.Data.Models.Enums;
-using CruiseApp.Services.Interfaces;
-using CruiseApp.Services.Models.Admin;
 using CruiseApp.Web.Common;
-using CruiseApp.Web.ViewModels.Admin;
+using CruiseApp.ViewModels.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using CruiseApp.Services.Core.Interfaces;
+using CruiseApp.Services.Core.Models.Admin;
 
 namespace CruiseApp.Web.Controllers
 {

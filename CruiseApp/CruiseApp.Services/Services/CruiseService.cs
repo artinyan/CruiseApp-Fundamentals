@@ -1,12 +1,12 @@
 ﻿using CruiseApp.Data;
 using CruiseApp.Data.Models;
 using CruiseApp.Data.Models.Enums;
-using CruiseApp.Services.Interfaces;
-using CruiseApp.Services.Models.Admin;
-using CruiseApp.Services.Models.Cruise;
+using CruiseApp.Services.Core.Interfaces;
+using CruiseApp.Services.Core.Models.Admin;
+using CruiseApp.Services.Core.Models.Cruise;
 using Microsoft.EntityFrameworkCore;
 
-namespace CruiseApp.Services.Services
+namespace CruiseApp.Services.Core.Services
 {
     public class CruiseService : ICruiseService
     {

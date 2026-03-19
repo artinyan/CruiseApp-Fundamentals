@@ -1,6 +1,6 @@
 ﻿using CruiseApp.Data.Models.Enums;
 
-namespace CruiseApp.Services.Models.Cruise
+namespace CruiseApp.Services.Core.Models.Cruise
 {
     public class CabinButtonServiceModel
     {

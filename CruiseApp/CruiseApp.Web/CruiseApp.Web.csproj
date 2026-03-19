@@ -20,8 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CruiseApp.Data\CruiseApp.Data.csproj" />
-    <ProjectReference Include="..\CruiseApp.Services\CruiseApp.Services.csproj" />
+    <ProjectReference Include="..\CruiseApp.Common\CruiseApp.Common.csproj" />
+    <ProjectReference Include="..\CruiseApp.Services\CruiseApp.Services.Core.csproj" />
+    <ProjectReference Include="..\CruiseApp.ViewModels\CruiseApp.ViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
