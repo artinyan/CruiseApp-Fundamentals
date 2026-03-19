@@ -207,6 +207,7 @@ namespace CruiseApp.Web.Controllers
                 ShipName = serviceModel.ShipName,
                 DeckId = serviceModel.DeckId,
                 DeckName = serviceModel.DeckName,
+                DeckNumber = int.Parse(serviceModel.DeckName),
                 DeckImage = serviceModel.DeckImage,
                 CabinType = serviceModel.CabinType,
                 Cabins = serviceModel.Cabins

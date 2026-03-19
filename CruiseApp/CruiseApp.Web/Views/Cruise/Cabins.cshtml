@@ -4,17 +4,14 @@
     ViewData["Title"] = "Cabin Details";
 }
 
-<div class="page-container mb-5">
-    <<a asp-action="Details"
-        asp-route-id="@Model.CruiseId"
-        class="btn btn-link px-0 mb-3">
-        ← Back to Cruise Details
-    </a>
-</div>
-
 <!-- ========================= -->
 <!-- HEADER -->
 <div class="page-container mb-5">
+    <a asp-action="Details"
+       asp-route-id="@Model.CruiseId"
+       class="btn btn-link px-0 mb-3">
+        ← Back to Cruise Details
+    </a>
 <h2 class="h4 mb-1">Ship: @Model.ShipName</h2>
 
     <div class="text-muted small mb-3">

@@ -7,16 +7,12 @@
     <a asp-action="Cabins"
        asp-route-cruiseId="@Model.CruiseId"
        class="btn btn-link px-0 mb-3">
-        ← Back to cabin types
+        ← Back to View Cabins
     </a>
+    <h2 class="mb-4">
+        Select @Model.CabinType Cabin on Deck @Model.DeckNumber
+    </h2>
 </div>
-
-@* <p>@Model.CruiseId</p> *@
-
-<h2 class="mb-4">
-    
-    Select @Model.CabinType Cabin on Deck @Model.DeckName
-</h2>
 
 <div class="deck-map">
     <img src="~/images/decks/@Model.DeckImage" />
