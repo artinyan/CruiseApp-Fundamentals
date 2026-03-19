@@ -29,7 +29,7 @@
                 <div class="deck-buttons">
                     @foreach (var deck in Model.Decks)
                     {
-                        <a asp-controller="Cruise"
+                        <a asp-controller="Cabin"
                            asp-action="Deck"
                            asp-route-cruiseId="@Model.CruiseId"
                            asp-route-deckId="@deck.Id"

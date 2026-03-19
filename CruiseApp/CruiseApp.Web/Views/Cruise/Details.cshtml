@@ -66,9 +66,8 @@
                 </div>
 
                 <div class="cruise-footer">
-                    @* <a asp-action="Cabins"
-                       asp-route-id="@Model.Id" *@
-                    <a asp-action="Cabins"
+                    <a asp-controller="Cabin"
+                       asp-action="Cabins"
                        asp-route-cruiseId="@Model.Id"
                        class="details-link">
                         View Cabins →
@@ -95,7 +94,7 @@
         </div>
     </div>
 </div>
-@* </div> *@
+
 
 
 <!-- Hero Image Carousel Script -->
