@@ -52,6 +52,7 @@ builder.Services.AddScoped<ICruiseService, CruiseService>();
 builder.Services.AddScoped<IShipService, ShipService>();
 builder.Services.AddScoped<IPointService, PointService>();
 builder.Services.AddScoped<ICruiseLikeService, CruiseLikeService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
 // ===========================================
 
 var app = builder.Build();

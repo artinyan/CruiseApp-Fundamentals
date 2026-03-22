@@ -8,12 +8,12 @@
 <!-- HEADER -->
 <div class="page-container mb-5">
     <a asp-controller="Cruise"
-       asp-action="Details"
-       asp-route-id="@Model.CruiseId"
-       class="btn btn-link px-0 mb-3">
+           asp-action="Details"
+           asp-route-id="@Model.CruiseId"
+           class="btn btn-link px-0 mb-3">
         ← Back to Cruise Details
     </a>
-<h2 class="h4 mb-1">Ship: @Model.ShipName</h2>
+    <h2 class="h4 mb-1">Ship: @Model.ShipName</h2>
 
     <div class="text-muted small mb-3">
         From <strong>@Model.StartPoint</strong>,
@@ -24,7 +24,7 @@
     </div>
 
 
-<!-- ========================= -->
+    <!-- ========================= -->
     @if (Model.Cabins != null && Model.Cabins.Any())
     {
         <div class="cabin-list">

@@ -57,6 +57,9 @@ namespace CruiseApp.Data.Models
         [Comment("Indicates whether the reservation has been paid")]
         public bool IsPaid { get; set; } = false;
 
+        public ICollection<ReservationPassenger> ReservationPassengers { get; set; } 
+            = new List<ReservationPassenger>();
+
         /// <summary>
         /// Simulated payment for the reservation (pseudo-payment for course project)
         /// </summary>
@@ -66,9 +69,7 @@ namespace CruiseApp.Data.Models
             IsPaid = true;
         }
 
-        // PassengersCount <= CabinTypeConstants.GetCapacity(cabin.Type
-        // Reservation.Passengers.Count == PassengersCount
-
-
+         //PassengersCount <= CabinTypeConstants.GetCapacity(cabin.Type
+         //Reservation.Passengers.Count == PassengersCount
     }
 }

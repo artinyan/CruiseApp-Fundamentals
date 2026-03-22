@@ -1,0 +1,14 @@
+﻿using CruiseApp.Data.Models.Enums;
+
+namespace CruiseApp.Services.Core.Models.Reservation
+{
+    public class MyReservationServiceModel
+    {
+        public int Id { get; set; }
+        public int CruiseId { get; set; }
+        public string CabinName { get; set; } = null!;
+        public decimal Price { get; set; }
+        public ReservationStatus Status { get; set; }
+        public bool IsPaid { get; set; }
+    }
+}

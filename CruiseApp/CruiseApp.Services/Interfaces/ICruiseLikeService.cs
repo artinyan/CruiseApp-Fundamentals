@@ -1,5 +1,4 @@
 ﻿using CruiseApp.Data.Models;
-
 public interface ICruiseLikeService
 {
     Task LikeAsync(int cruiseId, string userId);

@@ -21,18 +21,22 @@
     {
         if (cabin.IsAvailable)
         {
-            <a class="cabin cabin-blue"
-               style="left:@(cabin.PosX)px; top:@(cabin.PosY)px">
+            <a asp-controller="Reservation"
+                   asp-action="Create"
+                   asp-route-cabinId="@cabin.Id"
+                   asp-route-cruiseId="@Model.CruiseId"
+                   class="cabin cabin-blue"
+                   style="left:@(cabin.PosX)px; top:@(cabin.PosY)px">
                 @cabin.Name
             </a>
 
         }
         else
         {
-            <a class="cabin cabin-unavailable"
-               style="left:@(cabin.PosX)px; top:@(cabin.PosY)px">
+            <span class="cabin cabin-unavailable"
+                  style="left:@(cabin.PosX)px; top:@(cabin.PosY)px">
                 @cabin.Name
-            </a>
+            </span>
         }
     }
 </div>

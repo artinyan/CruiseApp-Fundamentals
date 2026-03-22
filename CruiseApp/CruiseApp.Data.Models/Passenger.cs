@@ -37,5 +37,8 @@ namespace CruiseApp.Data.Models
         [Comment("Passport Issuing Country of the Passenger")]
         [MaxLength(50)]
         public string PassportIssuingCountry { get; set; } = null!;
+
+        public ICollection<ReservationPassenger> ReservationPassengers { get; set; } 
+            = new List<ReservationPassenger>();
     }
 }

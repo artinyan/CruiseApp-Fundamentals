@@ -1,0 +1,124 @@
+﻿@model CruiseApp.ViewModels.Reservation.ReservationCreateViewModel
+
+@{
+    ViewData["Title"] = "Reserve Cabin";
+}
+
+@* <div class="container mt-4"> *@
+
+<div class="page-container mb-5">
+    <a asp-controller="Cabin"
+           asp-action="Deck"
+           asp-route-cruiseId="@Model.CruiseId"
+           asp-route-deckId="@Model.DeckId"
+           asp-route-cabinType="@Model.CabinType"
+           class="btn btn-link px-0 mb-3">
+        ← Back to Deck
+    </a>
+
+    <h2 class="h4 mb-1">Ship: @Model.ShipName</h2>
+
+    <div class="text-muted small mb-3">
+        From <strong>@Model.StartPoint</strong>,
+        @Model.FirstDay.ToString("dd MMM yyyy")
+        –
+        @Model.LastDay.ToString("dd MMM yyyy")
+        · <strong>@Model.Nights</strong> nights
+    </div>
+
+    <!-- 🔹 CABIN INFO -->
+    <div class="cabin-card">
+        <div class="cabin-image">
+            <img src="~/images/cabins/@Model.ImageName"
+                 alt="@Model.ImageName" />
+        </div>
+
+        <div class="cabin-info">
+                <div class="nights">
+                    Deck @Model.DeckNumber, Cabin @Model.CabinName
+                </div>
+
+                <div class="cabin-discription">
+                    <p class="text-muted">
+                        Type: @Model.CabinType
+                    </p>
+
+                    <p>
+                        Capacity: @Model.Capacity passengers
+                    </p>
+
+                    <p>
+                        @Model.Description
+                    </p>
+
+                    <h4 class="mt-3">
+                        Price for whole cabin: @Model.Price €
+                    </h4>
+                </div>
+        </div>
+    </div>
+
+    <!-- 🔹 FORM -->
+    <form asp-action="Create" method="post">
+
+        <input type="hidden" asp-for="CruiseId" />
+        <input type="hidden" asp-for="CabinId" />
+
+        <!-- Passengers count -->
+        <div class="mb-3">
+            <label class="form-label">Number of Passengers</label>
+            <select asp-for="PassengersCount" class="form-select" id="passengerCount">
+                @for (int i = 1; i <= Model.Capacity; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+        </div>
+
+        <!-- Dynamic passengers -->
+        <div id="passengersContainer"></div>
+
+        <button type="submit" class="btn btn-primary mt-3">
+            Reserve
+        </button>
+
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        const select = document.getElementById("passengerCount");
+        const container = document.getElementById("passengersContainer");
+
+        function generatePassengers(count) {
+            container.innerHTML = "";
+
+            for (let i = 0; i < count; i++) {
+                container.innerHTML += `
+                    <div class="card p-3 mb-3">
+                        <h5>Passenger ${i + 1}</h5>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>First Name</label>
+                                <input name="Passengers[${i}].FirstName" class="form-control" required />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Last Name</label>
+                                <input name="Passengers[${i}].LastName" class="form-control" required />
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // initial load
+        generatePassengers(select.value);
+
+        select.addEventListener("change", function () {
+            generatePassengers(this.value);
+        });
+    </script>
+}
