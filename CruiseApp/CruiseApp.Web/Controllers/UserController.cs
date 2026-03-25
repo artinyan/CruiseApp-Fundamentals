@@ -1,4 +1,6 @@
-﻿using CruiseApp.ViewModels;
+﻿using CruiseApp.Services.Core.Interfaces;
+using CruiseApp.ViewModels;
+using CruiseApp.ViewModels.Reservation;
 using CruiseApp.Web.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,11 +10,16 @@ using System.Security.Claims;
 public class UserController : Controller
 {
     private readonly ICruiseLikeService cruiseLikeService;
+    private readonly IReservationService reservationService;
 
-    public UserController(ICruiseLikeService cruiseLikeService)
+    public UserController(
+        ICruiseLikeService cruiseLikeService,
+        IReservationService reservationService)
     {
         this.cruiseLikeService = cruiseLikeService;
+        this.reservationService = reservationService;
     }
+
 
     [HttpGet]
     public async Task<IActionResult> MyLikedCruises()
@@ -45,5 +52,39 @@ public class UserController : Controller
 
 
         return View(model);
+    }
+
+    public async Task<IActionResult> MyReservations()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId == null)
+            return Unauthorized();
+
+        var serviceModels = await reservationService.GetUserReservationsAsync(userId);
+
+        var viewModels = serviceModels.Select(r => new MyReservationViewModel
+        {
+            Id = r.Id,
+            CruiseId = r.CruiseId,
+            CabinName = r.CabinName,
+            Price = r.Price,
+            Status = r.Status,
+            IsPaid = r.IsPaid,
+
+
+            ShipName = r.ShipName,
+            StartPoint = r.StartPoint,
+            FirstDay = r.FirstDay,
+            LastDay = r.LastDay,
+            Nights = r.Nights,
+            CruiseDiscription = r.CruiseDiscription,
+            DeckNumber = r.DeckNumber,
+            CabinType = r.CabinType,
+            CabinDiscription = r.CabinDiscription,
+            Destinations = r.Destinations,
+        }).ToList();
+
+        return View(viewModels);
     }
 }

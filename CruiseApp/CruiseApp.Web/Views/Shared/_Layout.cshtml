@@ -55,8 +55,8 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link fw-semibold"
-                                   asp-controller="AdminCruise"
-                                   asp-action="Index">
+                                       asp-controller="AdminCruise"
+                                       asp-action="Index">
                                     Admin Cruises
                                     <span class="badge bg-warning text-dark ms-1">Admin</span>
                                 </a>
@@ -64,13 +64,21 @@
                         }
 
                         @if (User.Identity?.IsAuthenticated == true &&
-                                                User.IsInRole(Roles.User))
+                                                                        User.IsInRole(Roles.User))
                         {
                             <li class="nav-item">
                                 <a class="nav-link"
-                                   asp-controller="User"
-                                   asp-action="MyLikedCruises">
+                                       asp-controller="User"
+                                       asp-action="MyLikedCruises">
                                     ❤️ My Liked Cruises
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                       asp-controller="User"
+                                       asp-action="MyReservations">
+                                    My Bookings
                                 </a>
                             </li>
                         }

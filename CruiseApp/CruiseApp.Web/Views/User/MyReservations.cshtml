@@ -1,0 +1,22 @@
+﻿@model IEnumerable<CruiseApp.ViewModels.Reservation.MyReservationViewModel>
+
+@{
+    ViewData["Title"] = "My Reservations";
+}
+
+<h2 class="mb-4">My Reservations</h2>
+
+@if (!Model.Any())
+{
+    <p>You have no reservations.</p>
+}
+else
+{
+
+    <div class="cruise-list">
+        @foreach (var r in Model)
+        {
+            <partial name="_MyReservationsCardPartial" model="r" />
+        }
+    </div>
+}

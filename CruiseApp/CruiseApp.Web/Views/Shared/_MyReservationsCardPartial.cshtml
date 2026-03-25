@@ -1,0 +1,59 @@
+﻿@model CruiseApp.ViewModels.Reservation.MyReservationViewModel
+
+<div class="cruise-card">
+    <!-- IMAGE -->
+    <div class="cruise-image">
+        <img src="~/images/destinations/@Model.PointImage"
+             alt="@Model.StartPoint" />
+    </div>
+
+    <!-- INFO -->
+    <div class="cruise-info">
+        <h4 class="cruise-destinations">
+            <strong>Ship:</strong> @Model.ShipName.  
+            From <strong>@Model.StartPoint</strong>,
+            @Model.FirstDay.ToString("dd MMM yyyy")
+            –
+            @Model.LastDay.ToString("dd MMM yyyy")
+            · <strong>@Model.Nights</strong> nights
+        </h4>
+
+        <h4 class="cruise-destinations">
+            <strong>Destinations:</strong> @Model.Destinations
+        </h4>
+
+        <h4 class="cruise-destinations">
+            @Model.CruiseDiscription
+        </h4>
+
+        <h4 class="cruise-destinations">
+            <strong>Deck:</strong> @Model.DeckNumber, <strong>Cabin:</strong> @Model.CabinName, <strong>Cabin Type:</strong> @Model.CabinType. - @Model.CabinDiscription
+        </h4>
+
+        <h4 class="mt-3">
+            @if (!Model.IsPaid)
+            {
+                <span class="badge bg-warning text-dark">Price for whole cabin: @Model.Price € - Not Paid</span>
+            }
+            else
+            {
+                <span class="badge bg-success">Price for whole cabin: @Model.Price € - Paid</span>
+            }
+            
+        </h4>
+
+        <div class="cruise-footer">
+            @if (Model.Status.ToString() != "Confirmed")
+            {
+                <a asp-controller="Reservation"
+                       asp-action="CheckIn"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-success btn-sm">
+                    Check In
+                </a>
+            }
+            <strong> Status:</strong> @Model.Status
+        </div>
+    </div>
+</div>
+

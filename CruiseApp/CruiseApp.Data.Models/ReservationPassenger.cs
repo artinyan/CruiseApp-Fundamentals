@@ -18,12 +18,11 @@ namespace CruiseApp.Data.Models
         [ForeignKey(nameof(CabinReservationId))]
         public CabinReservation CabinReservation { get; set; } = null!;
 
-        [Required]
         [Comment("Id of the Passenger")]
-        public int PassengerId { get; set; }
+        public int? PassengerId { get; set; }
 
         [ForeignKey(nameof(PassengerId))]
-        public Passenger Passenger { get; set; } = null!;
+        public Passenger? Passenger { get; set; } = null!;
 
         [Required]
         [Comment("First Name of the Passenger")]

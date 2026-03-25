@@ -26,6 +26,7 @@ namespace CruiseApp.Web.Controllers
             return View(model);
         }
 
+
         [HttpGet]
         public async Task<IActionResult> Create(int cabinId, int cruiseId)
         {
@@ -37,7 +38,6 @@ namespace CruiseApp.Web.Controllers
             var viewModel = new ReservationCreateViewModel
             {
                 CruiseId = serviceModel.CruiseId,
-
                 ShipName = serviceModel.ShipName,
                 FirstDay = serviceModel.FirstDay,
                 LastDay = serviceModel.LastDay,
@@ -52,21 +52,61 @@ namespace CruiseApp.Web.Controllers
                 Price = serviceModel.Price,
                 ImageName = serviceModel.ImageName,
                 Description = serviceModel.Description,
-                PassengersCount = serviceModel.PassengersCount,
-                Passengers = new List<PassengerFormViewModel>()
+
+                PassengersCount = 1,
+                Passengers = new List<PassengerFormViewModel>
+        {
+            new PassengerFormViewModel()
+        }
             };
 
             return View(viewModel);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Create(ReservationCreateViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            var serviceModel = new ReservationCreateServiceModel
+
+            if (userId == null)
+                return Unauthorized();
+
+            // ❗ validation
+            if (!ModelState.IsValid)
+            {
+                var serviceModel = await reservationService.GetCreateModelAsync(model.CabinId, model.CruiseId);
+
+                if (serviceModel == null)
+                    return NotFound();
+
+                var viewModel = new ReservationCreateViewModel
+                {
+                    CruiseId = serviceModel.CruiseId,
+                    ShipName = serviceModel.ShipName,
+                    FirstDay = serviceModel.FirstDay,
+                    LastDay = serviceModel.LastDay,
+                    StartPoint = serviceModel.StartPoint,
+                    Nights = serviceModel.Nights,
+                    DeckId = serviceModel.DeckId,
+                    DeckNumber = serviceModel.DeckNumber,
+                    CabinId = serviceModel.CabinId,
+                    CabinName = serviceModel.CabinName,
+                    CabinType = serviceModel.CabinType,
+                    Capacity = serviceModel.Capacity,
+                    Price = serviceModel.Price,
+                    ImageName = serviceModel.ImageName,
+                    Description = serviceModel.Description,
+
+                    // 🔥 запазваме user input
+                    PassengersCount = model.PassengersCount,
+                    Passengers = model.Passengers
+                };
+
+                return View(viewModel);
+            }
+
+            // ✅ mapping към ServiceModel
+            var serviceModelToCreate = new ReservationCreateServiceModel
             {
                 CruiseId = model.CruiseId,
                 CabinId = model.CabinId,
@@ -76,12 +116,109 @@ namespace CruiseApp.Web.Controllers
                     {
                         FirstName = p.FirstName,
                         LastName = p.LastName
-                    }).ToList()
+                    })
+                    .ToList()
             };
-            await reservationService.CreateReservationAsync(userId!, serviceModel);
+
+            await reservationService.CreateReservationAsync(userId, serviceModelToCreate);
+
             return RedirectToAction("MyReservations", "User");
         }
 
+
+
+        //[HttpGet]
+        //public async Task<IActionResult> Create(int cabinId, int cruiseId)
+        //{
+        //    var serviceModel = await reservationService.GetCreateModelAsync(cabinId, cruiseId);
+
+        //    if (serviceModel == null)
+        //        return NotFound();
+
+        //    var viewModel = new ReservationCreateViewModel
+        //    {
+        //        CruiseId = serviceModel.CruiseId,
+        //        ShipName = serviceModel.ShipName,
+        //        FirstDay = serviceModel.FirstDay,
+        //        LastDay = serviceModel.LastDay,
+        //        StartPoint = serviceModel.StartPoint,
+        //        Nights = serviceModel.Nights,
+        //        DeckId = serviceModel.DeckId,
+        //        DeckNumber = serviceModel.DeckNumber,
+        //        CabinId = serviceModel.CabinId,
+        //        CabinName = serviceModel.CabinName,
+        //        CabinType = serviceModel.CabinType,
+        //        Capacity = serviceModel.Capacity,
+        //        Price = serviceModel.Price,
+        //        ImageName = serviceModel.ImageName,
+        //        Description = serviceModel.Description,
+        //        PassengersCount = serviceModel.PassengersCount,
+        //        Passengers = new List<PassengerFormViewModel>()
+        //    };
+
+        //    return View(viewModel);
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> Create(ReservationCreateViewModel model)
+        //{
+        //    var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+        //    if (userId == null)
+        //        return Unauthorized();
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        // Вземаме отново данните от Service
+        //        var serviceModel = await reservationService.GetCreateModelAsync(model.CabinId, model.CruiseId);
+
+        //        // Mapping обратно към ViewModel
+        //        var viewModel = new ReservationCreateViewModel
+        //        {
+        //            CruiseId = serviceModel.CruiseId,
+        //            CabinId = serviceModel.CabinId,
+        //            CabinName = serviceModel.CabinName,
+        //            CabinType = serviceModel.CabinType,
+        //            Capacity = serviceModel.Capacity,
+        //            Price = serviceModel.Price,
+        //            ShipName = serviceModel.ShipName,
+        //            FirstDay = serviceModel.FirstDay,
+        //            LastDay = serviceModel.LastDay,
+        //            StartPoint = serviceModel.StartPoint,
+        //            Nights = serviceModel.Nights,
+        //            DeckId = serviceModel.DeckId,
+        //            DeckNumber = serviceModel.DeckNumber,
+        //            ImageName = serviceModel.ImageName,
+        //            Description = serviceModel.Description,
+
+        //            // ВАЖНО: запазваме user input-а
+        //            PassengersCount = model.PassengersCount,
+        //            Passengers = model.Passengers
+        //        };
+
+        //        return View(viewModel);
+        //    }
+
+        //    // Mapping към ServiceModel
+        //    var reservationServiceModel = new ReservationCreateServiceModel
+        //    {
+        //        CruiseId = model.CruiseId,
+        //        CabinId = model.CabinId,
+        //        CabinType = model.CabinType,
+        //        PassengersCount = model.PassengersCount,
+        //        Passengers = model.Passengers
+        //            .Select(p => new PassengerFormServiceModel
+        //            {
+        //                FirstName = p.FirstName,
+        //                LastName = p.LastName
+        //            })
+        //            .ToList()
+        //    };
+
+        //    await reservationService.CreateReservationAsync(userId, reservationServiceModel);
+
+        //    return RedirectToAction("MyReservations", "User");
+        //}
 
         [HttpGet]
         public async Task<IActionResult> CheckIn(int id)

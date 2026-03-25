@@ -19,17 +19,14 @@ namespace CruiseApp.Services.Core.Services
 
         public async Task CreateReservationAsync(string userId, ReservationCreateServiceModel model)
         {
-            // 1. Взимаш кабината
             var cabin = await db.Cabins.FindAsync(model.CabinId);
 
             if (cabin == null)
                 throw new Exception("Cabin not found");
 
-            // 2. Проверка за капацитет ❗
             if (model.PassengersCount > cabin.Capacity)
                 throw new Exception("Too many passengers");
 
-            // 3. Проверка дали е заета ❗
             bool isTaken = await db.CabinReservations
                 .AnyAsync(r => r.CabinId == model.CabinId
                             && r.CruiseId == model.CruiseId
@@ -38,37 +35,34 @@ namespace CruiseApp.Services.Core.Services
             if (isTaken)
                 throw new Exception("Cabin is already reserved");
 
-            // 4. Създаване на резервация
+            var price = await db.CruiseCabinPrices
+                .Where(p => p.CruiseId == model.CruiseId && p.CabinType == cabin.CabinType)
+                .Select(p => p.Price)
+                .FirstOrDefaultAsync();
+
             var reservation = new CabinReservation
             {
                 CruiseId = model.CruiseId,
                 CabinId = model.CabinId,
+                CabinType = cabin.CabinType,
                 UserId = userId,
                 PassengersCount = model.PassengersCount,
-                CabinType = model.CabinType,
-                Status = ReservationStatus.Pending
+                Status = ReservationStatus.Pending,
+
+                PricePaid = price,
+                IsPaid = true
             };
 
             await db.CabinReservations.AddAsync(reservation);
             await db.SaveChangesAsync();
 
-            // 5. Добавяне на пасажери
             int order = 1;
 
             foreach (var p in model.Passengers)
             {
-                var passenger = new Passenger
-                {
-                    // ще се попълни при Check-In
-                };
-
-                await db.Passengers.AddAsync(passenger);
-                await db.SaveChangesAsync();
-
                 var rp = new ReservationPassenger
                 {
                     CabinReservationId = reservation.Id,
-                    PassengerId = passenger.Id,
                     FirstName = p.FirstName,
                     LastName = p.LastName,
                     PassengerOrder = order++
@@ -79,7 +73,6 @@ namespace CruiseApp.Services.Core.Services
 
             await db.SaveChangesAsync();
         }
-
 
         public async Task<IEnumerable<MyReservationServiceModel>> GetUserReservationsAsync(string userId)
         {
@@ -92,7 +85,36 @@ namespace CruiseApp.Services.Core.Services
                     CabinName = r.Cabin.Deck.Name + r.Cabin.SequenceNumber.ToString("D3"),
                     Price = r.PricePaid,
                     Status = r.Status,
-                    IsPaid = r.IsPaid
+                    IsPaid = r.IsPaid,
+
+                    // Cruise info
+                    ShipName = r.Cruise.Route.Ship.Name,
+                    FirstDay = r.Cruise.FirstDay,
+                    LastDay = r.Cruise.LastDay,
+                    Nights = r.Cruise.CruiseLength,
+
+                    // StartPoint
+                    StartPoint = r.Cruise.Route.Days
+                        .Where(d => d.Date == r.Cruise.FirstDay)
+                        .Select(d => d.Point.Name)
+                        .FirstOrDefault(),
+
+                    // Deck + Cabin
+                    DeckNumber = r.Cabin.Deck.Number,
+                    CabinType = r.Cabin.CabinType,
+
+                    // Descriptions
+                    CruiseDiscription = r.Cruise.Description,
+                    CabinDiscription = CabinDescriptionProvider.Get(
+                        r.Cabin.Deck.Ship.Name,
+                        r.Cabin.CabinType),
+
+                    // Destinations
+                    Destinations = string.Join(" • ",
+                        r.Cruise.Route.Days
+                            .Where(d => d.Date >= r.Cruise.FirstDay && d.Date <= r.Cruise.LastDay)
+                            .OrderBy(d => d.Date)
+                            .Select(d => d.Point.Name))
                 })
                 .ToListAsync();
         }
@@ -112,7 +134,6 @@ namespace CruiseApp.Services.Core.Services
                     Passengers = r.ReservationPassengers
                         .Select(p => new PassengerDetailsServiceModel
                         {
-                            PassengerId = p.PassengerId,
                             FirstName = p.FirstName,
                             LastName = p.LastName,
                             IsCheckedIn = p.Passenger.PassportNumber != null
@@ -170,7 +191,6 @@ namespace CruiseApp.Services.Core.Services
             return new ReservationCreateServiceModel
             {
                 CruiseId = cruiseId,
-
                 ShipName = cabin.Deck.Ship.Name,
                 FirstDay = cruise.FirstDay,
                 LastDay = cruise.LastDay,
