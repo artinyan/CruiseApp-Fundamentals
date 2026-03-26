@@ -21,6 +21,18 @@ namespace CruiseApp.Services.Core.Services
         {
             var cabin = await db.Cabins.FindAsync(model.CabinId);
 
+            // ❗ 1. Count check
+            if (model.Passengers == null || model.Passengers.Count != model.PassengersCount)
+                throw new Exception("Invalid passengers count");
+
+            // ❗ 2. Empty names
+            if (model.Passengers.Any(p =>
+                string.IsNullOrWhiteSpace(p.FirstName) ||
+                string.IsNullOrWhiteSpace(p.LastName)))
+            {
+                throw new Exception("Passenger names are required");
+            }
+
             if (cabin == null)
                 throw new Exception("Cabin not found");
 
@@ -48,10 +60,11 @@ namespace CruiseApp.Services.Core.Services
                 UserId = userId,
                 PassengersCount = model.PassengersCount,
                 Status = ReservationStatus.Pending,
-
                 PricePaid = price,
                 IsPaid = true
             };
+
+            using var transaction = await db.Database.BeginTransactionAsync();
 
             await db.CabinReservations.AddAsync(reservation);
             await db.SaveChangesAsync();
@@ -72,6 +85,7 @@ namespace CruiseApp.Services.Core.Services
             }
 
             await db.SaveChangesAsync();
+            await transaction.CommitAsync();
         }
 
         public async Task<IEnumerable<MyReservationServiceModel>> GetUserReservationsAsync(string userId)

@@ -71,8 +71,6 @@ public class UserController : Controller
             Price = r.Price,
             Status = r.Status,
             IsPaid = r.IsPaid,
-
-
             ShipName = r.ShipName,
             StartPoint = r.StartPoint,
             FirstDay = r.FirstDay,

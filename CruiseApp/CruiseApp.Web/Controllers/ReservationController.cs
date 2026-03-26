@@ -71,6 +71,19 @@ namespace CruiseApp.Web.Controllers
             if (userId == null)
                 return Unauthorized();
 
+
+            // ❗ проверка дали броят съвпада
+            if (model.Passengers == null || model.Passengers.Count != model.PassengersCount)
+            {
+                ModelState.AddModelError("", "Passengers count does not match the provided data.");
+            }
+
+            // ❗ празни имена (extra защита)
+            if (model.Passengers.Any(p => string.IsNullOrWhiteSpace(p.FirstName) ||
+                                          string.IsNullOrWhiteSpace(p.LastName)))
+            {
+                ModelState.AddModelError("", "All passengers must have first and last name.");
+            }
             // ❗ validation
             if (!ModelState.IsValid)
             {
@@ -97,7 +110,7 @@ namespace CruiseApp.Web.Controllers
                     ImageName = serviceModel.ImageName,
                     Description = serviceModel.Description,
 
-                    // 🔥 запазваме user input
+                    // запазваме user input
                     PassengersCount = model.PassengersCount,
                     Passengers = model.Passengers
                 };

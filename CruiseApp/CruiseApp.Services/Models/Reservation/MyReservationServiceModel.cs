@@ -10,8 +10,6 @@ namespace CruiseApp.Services.Core.Models.Reservation
         public decimal Price { get; set; }
         public ReservationStatus Status { get; set; }
         public bool IsPaid { get; set; }
-
-
         public string ShipName { get; set; } = null!;
         public string StartPoint { get; set; } = null!;
         public DateOnly FirstDay { get; set; }

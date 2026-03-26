@@ -4,7 +4,7 @@
     ViewData["Title"] = "Reserve Cabin";
 }
 
-@* <div class="container mt-4"> *@
+<div asp-validation-summary="All" class="text-danger"></div>
 
 <div class="page-container mb-5">
     <a asp-controller="Cabin"
@@ -34,29 +34,31 @@
         </div>
 
         <div class="cabin-info">
-                <div class="nights">
-                    Deck @Model.DeckNumber, Cabin @Model.CabinName
-                </div>
+            <div class="nights">
+                Deck @Model.DeckNumber, Cabin @Model.CabinName
+            </div>
 
-                <div class="cabin-discription">
-                    <p class="text-muted">
-                        Type: @Model.CabinType
-                    </p>
+            <div class="cabin-discription">
+                <p class="text-muted">
+                    Type: @Model.CabinType
+                </p>
 
-                    <p>
-                        Capacity: @Model.Capacity passengers
-                    </p>
+                <p>
+                    Capacity: @Model.Capacity passengers
+                </p>
 
-                    <p>
-                        @Model.Description
-                    </p>
+                <p>
+                    @Model.Description
+                </p>
 
-                    <h4 class="mt-3">
-                        Price for whole cabin: @Model.Price €
-                    </h4>
-                </div>
+                <h4 class="mt-3">
+                    Price for whole cabin: @Model.Price €
+                </h4>
+            </div>
         </div>
     </div>
+
+
 
     <!-- 🔹 FORM -->
     <form asp-action="Create" method="post">
@@ -85,12 +87,14 @@
     </form>
 </div>
 
+
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
     <script>
         const select = document.getElementById("passengerCount");
-        const container = document.getElementById("passengersContainer");
 
         function generatePassengers(count) {
+            const container = document.getElementById("passengersContainer");
             container.innerHTML = "";
 
             for (let i = 0; i < count; i++) {
@@ -101,17 +105,35 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label>First Name</label>
-                                <input name="Passengers[${i}].FirstName" class="form-control" required />
+                                <input name="Passengers[${i}].FirstName"
+                                        class="form-control"
+                                        required
+                                        minlength="2"
+                                        pattern="^[A-Za-z]{2,}$"
+                                        title="At least 2 letters, no spaces" />
+                                <span class="text-danger"
+                                      data-valmsg-for="Passengers[${i}].FirstName"
+                                      data-valmsg-replace="true"></span>
                             </div>
 
                             <div class="col-md-6">
                                 <label>Last Name</label>
-                                <input name="Passengers[${i}].LastName" class="form-control" required />
+                                <input name="Passengers[${i}].LastName"
+                                       class="form-control"
+                                       required
+                                       minlength="2"
+                                       pattern="^[A-Za-z]{2,}$"
+                                       title="At least 2 letters, no spaces" />
+                                <span class="text-danger"
+                                      data-valmsg-for="Passengers[${i}].LastName"
+                                      data-valmsg-replace="true"></span>
                             </div>
                         </div>
                     </div>
                 `;
             }
+
+            $.validator.unobtrusive.parse("#passengersContainer");
         }
 
         // initial load
