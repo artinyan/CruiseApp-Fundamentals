@@ -10,5 +10,6 @@
         public string PassportNumber { get; set; } = null!;
         public DateOnly PassportExpirationDate { get; set; }
         public string PassportIssuingCountry { get; set; } = null!;
+        public int PassengerOrder { get; set; }
     }
 }

@@ -8,5 +8,8 @@
         public string LastName { get; set; } = null!;
 
         public bool IsCheckedIn { get; set; }
+
+        public int PassengerOrder { get; set; }
+
     }
 }

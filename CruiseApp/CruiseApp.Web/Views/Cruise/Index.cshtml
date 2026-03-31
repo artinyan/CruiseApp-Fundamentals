@@ -24,10 +24,7 @@
     <form method="get" asp-action="Index">
         <div class="row g-3 align-items-end">
             <div class="col-12 col-md-6 col-lg-3">
-                @* <label asp-for="ShipId" class="form-label">Ship</label>
-                <select asp-for="ShipId" class="form-select" asp-items="Model.Ships">
-                    <option value="">-- All Ships --</option>
-                </select> *@
+
 
                 <select asp-for="ShipId" class="form-select"
                         asp-items="@(Model.Ships.Select(s => new SelectListItem
@@ -40,10 +37,7 @@
             </div>
 
             <div class="col-12 col-md-6 col-lg-3">
-                @* <label asp-for="StartPointId" class="form-label">Start Point</label>
-                <select asp-for="StartPointId" class="form-select" asp-items="Model.StartPoints">
-                    <option value="">-- All Ports --</option>
-                </select> *@
+
 
                 <select asp-for="StartPointId" class="form-select"
                         asp-items="@(Model.StartPoints.Select(s => new SelectListItem

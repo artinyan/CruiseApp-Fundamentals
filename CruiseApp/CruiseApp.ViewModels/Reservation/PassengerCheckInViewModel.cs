@@ -29,5 +29,11 @@ namespace CruiseApp.ViewModels.Reservation
 
         [Required]
         public string PassportIssuingCountry { get; set; } = null!;
+
+        [Required]
+        public int ReservationId { get; set; }
+
+        [Required]
+        public int PassengerOrder { get; set; }
     }
 }

@@ -1,0 +1,94 @@
+﻿@model CruiseApp.ViewModels.Reservation.CheckInViewModel
+
+@{
+    ViewData["Title"] = "Check-In";
+}
+
+<h2 class="mb-4">Passenger Check-In</h2>
+
+<form asp-action="CheckIn" method="post">
+
+    <input type="hidden" asp-for="ReservationId" />
+
+    @for (int i = 0; i < Model.Passengers.Count; i++)
+    {
+        <div class="card p-3 mb-3">
+            <h5>
+                Passenger @(i + 1):
+                @Model.Passengers[i].FirstName
+                @Model.Passengers[i].LastName
+            </h5>
+
+            <!-- Hidden fields -->
+            <input type="hidden" asp-for="Passengers[@i].PassengerId" />
+            <input type="hidden" asp-for="Passengers[@i].FirstName" />
+            <input type="hidden" asp-for="Passengers[@i].LastName" />
+            <input type="hidden" asp-for="Passengers[@i].ReservationId" />
+            <input type="hidden" asp-for="Passengers[@i].PassengerOrder" />
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <label>Gender</label>
+                    <select asp-for="Passengers[@i].Gender" class="form-select">
+                        <option value="">Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                    <span asp-validation-for="Passengers[@i].Gender" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label>Date of Birth</label>
+                    <input asp-for="Passengers[@i].DateOfBirth"
+                           type="date"
+                           class="form-control"
+                           value="@(Model.Passengers[i].DateOfBirth == default ? "" : Model.Passengers[i].DateOfBirth.ToString("yyyy-MM-dd"))" />
+                        <span asp-validation-for="Passengers[@i].DateOfBirth" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>Nationality</label>
+                        <input asp-for="Passengers[@i].Nationality" class="form-control" />
+                        <span asp-validation-for="Passengers[@i].Nationality" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mt-3">
+                        <label>Passport Number</label>
+                        <input asp-for="Passengers[@i].PassportNumber" class="form-control" />
+                        <span asp-validation-for="Passengers[@i].PassportNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mt-3">
+                        <label>Passport Expiration</label>
+                        <input asp-for="Passengers[@i].PassportExpirationDate"
+                           type="date"
+                           class="form-control"
+                           value="@(Model.Passengers[i].PassportExpirationDate == default ? "" : Model.Passengers[i].PassportExpirationDate.ToString("yyyy-MM-dd"))" />
+                        <span asp-validation-for="Passengers[@i].PassportExpirationDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mt-3">
+                        <label>Issuing Country</label>
+                        <input asp-for="Passengers[@i].PassportIssuingCountry" class="form-control" />
+                        <span asp-validation-for="Passengers[@i].PassportIssuingCountry" class="text-danger"></span>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+        @if (Model.Status == CruiseApp.Data.Models.Enums.ReservationStatus.Confirmed)
+        {
+            <button class="btn btn-success" disabled>Checked</button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-primary">Complete Check In</button>
+        }
+
+    </form>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }

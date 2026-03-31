@@ -145,27 +145,117 @@ namespace CruiseApp.Services.Core.Services
                     Price = r.PricePaid,
                     Status = r.Status,
                     IsPaid = r.IsPaid,
+
                     Passengers = r.ReservationPassengers
                         .Select(p => new PassengerDetailsServiceModel
                         {
+                            PassengerId = p.PassengerId,
+                            PassengerOrder = p.PassengerOrder,
+
                             FirstName = p.FirstName,
                             LastName = p.LastName,
-                            IsCheckedIn = p.Passenger.PassportNumber != null
-                        }).ToList()
+
+                            IsCheckedIn = p.Passenger != null
+                        })
+                        .ToList()
+
+                    //Passengers = r.ReservationPassengers
+                    //    .Select(p => new PassengerDetailsServiceModel
+                    //    {
+                    //        FirstName = p.FirstName,
+                    //        LastName = p.LastName,
+                    //        IsCheckedIn = p.Passenger.PassportNumber != null
+                    //    }).ToList()
                 })
                 .FirstOrDefaultAsync();
         }
 
-        public Task CheckInAsync(int reservationId, List<PassengerCheckInServiceModel> passengers)
+
+        public async Task CheckInAsync(int reservationId, List<PassengerCheckInServiceModel> passengers)
         {
-            throw new NotImplementedException();
+            var reservation = await db.CabinReservations
+                .FirstOrDefaultAsync(r => r.Id == reservationId);
+
+            if (reservation == null)
+                throw new Exception("Reservation not found");
+
+            // ❗ НЕ позволяваме повторен check-in
+            if (reservation.Status == ReservationStatus.Confirmed)
+                throw new Exception("Already checked in");
+
+            var reservationPassengers = await db.ReservationPassengers
+                .Where(rp => rp.CabinReservationId == reservationId)
+                .ToListAsync();
+
+            foreach (var p in passengers)
+            {
+                var rp = reservationPassengers
+                    .FirstOrDefault(x => x.PassengerOrder == p.PassengerOrder);
+
+                if (rp == null)
+                    continue;
+
+                // ❗ създаваме Passenger (check-in данни)
+                var passenger = new Passenger
+                {
+                    Gender = p.Gender,
+                    DateOfBirth = p.DateOfBirth,
+                    Nationality = p.Nationality,
+                    PassportNumber = p.PassportNumber,
+                    PassportExpirationDate = p.PassportExpirationDate,
+                    PassportIssuingCountry = p.PassportIssuingCountry
+                };
+
+                await db.Passengers.AddAsync(passenger);
+                await db.SaveChangesAsync();
+
+                // ✅ връзваме го към ReservationPassenger
+                rp.PassengerId = passenger.Id;
+            }
+
+            // ✅ сменяме статус
+            reservation.Status = ReservationStatus.Confirmed;
+
+            await db.SaveChangesAsync();
         }
+
+        //public async Task CheckInAsync(int reservationId, List<PassengerCheckInServiceModel> passengers)
+        //{
+        //    var reservationPassengers = await db.ReservationPassengers
+        //        .Where(rp => rp.CabinReservationId == reservationId)
+        //        .ToListAsync();
+
+        //    foreach (var p in passengers)
+        //    {
+        //        var rp = reservationPassengers
+        //            .FirstOrDefault(x => x.PassengerOrder == p.PassengerOrder);
+
+        //        if (rp == null)
+        //            continue;
+
+        //        var passenger = new Passenger
+        //        {
+        //            Gender = p.Gender,
+        //            DateOfBirth = p.DateOfBirth,
+        //            Nationality = p.Nationality,
+        //            PassportNumber = p.PassportNumber,
+        //            PassportExpirationDate = p.PassportExpirationDate,
+        //            PassportIssuingCountry = p.PassportIssuingCountry
+        //        };
+
+        //        await db.Passengers.AddAsync(passenger);
+        //        await db.SaveChangesAsync();
+
+        //        rp.PassengerId = passenger.Id;
+        //    }
+
+        //    await db.SaveChangesAsync();
+        //}
+
         public Task<bool> IsCabinAvailableAsync(int cruiseId, int cabinId)
         {
             throw new NotImplementedException();
         }
-
-
 
         public async Task<ReservationCreateServiceModel> GetCreateModelAsync(int cabinId, int cruiseId)
         {
