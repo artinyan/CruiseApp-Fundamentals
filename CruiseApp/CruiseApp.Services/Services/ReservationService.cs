@@ -21,11 +21,9 @@ namespace CruiseApp.Services.Core.Services
         {
             var cabin = await db.Cabins.FindAsync(model.CabinId);
 
-            // ❗ 1. Count check
             if (model.Passengers == null || model.Passengers.Count != model.PassengersCount)
                 throw new Exception("Invalid passengers count");
 
-            // ❗ 2. Empty names
             if (model.Passengers.Any(p =>
                 string.IsNullOrWhiteSpace(p.FirstName) ||
                 string.IsNullOrWhiteSpace(p.LastName)))
@@ -101,29 +99,24 @@ namespace CruiseApp.Services.Core.Services
                     Status = r.Status,
                     IsPaid = r.IsPaid,
 
-                    // Cruise info
                     ShipName = r.Cruise.Route.Ship.Name,
                     FirstDay = r.Cruise.FirstDay,
                     LastDay = r.Cruise.LastDay,
                     Nights = r.Cruise.CruiseLength,
 
-                    // StartPoint
                     StartPoint = r.Cruise.Route.Days
                         .Where(d => d.Date == r.Cruise.FirstDay)
                         .Select(d => d.Point.Name)
                         .FirstOrDefault(),
 
-                    // Deck + Cabin
                     DeckNumber = r.Cabin.Deck.Number,
                     CabinType = r.Cabin.CabinType,
 
-                    // Descriptions
                     CruiseDiscription = r.Cruise.Description,
                     CabinDiscription = CabinDescriptionProvider.Get(
                         r.Cabin.Deck.Ship.Name,
                         r.Cabin.CabinType),
 
-                    // Destinations
                     Destinations = string.Join(" • ",
                         r.Cruise.Route.Days
                             .Where(d => d.Date >= r.Cruise.FirstDay && d.Date <= r.Cruise.LastDay)
@@ -159,13 +152,6 @@ namespace CruiseApp.Services.Core.Services
                         })
                         .ToList()
 
-                    //Passengers = r.ReservationPassengers
-                    //    .Select(p => new PassengerDetailsServiceModel
-                    //    {
-                    //        FirstName = p.FirstName,
-                    //        LastName = p.LastName,
-                    //        IsCheckedIn = p.Passenger.PassportNumber != null
-                    //    }).ToList()
                 })
                 .FirstOrDefaultAsync();
         }
@@ -173,19 +159,62 @@ namespace CruiseApp.Services.Core.Services
 
         public async Task CheckInAsync(int reservationId, List<PassengerCheckInServiceModel> passengers)
         {
+
+
+            using var transaction = await db.Database.BeginTransactionAsync();
+
             var reservation = await db.CabinReservations
                 .FirstOrDefaultAsync(r => r.Id == reservationId);
 
             if (reservation == null)
                 throw new Exception("Reservation not found");
 
-            // ❗ НЕ позволяваме повторен check-in
             if (reservation.Status == ReservationStatus.Confirmed)
                 throw new Exception("Already checked in");
 
+            var cruise = await db.Cruises
+               .Where(c => c.Id == reservation.CruiseId)
+               .Select(c => new
+               {
+                   c.FirstDay
+               })
+               .FirstOrDefaultAsync();
+
+            if (cruise == null)
+            {
+                throw new Exception("Cruise not found");
+            }
+
+            if (IsCheckInClosed(cruise.FirstDay))
+                throw new Exception("Check-in is closed");
+
+
             var reservationPassengers = await db.ReservationPassengers
-                .Where(rp => rp.CabinReservationId == reservationId)
+                    .Where(rp => rp.CabinReservationId == reservationId)
+                    .ToListAsync();
+
+            foreach (var p in passengers)
+            {
+                if (string.IsNullOrWhiteSpace(p.PassportNumber))
+                    throw new Exception("Invalid passport");
+
+                if (p.PassportExpirationDate <= DateOnly.FromDateTime(DateTime.Today))
+                    throw new Exception("Passport expired");
+
+                if (p.DateOfBirth > DateOnly.FromDateTime(DateTime.Today))
+                    throw new Exception("Invalid birth date");
+            }
+
+            var passengerIds = reservationPassengers
+                .Where(rp => rp.PassengerId != null)
+                .Select(rp => rp.PassengerId)
+                .ToList();
+
+            var existingPassengers = await db.Passengers
+                .Where(x => passengerIds.Contains(x.Id))
                 .ToListAsync();
+
+            db.Passengers.RemoveRange(existingPassengers);
 
             foreach (var p in passengers)
             {
@@ -195,7 +224,6 @@ namespace CruiseApp.Services.Core.Services
                 if (rp == null)
                     continue;
 
-                // ❗ създаваме Passenger (check-in данни)
                 var passenger = new Passenger
                 {
                     Gender = p.Gender,
@@ -207,50 +235,23 @@ namespace CruiseApp.Services.Core.Services
                 };
 
                 await db.Passengers.AddAsync(passenger);
-                await db.SaveChangesAsync();
-
-                // ✅ връзваме го към ReservationPassenger
-                rp.PassengerId = passenger.Id;
+                rp.Passenger = passenger;
             }
 
-            // ✅ сменяме статус
             reservation.Status = ReservationStatus.Confirmed;
 
             await db.SaveChangesAsync();
+            await transaction.CommitAsync();
         }
 
-        //public async Task CheckInAsync(int reservationId, List<PassengerCheckInServiceModel> passengers)
-        //{
-        //    var reservationPassengers = await db.ReservationPassengers
-        //        .Where(rp => rp.CabinReservationId == reservationId)
-        //        .ToListAsync();
 
-        //    foreach (var p in passengers)
-        //    {
-        //        var rp = reservationPassengers
-        //            .FirstOrDefault(x => x.PassengerOrder == p.PassengerOrder);
+        private bool IsCheckInClosed(DateOnly cruiseStart)
+        {
+            var cutoff = cruiseStart.AddDays(-2);
+            var today = DateOnly.FromDateTime(DateTime.Today);
 
-        //        if (rp == null)
-        //            continue;
-
-        //        var passenger = new Passenger
-        //        {
-        //            Gender = p.Gender,
-        //            DateOfBirth = p.DateOfBirth,
-        //            Nationality = p.Nationality,
-        //            PassportNumber = p.PassportNumber,
-        //            PassportExpirationDate = p.PassportExpirationDate,
-        //            PassportIssuingCountry = p.PassportIssuingCountry
-        //        };
-
-        //        await db.Passengers.AddAsync(passenger);
-        //        await db.SaveChangesAsync();
-
-        //        rp.PassengerId = passenger.Id;
-        //    }
-
-        //    await db.SaveChangesAsync();
-        //}
+            return today > cutoff;
+        }
 
         public Task<bool> IsCabinAvailableAsync(int cruiseId, int cabinId)
         {

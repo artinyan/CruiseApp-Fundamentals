@@ -22,6 +22,7 @@ namespace CruiseApp.ViewModels.Reservation
         public string Nationality { get; set; } = null!;
 
         [Required]
+        [MinLength(6)]
         public string PassportNumber { get; set; } = null!;
 
         [Required]
@@ -37,3 +38,5 @@ namespace CruiseApp.ViewModels.Reservation
         public int PassengerOrder { get; set; }
     }
 }
+
+

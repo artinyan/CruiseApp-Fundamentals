@@ -6,6 +6,8 @@
 
 <h2 class="mb-4">Passenger Check-In</h2>
 
+<div asp-validation-summary="All" class="text-danger"></div>
+
 <form asp-action="CheckIn" method="post">
 
     <input type="hidden" asp-for="ReservationId" />
@@ -43,6 +45,7 @@
                     <input asp-for="Passengers[@i].DateOfBirth"
                            type="date"
                            class="form-control"
+                           max="@DateTime.Today.ToString("yyyy-MM-dd")"
                            value="@(Model.Passengers[i].DateOfBirth == default ? "" : Model.Passengers[i].DateOfBirth.ToString("yyyy-MM-dd"))" />
                         <span asp-validation-for="Passengers[@i].DateOfBirth" class="text-danger"></span>
                     </div>
@@ -64,6 +67,7 @@
                         <input asp-for="Passengers[@i].PassportExpirationDate"
                            type="date"
                            class="form-control"
+                           min="@DateTime.Today.ToString("yyyy-MM-dd")"
                            value="@(Model.Passengers[i].PassportExpirationDate == default ? "" : Model.Passengers[i].PassportExpirationDate.ToString("yyyy-MM-dd"))" />
                         <span asp-validation-for="Passengers[@i].PassportExpirationDate" class="text-danger"></span>
                     </div>

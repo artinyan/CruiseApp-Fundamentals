@@ -5,6 +5,7 @@ namespace CruiseApp.ViewModels.Reservation
     public class MyReservationViewModel
     {
         public int Id { get; set; }
+        public string ReservationNumber => $"#{Id:D8}";
         public int CruiseId { get; set; }
         public string CabinName { get; set; } = null!;
         public decimal Price { get; set; }
@@ -23,5 +24,7 @@ namespace CruiseApp.ViewModels.Reservation
         public string? CabinDiscription { get; set; }
         public string Destinations { get; set; } = string.Empty;
         public string PointImage => $"{StartPoint.ToLower()}.jpg";
+
+        public bool IsCheckInClosed => DateOnly.FromDateTime(DateTime.Today) > FirstDay.AddDays(-2);
     }
 }

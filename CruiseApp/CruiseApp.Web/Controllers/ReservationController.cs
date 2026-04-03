@@ -161,13 +161,12 @@ namespace CruiseApp.Web.Controllers
                 Passengers = reservation.Passengers.Select((p, index) => new PassengerCheckInViewModel
                 {
                     ReservationId = reservation.Id,
-                    PassengerOrder = index + 1,   // 🔥 важно
+                    PassengerOrder = index + 1,
                     PassengerId = 0,
 
                     FirstName = p.FirstName,
                     LastName = p.LastName,
 
-                    // празни за попълване
                     Gender = string.Empty,
                     Nationality = string.Empty,
                     PassportNumber = string.Empty,
@@ -175,12 +174,45 @@ namespace CruiseApp.Web.Controllers
                 }).ToList()
             };
 
+            if (model == null)
+                return NotFound();
+
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> CheckIn(CheckInViewModel model)
         {
+
+            if (model.Passengers == null || !model.Passengers.Any())
+            {
+                ModelState.AddModelError("", "No passengers provided.");
+            }
+
+            foreach (var p in model.Passengers)
+            {
+                if (p.DateOfBirth > DateOnly.FromDateTime(DateTime.Today))
+                {
+                    ModelState.AddModelError("", "Date of birth cannot be in the future.");
+                }
+
+                var age = DateTime.Today.Year - p.DateOfBirth.Year;
+                if (age < 0 || age > 120)
+                {
+                    ModelState.AddModelError("", "Invalid age.");
+                }
+
+                if (p.PassportExpirationDate <= DateOnly.FromDateTime(DateTime.Today))
+                {
+                    ModelState.AddModelError("", "Passport must be valid.");
+                }
+
+                if (string.IsNullOrWhiteSpace(p.PassportNumber))
+                {
+                    ModelState.AddModelError("", "Passport number is required.");
+                }
+            }
+
             if (!ModelState.IsValid)
                 return View(model);
 
