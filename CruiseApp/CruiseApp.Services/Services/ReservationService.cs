@@ -3,6 +3,7 @@ using CruiseApp.Data;
 using CruiseApp.Data.Models;
 using CruiseApp.Data.Models.Enums;
 using CruiseApp.Services.Core.Interfaces;
+using CruiseApp.Services.Core.Models.Admin;
 using CruiseApp.Services.Core.Models.Reservation;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,7 +41,7 @@ namespace CruiseApp.Services.Core.Services
             bool isTaken = await db.CabinReservations
                 .AnyAsync(r => r.CabinId == model.CabinId
                             && r.CruiseId == model.CruiseId
-                            && r.Status != ReservationStatus.Cancelled);
+                            && r.Status != ReservationStatus.Canceled);
 
             if (isTaken)
                 throw new Exception("Cabin is already reserved");
@@ -271,7 +272,7 @@ namespace CruiseApp.Services.Core.Services
             bool isTaken = await db.CabinReservations
                 .AnyAsync(r => r.CabinId == cabinId
                             && r.CruiseId == cruiseId
-                            && r.Status != ReservationStatus.Cancelled);
+                            && r.Status != ReservationStatus.Canceled);
 
             if (isTaken)
                 throw new Exception("Cabin is already reserved");
@@ -314,5 +315,77 @@ namespace CruiseApp.Services.Core.Services
                 Passengers = new List<PassengerFormServiceModel>()
             };
         }
+
+        ///////////////////////
+        // Admin
+        ///////////////////////
+        public async Task<AdminReservationEditServiceModel?> GetByReferenceAsync(string reference)
+        {
+            if (string.IsNullOrWhiteSpace(reference))
+                return null;
+
+            var clean = reference.Replace("#", "");
+
+            if (!int.TryParse(clean, out int id))
+                return null;
+
+
+            return await db.CabinReservations
+    .Include(r => r.ReservationPassengers)
+        .ThenInclude(rp => rp.Passenger)
+    .Where(r => r.Id == id)
+    .Select(r => new AdminReservationEditServiceModel
+    {
+        Id = r.Id,
+        ReferenceNumber = $"#{r.Id.ToString().PadLeft(8, '0')}",
+        Status = r.Status,
+        IsPaid = r.IsPaid,
+        Price = r.PricePaid,
+        FirstDay = r.Cruise.FirstDay,
+        LastDay = r.Cruise.LastDay,
+
+        ShipName = r.Cruise.Route.Ship.Name,
+        CabinName = r.Cabin.Deck.Name + r.Cabin.SequenceNumber.ToString("D3"),
+
+        Passengers = r.ReservationPassengers
+            .OrderBy(p => p.PassengerOrder)
+            .Select(p => new AdminPassengerServiceModel
+            {
+                FirstName = p.FirstName,
+                LastName = p.LastName,
+                PassengerOrder = p.PassengerOrder,
+
+                PassengerId = p.PassengerId,
+                IsCheckedIn = p.PassengerId != null,
+
+                Gender = p.Passenger != null ? p.Passenger.Gender : "",
+                DateOfBirth = p.Passenger != null ? p.Passenger.DateOfBirth : null,
+                Nationality = p.Passenger != null ? p.Passenger.Nationality : "",
+                PassportNumber = p.Passenger != null ? p.Passenger.PassportNumber : "",
+                PassportExpirationDate = p.Passenger != null ? p.Passenger.PassportExpirationDate : null,
+                PassportIssuingCountry = p.Passenger != null ? p.Passenger.PassportIssuingCountry : ""
+            }).ToList()
+    })
+    .FirstOrDefaultAsync();
+        }
+
+        public async Task ChangeStatusAsync(int reservationId, ReservationStatus status)
+        {
+            if (status == ReservationStatus.Confirmed)
+                throw new Exception("Admin cannot set Confirmed manually");
+
+            if (status == ReservationStatus.Pending)
+                throw new Exception("Cannot revert to Pending");
+
+            var reservation = await db.CabinReservations.FindAsync(reservationId);
+
+            if (reservation == null)
+                throw new Exception("Reservation not found");
+
+            reservation.Status = status;
+
+            await db.SaveChangesAsync();
+        }
+
     }
 }

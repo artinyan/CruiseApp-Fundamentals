@@ -172,7 +172,8 @@ namespace CruiseApp.Services.Core.Services
 
                             IsAvailable = !db.CabinReservations
                                 .Any(r => r.CruiseId == cruiseId
-                                       && r.CabinId == cl.CabinId)
+                                       && r.CabinId == cl.CabinId
+                                       && r.Status != ReservationStatus.Canceled)
                         })
                         .ToList()
                 })

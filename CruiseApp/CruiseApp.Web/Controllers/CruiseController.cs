@@ -1,10 +1,6 @@
-﻿using CruiseApp.Data.Models;
-using CruiseApp.Data.Models.Enums;
-using CruiseApp.Services.Core.Interfaces;
+﻿using CruiseApp.Services.Core.Interfaces;
 using CruiseApp.ViewModels;
 using CruiseApp.Web.Common;
-using CruiseApp.ViewModels.Cruise;
-using CruiseApp.ViewModels.Deck;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -38,7 +34,6 @@ namespace CruiseApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] CruiseSearchViewModel model)
         {
-            // Ships dropdown
             model.Ships = (await shipService.GetAllAsync())
                 .Select(s => new SelectOptionViewModel
                 {
@@ -47,7 +42,6 @@ namespace CruiseApp.Web.Controllers
                 })
                 .ToList();
 
-            // Start points dropdown (without "At Sea")
             model.StartPoints = (await pointService.GetAllAsync())
                 .Where(p => !p.IsSea)
                 .Select(p => new SelectOptionViewModel
@@ -57,7 +51,6 @@ namespace CruiseApp.Web.Controllers
                 })
                 .ToList();
 
-            // Search cruises
             var cruises = await cruiseService.SearchCruisesAsync(
                 model.ShipId,
                 model.StartDate,
@@ -89,7 +82,7 @@ namespace CruiseApp.Web.Controllers
         }
 
         //// ============================
-        //// GET: /Cruise
+        //// Cruise
         //// ============================
 
         [HttpGet]

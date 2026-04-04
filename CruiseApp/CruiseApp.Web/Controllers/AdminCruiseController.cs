@@ -1,5 +1,4 @@
-﻿using CruiseApp.Data.Models;
-using CruiseApp.Data.Models.Enums;
+﻿using CruiseApp.Data.Models.Enums;
 using CruiseApp.Web.Common;
 using CruiseApp.ViewModels.Admin;
 using Microsoft.AspNetCore.Authorization;
@@ -44,7 +43,7 @@ namespace CruiseApp.Web.Controllers
                 CruiseLength = c.CruiseLength
             }).ToList();
 
-            return View(viewModel); // View получава точно това, което очаква
+            return View(viewModel);
         }
 
         // ============================
@@ -116,7 +115,6 @@ namespace CruiseApp.Web.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                // ❗ Domain validation → UI validation
                 ModelState.AddModelError(string.Empty, ex.Message);
 
                 await LoadShips();
@@ -131,7 +129,7 @@ namespace CruiseApp.Web.Controllers
         // ============================
 
 
-        // GET
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var serviceModel = await cruiseService.GetForEditAsync(id);
@@ -158,7 +156,6 @@ namespace CruiseApp.Web.Controllers
         }
 
 
-        // POST
         [HttpPost]
         public async Task<IActionResult> Edit(int id, AdminCruiseEditViewModel model)
         {
@@ -228,10 +225,9 @@ namespace CruiseApp.Web.Controllers
                 FirstDay = serviceModel.FirstDay,
                 LastDay = serviceModel.LastDay,
                 CruiseLength = serviceModel.CruiseLength
-                //CruiseLength = serviceModel.LastDay.DayNumber - serviceModel.FirstDay.DayNumber
             };
 
-            return View(viewModel); // ✅ View получава точно това, което очаква
+            return View(viewModel);
         }
 
         [HttpPost, ActionName("Delete")]

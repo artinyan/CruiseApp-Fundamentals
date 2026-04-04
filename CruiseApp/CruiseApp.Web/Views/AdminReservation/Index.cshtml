@@ -1,0 +1,77 @@
+﻿@using CruiseApp.Data.Models.Enums
+@model CruiseApp.ViewModels.Admin.AdminReservationEditViewModel
+
+@{
+    ViewData["Title"] = "Admin Reservation";
+}
+
+<h2>Admin Reservation Search</h2>
+
+<form asp-action="Index" method="post" class="mb-4">
+    <div class="input-group">
+        <input asp-for="ReferenceNumber" class="form-control" placeholder="Enter reference number (e.g. #00012345)" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+    <span class="text-danger">@Model.ErrorMessage</span>
+</form>
+
+@if (Model.Reservation != null)
+{
+    <div class="card mb-4 p-3">
+        <h4>Reservation Details</h4>
+        <p><strong>Reference:</strong> @Model.ReferenceNumber</p>
+        <p><strong>Cabin:</strong> @Model.Reservation.CabinName</p>
+        <p><strong>Ship:</strong> @Model.Reservation.ShipName</p>
+        <p><strong>Status:</strong> @Model.Reservation.Status</p>
+        <p><strong>Paid:</strong> @(Model.Reservation.IsPaid ? "Yes" : "No")</p>
+        <p><strong>From:</strong> @Model.Reservation.FirstDay</p>
+        <p><strong>To:</strong> @Model.Reservation.LastDay</p>
+        @* <p><strong>From:</strong> @(Model.Reservation.FirstDay == default ? "-" : Model.Reservation.FirstDay.ToString("yyyy-MM-dd"))</p>
+        <p><strong>To:</strong> @(Model.Reservation.LastDay == default ? "-" : Model.Reservation.LastDay.ToString("yyyy-MM-dd"))</p> *@
+    </div>
+
+
+    <div class="card mb-4 p-3">
+        <h4>Passengers</h4>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Date of Birth</th>
+                    <th>Nationality</th>
+                    <th>Passport Number</th>
+                    <th>Passport Expiration</th>
+                    <th>Issuing Country</th>
+                    <th>Checked In</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Reservation.Passengers.Count; i++)
+                {
+                    var p = Model.Reservation.Passengers[i];
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@p.FirstName @p.LastName</td>
+                        <td>@p.Gender</td>
+                        <td>@p.DateOfBirthString</td>
+                        <td>@p.Nationality</td>
+                        <td>@p.PassportNumber</td>
+                        <td>@p.PassportExpirationDateString</td>
+                        <td>@p.PassportIssuingCountry</td>
+                        <td>@(p.IsCheckedIn ? "Yes" : "No")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mb-4">
+        <form asp-action="ChangeStatus" method="post" class="d-inline">
+            <input type="hidden" name="id" value="@Model.Reservation.Id" />
+            <input type="hidden" name="status" value="@((int)ReservationStatus.Canceled)" />
+            <button type="submit" class="btn btn-danger">Cancel Reservation</button>
+        </form>
+    </div>
+}

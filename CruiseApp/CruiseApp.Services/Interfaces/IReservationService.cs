@@ -1,4 +1,6 @@
-﻿using CruiseApp.Services.Core.Models.Reservation;
+﻿using CruiseApp.Data.Models.Enums;
+using CruiseApp.Services.Core.Models.Admin;
+using CruiseApp.Services.Core.Models.Reservation;
 
 namespace CruiseApp.Services.Core.Interfaces
 {
@@ -15,5 +17,8 @@ namespace CruiseApp.Services.Core.Interfaces
         Task CheckInAsync(int reservationId, List<PassengerCheckInServiceModel> passengers);
 
         Task<bool> IsCabinAvailableAsync(int cruiseId, int cabinId);
+
+        Task<AdminReservationEditServiceModel?> GetByReferenceAsync(string reference);
+        Task ChangeStatusAsync(int reservationId, ReservationStatus status);
     }
 }

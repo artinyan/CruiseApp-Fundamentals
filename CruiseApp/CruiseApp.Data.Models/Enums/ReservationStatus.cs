@@ -4,6 +4,6 @@
     {
         Pending = 1,  // Reservation
         Confirmed = 2, // Check In
-        Cancelled = 3
+        Canceled = 3
     }
 }
