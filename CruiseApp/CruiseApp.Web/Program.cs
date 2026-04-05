@@ -53,6 +53,7 @@ builder.Services.AddScoped<IShipService, ShipService>();
 builder.Services.AddScoped<IPointService, PointService>();
 builder.Services.AddScoped<ICruiseLikeService, CruiseLikeService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IShipImportService, ShipImportService>();
 // ===========================================
 
 var app = builder.Build();
@@ -81,11 +82,6 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine("Database already contains data.");
     }
 }
-
-
-
-// ===========================================
-
 
 // ===========================================
 // Configure the HTTP request pipeline.

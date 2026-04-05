@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\" />
+    <Folder Include="Uploads\packages\" />
     <Folder Include="wwwroot\images\destinations\" />
     <Folder Include="wwwroot\images\hero\" />
     <Folder Include="wwwroot\images\cabins\" />

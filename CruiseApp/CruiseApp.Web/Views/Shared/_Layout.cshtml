@@ -18,12 +18,10 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
             <div class="container">
 
-                <!-- Brand -->
                 <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">
                     🐬 Dolphin Cruises
                 </a>
 
-                <!-- Toggler -->
                 <button class="navbar-toggler" type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#mainNavbar"
@@ -66,6 +64,15 @@
                                        asp-controller="AdminReservation"
                                        asp-action="Index">
                                     Admin Reservations
+                                    <span class="badge bg-warning text-dark ms-1">Admin</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link fw-semibold"
+                                       asp-controller="AdminShip"
+                                       asp-action="ImportShip">
+                                    Import Ship
                                     <span class="badge bg-warning text-dark ms-1">Admin</span>
                                 </a>
                             </li>

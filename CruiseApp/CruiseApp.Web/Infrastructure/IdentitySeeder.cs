@@ -11,14 +11,12 @@ namespace CruiseApp.Web.Infrastructure
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
 
-            // Roles
             if (!await roleManager.RoleExistsAsync(Roles.Administrator))
                 await roleManager.CreateAsync(new IdentityRole(Roles.Administrator));
 
             if (!await roleManager.RoleExistsAsync(Roles.User))
                 await roleManager.CreateAsync(new IdentityRole(Roles.User));
 
-            // Optional admin user
             var adminEmail = "admin@cruise.com";
             var admin = await userManager.FindByEmailAsync(adminEmail);
 
