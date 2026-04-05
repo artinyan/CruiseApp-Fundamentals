@@ -1,11 +1,21 @@
 ﻿@using CruiseApp.ViewModels.Admin
 @model IEnumerable<AdminCruiseListViewModel>
 
+@{
+    ViewData["Title"] = "Admin Cruise";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
 <div class="container page-container mt-4">
     <div class="card shadow-sm p-4">
         <h1 class="mb-4">Admin – Cruises</h1>
 
-        <a asp-action="Create" class="btn btn-success mb-3">➕ Add Cruise</a>
+        <a asp-area="Admin" asp-controller="Cruise" asp-action="Create" class="btn btn-success mb-3">
+            ➕ Add Cruise
+        </a>
 
         <!-- ===== DESKTOP / TABLET TABLE ===== -->
         <div class="table-responsive d-none d-md-block">

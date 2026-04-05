@@ -103,9 +103,22 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+
+// 1️ Маршрут за Areas – поставя се първи, защото е по-специфичен
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+// 2️ Default маршрут за останалите контролери
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.MapRazorPages();
 

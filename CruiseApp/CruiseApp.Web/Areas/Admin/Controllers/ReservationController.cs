@@ -6,16 +6,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace CruiseApp.Web.Controllers
+namespace CruiseApp.Web.Areas.Admin.Controllers
 {
-
+    [Area("Admin")]
     [Authorize(Roles = Roles.Administrator)]
 
-    public class AdminReservationController : Controller
+    public class ReservationController : Controller
     {
         private readonly IReservationService reservationService;
 
-        public AdminReservationController(IReservationService reservationService)
+        public ReservationController(IReservationService reservationService)
         {
             this.reservationService = reservationService;
         }

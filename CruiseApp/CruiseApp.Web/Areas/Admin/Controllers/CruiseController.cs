@@ -7,16 +7,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using CruiseApp.Services.Core.Interfaces;
 using CruiseApp.Services.Core.Models.Admin;
 
-namespace CruiseApp.Web.Controllers
+namespace CruiseApp.Web.Areas.Admin.Controllers
 {
-
+    [Area("Admin")]
     [Authorize(Roles = Roles.Administrator)]
-    public class AdminCruiseController : Controller
+    public class CruiseController : Controller
     {
         private readonly ICruiseService cruiseService;
         private readonly IShipService shipService;
 
-        public AdminCruiseController(
+        public CruiseController(
             ICruiseService cruiseService,
             IShipService shipService)
         {

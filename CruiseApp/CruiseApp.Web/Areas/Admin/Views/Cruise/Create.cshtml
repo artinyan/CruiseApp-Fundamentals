@@ -1,7 +1,11 @@
-﻿@model CruiseApp.ViewModels.Admin.AdminCruiseEditViewModel
+﻿@model CruiseApp.ViewModels.Admin.AdminCruiseCreateViewModel
 
 @{
-    ViewData["Title"] = "Edit Cruise";
+    ViewData["Title"] = "Create Cruise";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container page-container mt-4">
@@ -10,13 +14,15 @@
             <div class="card shadow-sm p-4">
                 <h2 class="mb-4">@ViewData["Title"]</h2>
 
-                <form asp-action="Edit" method="post">
-                    <input type="hidden" asp-for="Id" />
+                <form asp-action="Create" method="post">
                     <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
                     <div class="mb-3">
-                        <label class="form-label">Ship</label>
-                        <input class="form-control" value="@ViewBag.ShipName" disabled />
+                        <label asp-for="ShipId" class="form-label"></label>
+                        <select asp-for="ShipId" asp-items="ViewBag.Ships" class="form-select">
+                            <option value="">-- Select Ship --</option>
+                        </select>
+                        <span asp-validation-for="ShipId" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
@@ -56,8 +62,10 @@
                                            class="form-control text-end"
                                            placeholder="0.00"
                                            step="0.01" />
+
                                     <span class="input-group-text">€</span>
                                 </div>
+
                                 <span asp-validation-for="CabinPrices[@i].Price"
                                       class="text-danger"></span>
                             </div>
@@ -65,7 +73,7 @@
                     }
 
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary flex-grow-1">Save</button>
+                        <button type="submit" class="btn btn-primary flex-grow-1">Create</button>
                         <a asp-action="Index" class="btn btn-secondary flex-grow-1">Cancel</a>
                     </div>
                 </form>
@@ -76,17 +84,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-
-    <script>
-        $.validator.addMethod("daterange", function (value, element, params) {
-            var start = $("#" + params.startpropertyname).val();
-            if (!start || !value) return true;
-            return value > start;
-        });
-
-        $.validator.unobtrusive.adapters.add("daterange", ["startpropertyname"], function (options) {
-            options.rules["daterange"] = { startpropertyname: options.params.startpropertyname };
-            options.messages["daterange"] = options.message;
-        });
-    </script>
 }

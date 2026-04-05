@@ -1,12 +1,18 @@
 ﻿using CruiseApp.Services.Core.Interfaces;
 using CruiseApp.ViewModels.Admin;
+using CruiseApp.Web.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-public class AdminShipController : Controller
+namespace CruiseApp.Web.Areas.Admin.Controllers;
+
+[Area("Admin")]
+[Authorize(Roles = Roles.Administrator)]
+public class ShipController : Controller
 {
     private readonly IShipImportService importService;
 
-    public AdminShipController(IShipImportService importService)
+    public ShipController(IShipImportService importService)
     {
         this.importService = importService;
     }

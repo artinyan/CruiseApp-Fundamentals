@@ -33,15 +33,14 @@
                 <div class="collapse navbar-collapse" id="mainNavbar">
 
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index" asp-area="">
                                 Home
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Cruise" asp-action="Index">
+                            <a class="nav-link" asp-controller="Cruise" asp-action="Index" asp-area="">
                                 Cruises
                             </a>
                         </li>
@@ -51,15 +50,18 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link fw-semibold"
-                                       asp-controller="AdminCruise"
+                                       asp-area="Admin"
+                                       asp-controller="Cruise"
                                        asp-action="Index">
                                     Admin Cruises
                                     <span class="badge bg-warning text-dark ms-1">Admin</span>
                                 </a>
                             </li>
+
                             <li class="nav-item">
                                 <a class="nav-link fw-semibold"
-                                       asp-controller="AdminReservation"
+                                       asp-area="Admin"
+                                       asp-controller="Reservation"
                                        asp-action="Index">
                                     Admin Reservations
                                     <span class="badge bg-warning text-dark ms-1">Admin</span>
@@ -68,7 +70,8 @@
 
                             <li class="nav-item">
                                 <a class="nav-link fw-semibold"
-                                       asp-controller="AdminShip"
+                                       asp-area="Admin"
+                                       asp-controller="Ship"
                                        asp-action="ImportShip">
                                     Import Ship
                                     <span class="badge bg-warning text-dark ms-1">Admin</span>
@@ -77,7 +80,7 @@
                         }
 
                         @if (User.Identity?.IsAuthenticated == true &&
-                                                                        User.IsInRole(Roles.User))
+                                                                                                                        User.IsInRole(Roles.User))
                         {
                             <li class="nav-item">
                                 <a class="nav-link"
