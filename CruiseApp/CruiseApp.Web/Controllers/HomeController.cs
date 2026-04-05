@@ -26,7 +26,21 @@ namespace CruiseApp.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            });
         }
+
+        public IActionResult NotFound()
+        {
+            Response.StatusCode = 404;
+            return View();
+        }
+
+        //public IActionResult Test500()
+        //{
+        //    throw new Exception("Test 500 error");
+        //}
     }
 }

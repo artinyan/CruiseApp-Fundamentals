@@ -92,9 +92,11 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Home/Error"); // 500
     app.UseHsts();
 }
+
+app.UseStatusCodePagesWithReExecute("/Home/NotFound"); // 404
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -103,22 +105,13 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-
-// 1️ Маршрут за Areas – поставя се първи, защото е по-специфичен
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-// 2️ Default маршрут за останалите контролери
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=Home}/{action=Index}/{id?}");
-
 
 app.MapRazorPages();
 
