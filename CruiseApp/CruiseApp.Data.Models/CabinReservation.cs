@@ -68,8 +68,5 @@ namespace CruiseApp.Data.Models
             PricePaid = amount;
             IsPaid = true;
         }
-
-         //PassengersCount <= CabinTypeConstants.GetCapacity(cabin.Type
-         //Reservation.Passengers.Count == PassengersCount
     }
 }

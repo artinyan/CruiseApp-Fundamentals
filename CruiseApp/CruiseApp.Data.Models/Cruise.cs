@@ -41,7 +41,6 @@ namespace CruiseApp.Data.Models
 
         public int CruiseLength => LastDay.DayNumber - FirstDay.DayNumber;
 
-
         public ICollection<CruiseCabinPrice> CabinPrices { get; set; } = new List<CruiseCabinPrice>();
 
         private void SetRoute(Route route)
@@ -49,7 +48,6 @@ namespace CruiseApp.Data.Models
             Route = route;
             RouteId = route.Id;
         }
-
 
         private void SetDescription(string? description)
         {
@@ -60,7 +58,6 @@ namespace CruiseApp.Data.Models
         {
             SetDescription(description);
         }
-
 
         public void SetPeriod(DateOnly firstDay, DateOnly lastDay)
         {

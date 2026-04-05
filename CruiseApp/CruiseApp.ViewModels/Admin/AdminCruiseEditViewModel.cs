@@ -11,9 +11,6 @@ namespace CruiseApp.ViewModels.Admin
         [Required]
         public int ShipId { get; set; }
 
-        //[Required]
-        //public int RouteId { get; set; }
-
         [Required(ErrorMessage = "First day is required")]
         public DateOnly FirstDay { get; set; }
 
@@ -23,9 +20,6 @@ namespace CruiseApp.ViewModels.Admin
         [Required(ErrorMessage = "Last day is required")]
         [DateRange("FirstDay", ErrorMessage = "Last day must be after first day")]
         public DateOnly LastDay { get; set; }
-
-        //public ICollection<AdminCruiseCabinPriceViewModel> CabinPrices { get; set; }
-        //    = new List<AdminCruiseCabinPriceViewModel>();
 
         public List<AdminCruiseCabinPriceViewModel> CabinPrices { get; set; }
             = new();

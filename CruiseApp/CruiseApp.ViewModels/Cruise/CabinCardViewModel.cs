@@ -7,7 +7,6 @@ namespace CruiseApp.ViewModels.Cruise
     public class CabinCardViewModel
     {
         public string ShipName { get; set; } = string.Empty;
-
         public int CruiseId { get; set; }
         public CabinType CabinType { get; set; }
 
@@ -19,7 +18,6 @@ namespace CruiseApp.ViewModels.Cruise
 
         public decimal Price { get; set; }
 
-        // дековете, които имат този тип кабина
         public IEnumerable<DeckButtonViewModel> Decks { get; set; }
             = new List<DeckButtonViewModel>();
     }

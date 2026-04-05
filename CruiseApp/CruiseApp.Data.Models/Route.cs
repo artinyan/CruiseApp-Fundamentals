@@ -20,7 +20,6 @@ namespace CruiseApp.Data.Models
 
         public ICollection<RouteDay> Days { get; set; } = new List<RouteDay>();
 
-
         [NotMapped]
         public string Name => Ship != null? $"Route of {Ship.Name}" : "Route";
     }

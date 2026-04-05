@@ -9,9 +9,18 @@
        class="btn btn-link px-0 mb-3">
         ← Back to View Cabins
     </a>
+    @if (User.IsInRole("Administrator"))
+    {
+    <h2 class="mb-4">
+        @Model.CabinType Cabin on Deck @Model.DeckNumber. <strong>Administrator can not do booking.</strong>
+    </h2>
+    }
+    else
+    {
     <h2 class="mb-4">
         Select @Model.CabinType Cabin on Deck @Model.DeckNumber
     </h2>
+    }
 </div>
 
 <div class="deck-map">
@@ -19,17 +28,27 @@
 
     @foreach (var cabin in Model.Cabins)
     {
-        if (cabin.IsAvailable)
+        @if (cabin.IsAvailable)
         {
-            <a asp-controller="Reservation"
-                   asp-action="Create"
-                   asp-route-cabinId="@cabin.Id"
-                   asp-route-cruiseId="@Model.CruiseId"
-                   class="cabin cabin-blue"
-                   style="left:@(cabin.PosX)px; top:@(cabin.PosY)px">
-                @cabin.Name
-            </a>
-
+            if (User.IsInRole("Administrator"))
+            {
+                <span class="cabin cabin-blue"
+                      style="left:@(cabin.PosX)px; top:@(cabin.PosY)px; cursor:not-allowed;"
+                      title="Admins cannot make reservations">
+                    @cabin.Name
+                </span>
+            }
+            else
+            {
+                <a asp-controller="Reservation"
+                       asp-action="Create"
+                       asp-route-cabinId="@cabin.Id"
+                       asp-route-cruiseId="@Model.CruiseId"
+                       class="cabin cabin-blue"
+                       style="left:@(cabin.PosX)px; top:@(cabin.PosY)px">
+                    @cabin.Name
+                </a>
+            }
         }
         else
         {

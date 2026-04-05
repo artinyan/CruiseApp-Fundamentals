@@ -267,10 +267,6 @@ public static class DatabaseSeeder
         db.SaveChanges();
 
 
-        // ============================
-        // ADD CABIN PRICES (Липсваше!)
-        // ============================
-
         var cruisePrices = new List<CruiseCabinPrice>();
 
         foreach (var cruise in cruises)

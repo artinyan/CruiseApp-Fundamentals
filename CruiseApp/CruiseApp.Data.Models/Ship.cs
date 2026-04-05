@@ -18,5 +18,4 @@ namespace CruiseApp.Data.Models
 
         public ICollection<Deck> Decks { get; set; } = new List<Deck>();
     }
-
 }

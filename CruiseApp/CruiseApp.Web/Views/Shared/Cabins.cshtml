@@ -4,8 +4,6 @@
     ViewData["Title"] = "Cabin Details";
 }
 
-<!-- ========================= -->
-<!-- HEADER -->
 <div class="page-container mb-5">
     <a asp-controller="Cruise"
            asp-action="Details"
@@ -24,7 +22,6 @@
     </div>
 
 
-    <!-- ========================= -->
     @if (Model.Cabins != null && Model.Cabins.Any())
     {
         <div class="cabin-list">

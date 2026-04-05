@@ -108,7 +108,6 @@ namespace CruiseApp.Web.Controllers
             if (status == ReservationStatus.Pending)
                 throw new Exception("Setting Pending is not allowed");
 
-            //return RedirectToAction(nameof(ReservationSearch));
             return RedirectToAction(nameof(Index));
         }
     }

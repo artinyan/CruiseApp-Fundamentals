@@ -14,9 +14,6 @@ public class CruiseCabinPrice
     [Comment("Cruise for which this price applies")]
     public int CruiseId { get; set; }
 
-    //[NotMapped]
-    //public Cruise? Cruise { get; set; }
-
     [ForeignKey(nameof(CruiseId))]
     public Cruise Cruise { get; set; } = null!;
 

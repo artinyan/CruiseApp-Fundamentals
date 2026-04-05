@@ -4,9 +4,6 @@
     ViewData["Title"] = "Cruise Details";
 }
 
-<!-- ========================= -->
-<!-- HERO SECTION              -->
-<!-- ========================= -->
 
 <div class="container-fluid px-3 px-md-4 mb-4">
     <div class="hero-container">
@@ -16,9 +13,7 @@
     </div>
 </div>
 
-<!-- ========================= -->
-<!-- CRUISE CARD               -->
-<!-- ========================= -->
+
 <div class="page-container mb-5">
     <a asp-action="Index" class="btn btn-link px-0 mb-3">
         ← Back to Cruises
@@ -26,7 +21,6 @@
     <div class="cruise-list">
         <div class="cruise-card">
 
-            <!-- IMAGE -->
             <div class="cruise-image">
                 <img src="~/images/destinations/@(Model.StartPoint).jpg"
                      onerror="this.src='/images/noimage.jpg'"
@@ -34,10 +28,8 @@
                      class="img-fluid h-100 w-100 object-fit-cover" />
             </div>
 
-            <!-- INFO -->
             <div class="cruise-info">
 
-                <!-- HEADER -->
                 <h2 class="h4 mb-1">@Model.ShipName</h2>
 
                 <div class="text-muted small mb-3">
@@ -74,7 +66,6 @@
                     </a>
                 </div>
 
-                <!-- ACTIONS -->
                 @if (User.IsInRole("User"))
                 {
                     <div class="card-footer bg-white border-top">
@@ -96,8 +87,6 @@
 </div>
 
 
-
-<!-- Hero Image Carousel Script -->
 <script>
     const images = document.querySelectorAll('.hero-image');
     let currentIndex = 0;

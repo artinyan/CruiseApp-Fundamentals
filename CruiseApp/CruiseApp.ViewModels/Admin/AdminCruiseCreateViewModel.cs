@@ -10,9 +10,6 @@ namespace CruiseApp.ViewModels.Admin
         [Required]
         public int ShipId { get; set; }
 
-        //[Required]
-        //public int RouteId { get; set; }
-
         [Required(ErrorMessage = "First day is required")]
         public DateOnly FirstDay { get; set; }
 

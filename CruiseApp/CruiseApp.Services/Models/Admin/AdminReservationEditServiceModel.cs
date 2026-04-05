@@ -13,7 +13,6 @@ namespace CruiseApp.Services.Core.Models.Admin
         public bool IsPaid { get; set; }
         public decimal Price { get; set; }
 
-        // 🔹 Cruise info
         public string ShipName { get; set; } = null!;
         public string CabinName { get; set; } = null!;
         public string CabinType { get; set; } = null!;
@@ -21,10 +20,8 @@ namespace CruiseApp.Services.Core.Models.Admin
         public DateOnly FirstDay { get; set; }
         public DateOnly LastDay { get; set; }
 
-        // 🔹 User
         public string UserEmail { get; set; } = null!;
 
-        // 🔹 Passengers
         public List<AdminPassengerServiceModel> Passengers { get; set; }
             = new List<AdminPassengerServiceModel>();
     }

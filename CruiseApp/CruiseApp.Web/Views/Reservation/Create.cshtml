@@ -26,7 +26,6 @@
         · <strong>@Model.Nights</strong> nights
     </div>
 
-    <!-- 🔹 CABIN INFO -->
     <div class="cabin-card">
         <div class="cabin-image">
             <img src="~/images/cabins/@Model.ImageName"
@@ -60,13 +59,11 @@
 
 
 
-    <!-- 🔹 FORM -->
     <form asp-action="Create" method="post">
 
         <input type="hidden" asp-for="CruiseId" />
         <input type="hidden" asp-for="CabinId" />
 
-        <!-- Passengers count -->
         <div class="mb-3">
             <label class="form-label">Number of Passengers</label>
             <select asp-for="PassengersCount" class="form-select" id="passengerCount">
@@ -77,7 +74,6 @@
             </select>
         </div>
 
-        <!-- Dynamic passengers -->
         <div id="passengersContainer"></div>
 
         <button type="submit" class="btn btn-primary mt-3">
@@ -136,7 +132,6 @@
             $.validator.unobtrusive.parse("#passengersContainer");
         }
 
-        // initial load
         generatePassengers(select.value);
 
         select.addEventListener("change", function () {

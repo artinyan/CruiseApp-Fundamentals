@@ -13,7 +13,7 @@ namespace CruiseApp.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [Range(1, 999, ErrorMessage = "Cabin number must be between 1 and 999")] // Second Validation. (first sould be javascript frontend), third sould be in migration
+        [Range(1, 999, ErrorMessage = "Cabin number must be between 1 and 999")]
         public int SequenceNumber { get; set; }
 
         [Required]

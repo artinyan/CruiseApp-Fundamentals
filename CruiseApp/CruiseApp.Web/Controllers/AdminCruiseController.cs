@@ -33,7 +33,6 @@ namespace CruiseApp.Web.Controllers
         {
             var serviceModel = await cruiseService.GetAllAdminAsync();
 
-            // Мап към ViewModel
             var viewModel = serviceModel.Select(c => new AdminCruiseListViewModel
             {
                 Id = c.Id,

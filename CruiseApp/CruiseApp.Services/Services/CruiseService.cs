@@ -223,7 +223,6 @@ namespace CruiseApp.Services.Core.Services
             if (exists)
                 throw new InvalidOperationException("A cruise with the same ship and dates already exists.");
 
-            // Price Validation
             if (model.CabinPrices.Count != 4)
             {
                 throw new InvalidOperationException("All 4 cabin prices are required.");
@@ -236,13 +235,11 @@ namespace CruiseApp.Services.Core.Services
 
             var cruise = new Cruise(route, model.FirstDay, model.LastDay);
 
-            // ✅ Adding Description
             cruise.ChangeDescription(model.Description);
 
             db.Cruises.Add(cruise);
             await db.SaveChangesAsync();
 
-            // Price creaton
             var prices = model.CabinPrices.Select(p => new CruiseCabinPrice
             {
                 CruiseId = cruise.Id,
@@ -306,10 +303,8 @@ namespace CruiseApp.Services.Core.Services
             cruise.ChangePeriod(model.FirstDay, model.LastDay);
             cruise.ValidateAgainstRoute();
 
-            // Update Description
             cruise.ChangeDescription(model.Description);
 
-            // Update prices
             foreach (var price in cruise.CabinPrices)
             {
                 var newPrice = model.CabinPrices

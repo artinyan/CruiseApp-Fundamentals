@@ -5,9 +5,6 @@
     ViewData["Title"] = "Cruises";
 }
 
-<!-- ========================= -->
-<!-- Hero section              -->
-<!-- ========================= -->
 <div class="container-fluid px-3 px-md-4 mb-4">
     <div class="hero-container">
 
@@ -17,9 +14,6 @@
     </div>
 </div>
 
-<!-- ========================= -->
-<!-- Search form               -->
-<!-- ========================= -->
 <div class="page-container mb-4">
     <form method="get" asp-action="Index">
         <div class="row g-3 align-items-end">
@@ -63,9 +57,7 @@
     </form>
 </div>
 
-<!-- ========================= -->
-<!-- Cruises list              -->
-<!-- ========================= -->
+
 @if (Model.Cruises != null && Model.Cruises.Any())
 {
     <div class="page-container mb-5">

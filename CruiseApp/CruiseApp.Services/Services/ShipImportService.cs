@@ -17,8 +17,6 @@ public class ShipImportService : IShipImportService
         this.db = db;
     }
 
-
-
     public async Task ImportShipAsync(string zipPath)
     {
 
@@ -139,7 +137,6 @@ public class ShipImportService : IShipImportService
             db.Routes.Add(route);
             await db.SaveChangesAsync();
 
-            // RouteDays
             foreach (var day in routeModel.RouteDays)
             {
                 var point = await db.Points

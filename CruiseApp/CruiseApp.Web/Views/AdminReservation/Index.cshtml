@@ -26,8 +26,6 @@
         <p><strong>Paid:</strong> @(Model.Reservation.IsPaid ? "Yes" : "No")</p>
         <p><strong>From:</strong> @Model.Reservation.FirstDay</p>
         <p><strong>To:</strong> @Model.Reservation.LastDay</p>
-        @* <p><strong>From:</strong> @(Model.Reservation.FirstDay == default ? "-" : Model.Reservation.FirstDay.ToString("yyyy-MM-dd"))</p>
-        <p><strong>To:</strong> @(Model.Reservation.LastDay == default ? "-" : Model.Reservation.LastDay.ToString("yyyy-MM-dd"))</p> *@
     </div>
 
 
