@@ -265,7 +265,7 @@ namespace CruiseApp.Services.Core.Services
                     ShipName = c.Route.Ship.Name,
                     FirstDay = c.FirstDay,
                     LastDay = c.LastDay,
-                    Description = c.Description, // ✅ Връщаме Description
+                    Description = c.Description,
                     CabinPrices = c.CabinPrices
                         .Select(p => new AdminCruiseCabinPriceFormModel
                         {
@@ -285,7 +285,7 @@ namespace CruiseApp.Services.Core.Services
                 .Include(c => c.Route)
                     .ThenInclude(r => r.Days)
                         .ThenInclude(d => d.Point)
-                .Include(c => c.CabinPrices) // <- задължително за update на цените
+                .Include(c => c.CabinPrices)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (cruise == null)
